@@ -1,4 +1,5 @@
 import numpy as np
+import math
 import pandas as pd
 from numba import njit
 
@@ -67,5 +68,90 @@ def moving_yang_zhang_estimator(df, window_size=30, high_col='high', low_col='lo
 
     # Create a Series and add the calculated volatility as a new column
     series = pd.Series(vol_array, name="rolling_volatility_yang_zhang", index=df.index)
+
+    return series
+
+
+import numpy as np
+import pandas as pd
+from numba import njit
+import math
+
+
+@njit(nogil=True)
+def parkinson_estimator(high, low, window_size):
+    """
+    Compute Parkinson's volatility estimator over a rolling window.
+
+    Parameters
+    ----------
+    high : np.ndarray
+        Array of high prices.
+    low : np.ndarray
+        Array of low prices.
+    window_size : int
+        Rolling window size.
+
+    Returns
+    -------
+    vol : np.ndarray
+        Array containing the rolling Parkinson volatility.
+    """
+    n = high.shape[0]
+    vol = np.empty(n)
+
+    # Fill the first values (for which there isn't enough data) with NaN.
+    for i in range(window_size):
+        vol[i] = np.nan
+
+    # Compute rolling volatility over the sliding window
+    for i in range(window_size, n):
+        sum_squared = 0.0
+        N = window_size + 1  # Number of elements in the window
+
+        for j in range(i - window_size, i + 1):
+            sum_squared += np.log(high[j] / low[j]) ** 2
+
+        vol[i] = math.sqrt((1 / (4 * N * math.log(2))) * sum_squared)
+
+    return vol
+
+
+def moving_parkinson_estimator(df, window_size=30, high_col='high', low_col='low'):
+    """
+    Calculate Parkinson's volatility estimator using numpy operations with Numba acceleration.
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        DataFrame containing the price data.
+    window_size : int, optional
+        The number of periods to include in the rolling calculation (default is 30).
+    high_col : str, optional
+        Column name for the high prices (default is 'high').
+    low_col : str, optional
+        Column name for the low prices (default is 'low').
+
+    Returns
+    -------
+    volatility_series : pandas.Series
+        A Series indexed the same as `df`, containing the rolling Parkinson volatility.
+        The first `window_size` rows will be NaN because there is insufficient data
+        to compute the volatility in those windows.
+    """
+    # Check that the necessary columns exist in the DataFrame
+    for col in [high_col, low_col]:
+        if col not in df.columns:
+            raise ValueError(f"The required column '{col}' is not present in the DataFrame.")
+
+    # Convert the specified columns to NumPy arrays
+    high = df[high_col].to_numpy()
+    low = df[low_col].to_numpy()
+
+    # Calculate the volatility using the Numba-accelerated function
+    vol_array = parkinson_estimator(high, low, window_size)
+
+    # Create a Series and add the calculated volatility as a new column
+    series = pd.Series(vol_array, name="rolling_volatility_parkinson", index=df.index)
 
     return series
