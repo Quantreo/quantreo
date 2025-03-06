@@ -16,3 +16,6 @@ eggs/
 # Editor Configs
 .idea/
 .vscode/
+
+# macOS
+.DS_Store
