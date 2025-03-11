@@ -26,7 +26,8 @@ def yang_zhang_estimator(high, low, open_, close, window_size):
     return vol
 
 
-def moving_yang_zhang_estimator(df, window_size=30, high_col='high', low_col='low', open_col='open', close_col='close'):
+def yang_zhang_volatility(df: pd.DataFrame, window_size: int = 30, high_col: str = 'high', low_col: str = 'low',
+                          open_col: str = 'open', close_col: str = 'close') -> pd.Series:
     """
     Calculate Yang-Zhang volatility estimator using numpy operations with Numba acceleration.
 
@@ -72,12 +73,6 @@ def moving_yang_zhang_estimator(df, window_size=30, high_col='high', low_col='lo
     return series
 
 
-import numpy as np
-import pandas as pd
-from numba import njit
-import math
-
-
 @njit(nogil=True)
 def parkinson_estimator(high, low, window_size):
     """
@@ -117,7 +112,8 @@ def parkinson_estimator(high, low, window_size):
     return vol
 
 
-def moving_parkinson_estimator(df, window_size=30, high_col='high', low_col='low'):
+def parkinson_volatility(df: pd.DataFrame, window_size: int = 30, high_col: str = 'high', low_col: str = 'low')\
+                        -> pd.Series:
     """
     Calculate Parkinson's volatility estimator using numpy operations with Numba acceleration.
 

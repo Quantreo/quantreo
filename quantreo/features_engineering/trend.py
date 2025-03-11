@@ -3,7 +3,7 @@ import pandas as pd
 from numba import njit
 
 
-def sma(df, col, window=30):
+def sma(df: pd.DataFrame, col: str, window: int = 30) -> pd.Series:
     """
     Calculate the Simple Moving Average (SMA) using Pandas rolling.mean,
     following the standard conventions of our library.
@@ -36,7 +36,7 @@ def sma(df, col, window=30):
     return sma_series
 
 
-def kama(df, col, l1=10, l2=2, l3=30):
+def kama(df: pd.DataFrame, col: str, l1: int = 10, l2: int = 2, l3: int = 30) -> pd.Series:
     """
     Calculate Kaufman's Adaptive Moving Average (KAMA) for a specified column in a DataFrame.
 

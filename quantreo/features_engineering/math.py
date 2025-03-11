@@ -1,12 +1,12 @@
 import pandas as pd
 import numpy as np
 from numba import njit
-
+from typing import Tuple
 import math
 import warnings
 
 
-def derivatives(df, col):
+def derivatives(df: pd.DataFrame, col: str) -> Tuple[pd.Series, pd.Series]:
     """
     Calculate the first (velocity) and second (acceleration) derivatives of a specified column.
 
@@ -417,7 +417,9 @@ def hurst_exponent(series):
 def hurst(df: pd.DataFrame, col: str, window: int = 100) -> pd.DataFrame:
     df_copy = df.copy()
 
-    # Apply the helper function on a rolling window; use min_periods=window so that calculation occurs only when the window is full.
+    # Apply the helper function on a rolling window; use min_periods=window so that calculation occurs only when the
+    # window is full.
     df_copy[f"hurst_{window}"] = df_copy[col].rolling(window=window, min_periods=window, center=False) \
         .apply(hurst_exponent, raw=False)
-    return df_copy
+
+    return df_copy[f"hurst_{window}"]

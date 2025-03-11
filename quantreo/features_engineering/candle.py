@@ -3,7 +3,6 @@ import numpy as np
 from typing import Tuple
 
 
-
 def candle_information(df: pd.DataFrame, open_col: str = 'open', high_col: str = 'high', low_col: str = 'low',
                        close_col: str = 'close') -> Tuple[pd.Series, pd.Series, pd.Series]:
     """
@@ -53,7 +52,7 @@ def candle_information(df: pd.DataFrame, open_col: str = 'open', high_col: str =
     return df_copy["candle_way"], df_copy["filling"], df_copy["amplitude"]
 
 
-def compute_spread(df, high_col='high', low_col='low'):
+def compute_spread(df: pd.DataFrame, high_col: str = 'high', low_col: str = 'low') -> pd.Series:
     """
     Compute the spread between the high and low price columns.
 
