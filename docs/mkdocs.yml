@@ -12,6 +12,8 @@ theme:
     - content.tabs.link
     - content.code.annotation
     - content.code.copy
+
+
   language: en
   palette:
     - scheme: default
@@ -27,9 +29,11 @@ theme:
       primary: indigo
       accent: lime
 
+
 plugins:
   - social
   - search
+
 
 extra:
   social:
@@ -56,6 +60,12 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
+  - toc:
+      permalink: true
+      toc_depth: 2
+
+extra_javascript:
+  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML
 
 copyright: |
   &copy; 2025 <a href="https://github.com/"  target="_blank" rel="noopener">Quantreo

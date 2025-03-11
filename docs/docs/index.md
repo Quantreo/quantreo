@@ -23,3 +23,7 @@ Currently, our focus is on **feature engineering and target engineering**, provi
 ```bash
 pip install nom-de-ta-lib
 ```
+
+
+## **Contact me**
+
