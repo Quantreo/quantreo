@@ -1,13 +1,24 @@
 from quantreo.features_engineering.volatility import *
 from datetime import datetime
 from quantreo.features_engineering.math import *
-
+import ta
 
 df = pd.read_parquet("Data/ML_Strategy_4H_EURUSD.parquet")
-
+print(df)
 start = datetime.now()
 
-df = derivatives(df, "close")
+dft = hurst(df, "close", 500)
+
+
 end = datetime.now()
 print((end-start).total_seconds(), "s")
-print(df)
+print(dft)
+
+
+"""start = datetime.now()
+r = hurst_b(df, "close", 100)
+
+
+end = datetime.now()
+print((end-start).total_seconds(), "s")
+print(r)"""
