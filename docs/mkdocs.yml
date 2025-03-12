@@ -2,6 +2,7 @@ site_name: Quantreo
 site_url: https://www.quantreo.com
 theme:
   name: material
+  custom_dir: overrides
   features:
     - navigation.tabs
     - navigation.sections
@@ -66,6 +67,10 @@ markdown_extensions:
 
 extra_javascript:
   - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML
+  - assets/custom.js
+
+extra_css:
+  - /stylesheets/custom.css
 
 copyright: |
   &copy; 2025 <a href="https://github.com/"  target="_blank" rel="noopener">Quantreo

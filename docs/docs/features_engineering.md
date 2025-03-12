@@ -13,7 +13,7 @@ To help you understand how to use each function, we provide **detailed explanati
 ---
 
 ## **Candle Information**
-You can find a series of examples on how to create these features in the [educational notebooks](./examples/educational_notebooks.ipynb) provided by [Quantreo](https://www.quantreo.com).
+You can find a series of examples on how to create these features in the [educational notebooks](https://www.quantreo.com) provided by [Quantreo](https://www.quantreo.com).
 
 
 ``` py title="Module Import"
@@ -39,11 +39,10 @@ def candle_information(df: pd.DataFrame, open_col: str = 'open', high_col: str =
                        -> Tuple[pd.Series, pd.Series, pd.Series]:
 ```
 
-📢 "For a practical example, check out the [educational notebook](to define)."
+📢 "For a practical example, check out the [educational notebook](https://www.quantreo.com)."
 
 !!! tip "Tip"
     These three variables (`candle_way`, `filling` and `amplitude`) are often very correlated. Do not hesitate to keep only the best feature related to your problem or combine them smartly into one variable.
-
 
 
 

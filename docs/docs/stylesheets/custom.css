@@ -1,0 +1,26 @@
+/* === Banner Styling === */
+.banner {
+    height: 50px; /* Hauteur de la bannière */
+    position: sticky; /* Reste en haut lors du scroll */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; /* S'assurer que la bannière reste au-dessus du contenu */
+    background-color: black; /* Couleur de fond sombre pour un effet premium */
+    color: white; /* Texte blanc pour un bon contraste */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px; /* Texte lisible */
+    font-weight: bold;
+    font-family: "Arial", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* === Ajustement du header pour éviter le chevauchement === */
+.md-header {
+    top: 50px; /* Décaler le header en dessous de la bannière */
+}
+
+
