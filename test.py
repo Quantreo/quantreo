@@ -7,7 +7,7 @@ df = pd.read_parquet("Data/ML_Strategy_4H_EURUSD.parquet")
 print(df)
 start = datetime.now()
 
-dft = hurst(df, "close", 500)
+dft = yang_zhang_volatility(df,50)
 
 
 end = datetime.now()

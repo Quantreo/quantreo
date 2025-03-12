@@ -30,12 +30,12 @@ def candle_information(df: pd.DataFrame, open_col: str = 'open', high_col: str =
 
     Returns
     -------
-    pd.DataFrame
-        A new DataFrame with additional columns:
-          - 'candle_way'
-          - 'filling'
-          - 'amplitude'
+    Tuple[pd.Series, pd.Series, pd.Series]
+        - candle_way (pd.Series[int]): The direction of the candle (`1` for bullish, `-1` for bearish).
+        - filling (pd.Series[float]): The proportion of the candle range occupied by the body.
+        - amplitude (pd.Series[float]): The relative size of the candle in percentage.
     """
+
     df_copy = df.copy()
 
     # Candle color: 1 if close > open, else -1.
