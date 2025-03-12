@@ -6,6 +6,7 @@ theme:
   features:
     - navigation.tabs
     - navigation.sections
+    - navigation.indexes
     - toc.integrate
     - navigation.top
     - search.suggest
@@ -13,6 +14,7 @@ theme:
     - content.tabs.link
     - content.code.annotation
     - content.code.copy
+    - navigation.footer
 
 
   language: en

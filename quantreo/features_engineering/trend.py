@@ -76,12 +76,12 @@ def kama(df: pd.DataFrame, col: str, l1: int = 10, l2: int = 2, l3: int = 30) ->
     close_values = close_series.values
     n = len(close_values)
 
-    # Calculate volatility: absolute difference between consecutive close values
+    # Calculate volatility.md: absolute difference between consecutive close values
     vol = pd.Series(np.abs(close_series - close_series.shift(1)), index=close_series.index)
 
     # Efficiency ratio numerator: absolute difference between current close and close l1 periods ago
     er_num = np.abs(close_series - close_series.shift(l1))
-    # Efficiency ratio denominator: rolling sum of volatility over a window of l1 periods
+    # Efficiency ratio denominator: rolling sum of volatility.md over a window of l1 periods
     er_den = vol.rolling(window=l1, min_periods=l1).sum()
 
     # Compute efficiency ratio; fill NaN (or division by zero) with 0

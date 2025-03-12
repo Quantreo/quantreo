@@ -4,7 +4,43 @@ import pandas as pd
 from numba import njit
 
 
+def close_to_close_volatility(df: pd.DataFrame, window_size: int = 30, close_col: str = 'close') -> pd.Series:
+    """
+    Calculate the rolling close-to-close volatility.md using standard deviation.
 
+    This method computes the rolling standard deviation of the log returns,
+    which represents the close-to-close volatility.md over a specified window.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        DataFrame containing the price data.
+    close_col : str, optional
+        Column name for the closing prices (default is 'close').
+    window_size : int, optional
+        The number of periods to include in the rolling calculation (default is 30).
+
+    Returns
+    -------
+    volatility_series : pd.Series
+        A Series indexed the same as `df`, containing the rolling close-to-close volatility.md.
+        The first `window_size` rows will be NaN because there is insufficient data
+        to compute the volatility.md in those windows.
+    """
+    # Ensure the required column exists
+    if close_col not in df.columns:
+        raise ValueError(f"The required column '{close_col}' is not present in the DataFrame.")
+
+    # Compute log returns
+    log_returns = df[close_col].pct_change().apply(lambda x: np.log(1 + x))
+
+    # Compute rolling standard deviation of log returns
+    volatility_series = log_returns.rolling(window=window_size, min_periods=window_size).std()
+
+    # Name the resulting column
+    volatility_series.name = "close_to_close_vol"
+
+    return volatility_series
 
 
 @njit(nogil=True)
@@ -16,7 +52,7 @@ def rogers_satchell_estimator(high, low, open_, close, window_size):
     for i in range(window_size):
         vol[i] = np.nan
 
-    # Compute rolling volatility over the sliding window
+    # Compute rolling volatility.md over the sliding window
     for i in range(window_size, n):
         sum_val = 0.0
         N = window_size + 0
@@ -32,7 +68,7 @@ def rogers_satchell_estimator(high, low, open_, close, window_size):
 def rogers_satchell_volatility(df: pd.DataFrame, window_size: int = 30, high_col: str = 'high', low_col: str = 'low',
                           open_col: str = 'open', close_col: str = 'close') -> pd.Series:
     """
-    Calculate Rogers-Satchell volatility estimator using numpy operations with Numba acceleration.
+    Calculate Rogers-Satchell volatility.md estimator using numpy operations with Numba acceleration.
 
     Parameters
     ----------
@@ -52,9 +88,9 @@ def rogers_satchell_volatility(df: pd.DataFrame, window_size: int = 30, high_col
     Returns
     -------
     volatility_series : pandas.Series
-        A Series indexed the same as `df`, containing the rolling Rogers-Satchell volatility.
+        A Series indexed the same as `df`, containing the rolling Rogers-Satchell volatility.md.
         The first `window_size` rows will be NaN because there is insufficient data
-        to compute the volatility in those windows.
+        to compute the volatility.md in those windows.
     """
     # Check that the necessary columns exist in the DataFrame
     for col in [high_col, low_col, open_col, close_col]:
@@ -67,10 +103,10 @@ def rogers_satchell_volatility(df: pd.DataFrame, window_size: int = 30, high_col
     open_ = df[open_col].to_numpy()
     close = df[close_col].to_numpy()
 
-    # Calculate the volatility using the Numba-accelerated function
+    # Calculate the volatility.md using the Numba-accelerated function
     vol_array = rogers_satchell_estimator(high, low, open_, close, window_size)
 
-    # Create a Series and add the calculated volatility as a new column
+    # Create a Series and add the calculated volatility.md as a new column
     series = pd.Series(vol_array, name="rogers_satchell_vol", index=df.index)
 
     return series
@@ -79,7 +115,7 @@ def rogers_satchell_volatility(df: pd.DataFrame, window_size: int = 30, high_col
 @njit(nogil=True)
 def parkinson_estimator(high, low, window_size):
     """
-    Compute Parkinson's volatility estimator over a rolling window.
+    Compute Parkinson's volatility.md estimator over a rolling window.
 
     Parameters
     ----------
@@ -93,7 +129,7 @@ def parkinson_estimator(high, low, window_size):
     Returns
     -------
     vol : np.ndarray
-        Array containing the rolling Parkinson volatility.
+        Array containing the rolling Parkinson volatility.md.
     """
     n = high.shape[0]
     vol = np.empty(n)
@@ -102,7 +138,7 @@ def parkinson_estimator(high, low, window_size):
     for i in range(window_size):
         vol[i] = np.nan
 
-    # Compute rolling volatility over the sliding window
+    # Compute rolling volatility.md over the sliding window
     for i in range(window_size, n):
         sum_squared = 0.0
         N = window_size  # Number of elements in the window
@@ -118,7 +154,7 @@ def parkinson_estimator(high, low, window_size):
 def parkinson_volatility(df: pd.DataFrame, window_size: int = 30, high_col: str = 'high', low_col: str = 'low')\
                         -> pd.Series:
     """
-    Calculate Parkinson's volatility estimator using numpy operations with Numba acceleration.
+    Calculate Parkinson's volatility.md estimator using numpy operations with Numba acceleration.
 
     Parameters
     ----------
@@ -134,9 +170,9 @@ def parkinson_volatility(df: pd.DataFrame, window_size: int = 30, high_col: str 
     Returns
     -------
     volatility_series : pandas.Series
-        A Series indexed the same as `df`, containing the rolling Parkinson volatility.
+        A Series indexed the same as `df`, containing the rolling Parkinson volatility.md.
         The first `window_size` rows will be NaN because there is insufficient data
-        to compute the volatility in those windows.
+        to compute the volatility.md in those windows.
     """
     # Check that the necessary columns exist in the DataFrame
     for col in [high_col, low_col]:
@@ -147,10 +183,10 @@ def parkinson_volatility(df: pd.DataFrame, window_size: int = 30, high_col: str 
     high = df[high_col].to_numpy()
     low = df[low_col].to_numpy()
 
-    # Calculate the volatility using the Numba-accelerated function
+    # Calculate the volatility.md using the Numba-accelerated function
     vol_array = parkinson_estimator(high, low, window_size)
 
-    # Create a Series and add the calculated volatility as a new column
+    # Create a Series and add the calculated volatility.md as a new column
     series = pd.Series(vol_array, name="rolling_volatility_vol", index=df.index)
 
     return series
@@ -159,7 +195,7 @@ def parkinson_volatility(df: pd.DataFrame, window_size: int = 30, high_col: str 
 @njit(nogil=True)
 def yang_zhang_estimator(high, low, open_, close, window_size, k=0.34):
     """
-    Compute the Yang-Zhang volatility estimator using a single-pass approach,
+    Compute the Yang-Zhang volatility.md estimator using a single-pass approach,
     similar to the Rogers-Satchell method.
 
     Parameters
@@ -181,7 +217,7 @@ def yang_zhang_estimator(high, low, open_, close, window_size, k=0.34):
     Returns
     -------
     np.array
-        An array containing the estimated Yang-Zhang volatility over the given window.
+        An array containing the estimated Yang-Zhang volatility.md over the given window.
         The first `window_size` elements are NaN due to insufficient data.
     """
     n = high.shape[0]
@@ -215,7 +251,7 @@ def yang_zhang_estimator(high, low, open_, close, window_size, k=0.34):
         sigma_cc = sum_cc / N
         sigma_rs = sum_rs / N
 
-        # Yang-Zhang volatility formula
+        # Yang-Zhang volatility.md formula
         yz_vol = np.sqrt(sigma_oc + k * sigma_cc + (1 - k) * sigma_rs)
         vol[i] = yz_vol
 
@@ -225,7 +261,7 @@ def yang_zhang_estimator(high, low, open_, close, window_size, k=0.34):
 def yang_zhang_volatility(df: pd.DataFrame, window_size: int = 30, high_col: str = 'high', low_col: str = 'low',
                           open_col: str = 'open', close_col: str = 'close', k: float = 0.34) -> pd.Series:
     """
-    Compute the Yang-Zhang volatility estimator using a rolling window.
+    Compute the Yang-Zhang volatility.md estimator using a rolling window.
 
     Parameters
     ----------
@@ -248,7 +284,7 @@ def yang_zhang_volatility(df: pd.DataFrame, window_size: int = 30, high_col: str
     Returns
     -------
     pd.Series
-        A Series containing the rolling Yang-Zhang volatility, indexed like `df`.
+        A Series containing the rolling Yang-Zhang volatility.md, indexed like `df`.
         The first `window_size` rows are NaN due to insufficient data.
     """
     # Validate required columns
@@ -262,7 +298,7 @@ def yang_zhang_volatility(df: pd.DataFrame, window_size: int = 30, high_col: str
     open_ = df[open_col].to_numpy()
     close = df[close_col].to_numpy()
 
-    # Compute volatility using Numba-accelerated function
+    # Compute volatility.md using Numba-accelerated function
     vol_array = yang_zhang_estimator(high, low, open_, close, window_size, k)
 
     # Convert to pandas Series and return

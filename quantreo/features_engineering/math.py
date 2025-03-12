@@ -415,11 +415,35 @@ def hurst_exponent(series):
 
 
 def hurst(df: pd.DataFrame, col: str, window: int = 100) -> pd.DataFrame:
+    """
+    Compute the rolling Hurst exponent for a given column in a DataFrame.
+
+    The Hurst exponent is a measure of the **long-term memory** of a time series.
+    It helps determine whether a series is **mean-reverting**, **random**, or **trending**.
+
+    Interpretation:
+    - **H < 0.5**: Mean-reverting (e.g., stationary processes)
+    - **H ≈ 0.5**: Random walk (e.g., Brownian motion)
+    - **H > 0.5**: Trending behavior
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Input DataFrame containing the time series data.
+    col : str
+        Column name on which the Hurst exponent is calculated.
+    window : int, optional
+        Rolling window size for the Hurst exponent computation (default = 100).
+
+    Returns
+    -------
+    pd.Series
+        A Series containing the rolling Hurst exponent values over the given window.
+    """
     df_copy = df.copy()
 
-    # Apply the helper function on a rolling window; use min_periods=window so that calculation occurs only when the
-    # window is full.
-    df_copy[f"hurst_{window}"] = df_copy[col].rolling(window=window, min_periods=window, center=False) \
+    # Compute the rolling Hurst exponent using a helper function
+    df_copy[f"hurst_{window}"] = df_copy[col].rolling(window=window, min_periods=window) \
         .apply(hurst_exponent, raw=False)
 
     return df_copy[f"hurst_{window}"]

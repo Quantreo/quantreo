@@ -112,6 +112,9 @@ def compute_spread(df: pd.DataFrame, high_col: str = 'high', low_col: str = 'low
 ---
 ## **Volatility**
 
+!!! danger "à rajouter"
+    N'oubliez pas que la valeur de la volatilité va varier en fonction du timeframe utilisé
+
 ``` py
 from quantreo.features_engineering import volatility
 ```
@@ -120,9 +123,48 @@ from quantreo.features_engineering import volatility
 
 ---
 ### **CTC Volatility**
-Close to Close
+
+The `close_to_close_volatility` function calculates the **close-to-close volatility**, a widely used measure of market risk based on the standard deviation of **log returns**. This approach captures **price fluctuations over time** and is particularly useful in **statistical modeling and risk management**. The **close-to-close volatility** is defined as:
+
+\[
+\sigma_{CC} = \sqrt{\frac{1}{N - 1} \sum_{i=1}^{N} \left( \ln \frac{C_i}{C_{i-1}} - \mu \right)^2}
+\]
+
+Where:
+
+- **\(C_i\)**: The **closing price** at time \(i\).
+- **\(N\)**: The number of periods in the rolling window.
+- **\(\mu\)**: The mean of the log returns over the window.
 
 
+```python
+def close_to_close_volatility(df: pd.DataFrame, close_col: str = 'close', window_size: int = 30) -> pd.Series:
+    """
+    Calculate the rolling close-to-close volatility.md using standard deviation.
+
+    This method computes the rolling standard deviation of the log returns, 
+    which represents the close-to-close volatility.md over a specified window.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        DataFrame containing the price data.
+    close_col : str, optional
+        Column name for the closing prices (default is 'close').
+    window_size : int, optional
+        The number of periods to include in the rolling calculation (default is 30).
+
+    Returns
+    -------
+    volatility_series : pd.Series
+        A Series indexed the same as `df`, containing the rolling close-to-close volatility.md.
+        The first `window_size` rows will be NaN because there is insufficient data
+        to compute the volatility.md in those windows.
+    """
+```
+
+
+📢 *For a practical example, check out the [educational notebook](https://www.quantreo.com).*
 
 ---
 ### **Parkinson Volatility**
@@ -157,7 +199,7 @@ Where:
 def parkinson_volatility(df: pd.DataFrame, window_size: int = 30, high_col: str = 'high', low_col: str = 'low')\
                         -> pd.Series:
     """
-    Calculate Parkinson's volatility estimator using numpy operations with Numba acceleration.
+    Calculate Parkinson's volatility.md estimator using numpy operations with Numba acceleration.
 
     Parameters
     ----------
@@ -173,9 +215,9 @@ def parkinson_volatility(df: pd.DataFrame, window_size: int = 30, high_col: str 
     Returns
     -------
     volatility_series : pandas.Series
-        A Series indexed the same as `df`, containing the rolling Parkinson volatility.
+        A Series indexed the same as `df`, containing the rolling Parkinson volatility.md.
         The first `window_size` rows will be NaN because there is insufficient data
-        to compute the volatility in those windows.
+        to compute the volatility.md in those windows.
     """
 ```
 
@@ -218,7 +260,7 @@ Where:
 def rogers_satchell_volatility(df: pd.DataFrame, window_size: int = 30, high_col: str = 'high',
                                low_col: str = 'low', open_col: str = 'open', close_col: str = 'close') -> pd.Series:
     """
-    Compute the Rogers-Satchell volatility estimator using a rolling window.
+    Compute the Rogers-Satchell volatility.md estimator using a rolling window.
 
     Parameters
     ----------
@@ -238,7 +280,7 @@ def rogers_satchell_volatility(df: pd.DataFrame, window_size: int = 30, high_col
     Returns
     -------
     pd.Series
-        A Series containing the rolling Rogers-Satchell volatility, indexed like `df`.
+        A Series containing the rolling Rogers-Satchell volatility.md, indexed like `df`.
         The first `window_size` rows are NaN due to insufficient data.
     """
 ```
@@ -282,7 +324,7 @@ Where:
 def yang_zhang_volatility(df: pd.DataFrame, window_size: int = 30, high_col: str = 'high', low_col: str = 'low',
                           open_col: str = 'open', close_col: str = 'close', k: float = 0.34) -> pd.Series:
     """
-    Compute the Yang-Zhang volatility estimator using a rolling window.
+    Compute the Yang-Zhang volatility.md estimator using a rolling window.
 
     Parameters
     ----------
@@ -305,7 +347,7 @@ def yang_zhang_volatility(df: pd.DataFrame, window_size: int = 30, high_col: str
     Returns
     -------
     pd.Series
-        A Series containing the rolling Yang-Zhang volatility, indexed like `df`.
+        A Series containing the rolling Yang-Zhang volatility.md, indexed like `df`.
         The first `window_size` rows are NaN due to insufficient data.
     """
 
@@ -315,10 +357,187 @@ def yang_zhang_volatility(df: pd.DataFrame, window_size: int = 30, high_col: str
 
 
 ---
+## **Math**
+
+``` py
+from quantreo.features_engineering import math
+```
+
+
+---
+### **Derivatives**
+
+The `derivatives` function computes the **first and second derivatives** of a given price series, representing **velocity** (rate of change) and **acceleration** (rate of velocity change), respectively. These metrics are essential for understanding **price momentum** and **curvature** in financial time series.
+
+#### **Mathematical Definition**
+Given a price series \( P_t \):
+
+- **First derivative (Velocity):**  Measures the rate of change of the price over time. 
+  
+\[
+  v_t = \frac{P_{t} - P_{t-1}}{\Delta t} 
+\]
+
+- **Second derivative (Acceleration):**  Captures the curvature, indicating whether the momentum is **increasing or decreasing**.
+
+  
+\[
+  a_t = \frac{v_t - v_{t-1}}{\Delta t} = \frac{P_{t} - 2P_{t-1} + P_{t-2}}{\Delta t^2}
+\]
+
+!!! tip Tip
+    In practice, the function assumes $\Delta t = 1$ (e.g., one time step per observation)
+    These approximations work well for discrete financial time series but may introduce noise, so **smoothing techniques** can be applied.
+
+```python
+def derivatives(df: pd.DataFrame, col: str) -> Tuple[pd.Series, pd.Series]:
+    """
+    Compute the first (velocity) and second (acceleration) derivatives of a specified column.
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        DataFrame containing the data.
+    col : str
+        The name of the column for which the derivatives are computed.
+
+    Returns
+    -------
+    velocity_series : pandas.Series
+        The first derivative (velocity) of the specified column.
+    acceleration_series : pandas.Series
+        The second derivative (acceleration) of the specified column.
+    """
+```
+📢 *For a practical example, check out the [educational notebook](https://www.quantreo.com).*
+
+
+
+---
+### **Logarithmic Percentage Change**
+
+The `log_pct` function computes the **log return** over a specified window. Log returns are widely used in finance as they stabilize variance and make returns **time-additive**.
+
+\[
+r_t  = \ln(P_t) - \ln(P_{t-n})
+\]
+
+Where: $P_t$ is the price at time $t$ and $n$ is the window size.
+
+```python
+def log_pct(df: pd.DataFrame, col: str, n: int) -> pd.Series:
+    """
+    Compute the log-transformed percentage change over a given window.
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        Input DataFrame containing the column to be transformed.
+    col : str
+        Column name to apply the transformation.
+    n : int
+        Window size for the percentage change.
+
+    Returns
+    -------
+    pd.Series
+        A Series containing the rolling log returns over `n` periods.
+    """
+```
+📢 *For a practical example, check out the [educational notebook](https://www.quantreo.com).*
+
+
+---
+### **Auto Correlation**
+
+The `auto_corr` function computes the **rolling autocorrelation** of a given column over a specified window. Autocorrelation measures how strongly a time series value is related to its **past values** at a given lag.
+
+\[
+r_k = \frac{\sum_{t=1}^{N-k} (X_t - \bar{X})(X_{t+k} - \bar{X})}{\sum_{t=1}^{N} (X_t - \bar{X})^2}
+\]
+
+Where $X_t$ is the value at time $t$, $k$ is the lag,  $N$ is the rolling window size.
+
+```python
+def auto_corr(df: pd.DataFrame, col: str, n: int = 50, lag: int = 10) -> pd.Series:
+    """
+    Compute the rolling autocorrelation for a specified column.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Input DataFrame containing the data.
+    col : str
+        Column name to compute autocorrelation.
+    n : int, optional
+        Rolling window size (default = 50).
+    lag : int, optional
+        Lag for autocorrelation computation (default = 10).
+
+    Returns
+    -------
+    pd.Series
+        A Series containing the rolling autocorrelation values.
+    """
+```
 
 
 
 
+
+
+---
+### **Hurst**
+The `hurst` function computes the **Hurst exponent** over a rolling window. The Hurst exponent is a **measure of long-term memory** in time series data, helping to classify a series as **mean-reverting, random, or trending**.
+
+#### **Formula**
+The Hurst exponent is estimated using **rescaled range analysis**:
+
+\[
+H = \frac{\log(R/S)}{\log(n)}
+\]
+
+Where $R$ is the range of the cumulative deviations, $S$ is the standard deviation, $n$ is the window size.
+
+!!! tip "Tip"
+    In the Quantreo's library, the Hurst exponent is a rolling measure, meaning each value represents the memory effect over the last N observations.
+
+**Interpretation**:
+
+- **\( H < 0.5 \)** → **Mean-reverting** (e.g., stationary processes like stock spreads).
+- **\( H \approx 0.5 \)** → **Random walk** (e.g., Brownian motion, efficient markets).
+- **\( H > 0.5 \)** → **Trending** (e.g., momentum-driven assets).
+
+```python
+def hurst(df: pd.DataFrame, col: str, window: int = 100) -> pd.DataFrame:
+    """
+    Compute the rolling Hurst exponent for a given column in a DataFrame.
+
+    The Hurst exponent is a measure of the **long-term memory** of a time series.
+    It helps determine whether a series is **mean-reverting**, **random**, or **trending**.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Input DataFrame containing the time series data.
+    col : str
+        Column name on which the Hurst exponent is calculated.
+    window : int, optional
+        Rolling window size for the Hurst exponent computation (default = 100).
+
+    Returns
+    -------
+    pd.Series
+        A Series containing the rolling Hurst exponent values over the given window.
+    """
+```
+
+
+
+
+
+
+---
 <br>
 <br>
 <br>
@@ -335,8 +554,7 @@ def yang_zhang_volatility(df: pd.DataFrame, window_size: int = 30, high_col: str
 
 
 
-## Volatility
-## Momemtum
+
 ## Trend
 ## Math
 ## Market Regime
