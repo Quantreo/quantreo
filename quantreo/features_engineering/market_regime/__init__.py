@@ -1,5 +1,5 @@
 import pandas as pd
-from trend import kama
+from ..trend import kama
 
 
 def kama_market_regime(df, col, n, m):

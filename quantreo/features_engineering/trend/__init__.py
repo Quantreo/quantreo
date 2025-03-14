@@ -107,4 +107,3 @@ def kama(df: pd.DataFrame, col: str, l1: int = 10, l2: int = 2, l3: int = 30) ->
 
     return pd.Series(kama_values, index=df.index, name="kama")
 
-
