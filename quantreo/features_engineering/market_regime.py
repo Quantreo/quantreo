@@ -1,4 +1,6 @@
 import pandas as pd
+from trend import kama
+
 
 def kama_market_regime(df, col, n, m):
     """
@@ -35,7 +37,6 @@ def kama_market_regime(df, col, n, m):
     df_copy = df.copy()
 
     # Calculate KAMA for both periods.
-    # Il est supposé que la fonction `kama` existe et qu'elle ajoute une colonne nommée f"kama_{period}".
     df_copy = kama(df_copy, col, n)
     df_copy = kama(df_copy, col, m)
 

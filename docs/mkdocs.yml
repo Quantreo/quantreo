@@ -1,8 +1,10 @@
-site_name: Quantreo
+site_name: QUANTREO
 site_url: https://www.quantreo.com
 theme:
   name: material
   custom_dir: overrides
+  logo: assets/figures/quantreo_icon.png
+  favicon: assets/figures/quantreo_icon.png
   features:
     - navigation.tabs
     - navigation.sections
@@ -17,19 +19,20 @@ theme:
     - navigation.footer
 
 
+
   language: en
   palette:
     - scheme: default
       toggle:
         icon: material/toggle-switch-off-outline
         name: Switch to dark mode
-      primary: indigo
+      primary: black
       accent: teal
     - scheme: slate
       toggle:
         icon: material/toggle-switch
         name: Switch to light mode
-      primary: indigo
+      primary: black
       accent: lime
 
 
@@ -61,6 +64,7 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.mark
   - attr_list
+  - md_in_html
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg

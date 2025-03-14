@@ -44,7 +44,7 @@ def close_to_close_volatility(df: pd.DataFrame, window_size: int = 30, close_col
 
 
 @njit(nogil=True)
-def rogers_satchell_estimator(high, low, open_, close, window_size):
+def _rogers_satchell_estimator(high, low, open_, close, window_size):
     n = high.shape[0]
     vol = np.empty(n)
 
@@ -104,7 +104,7 @@ def rogers_satchell_volatility(df: pd.DataFrame, window_size: int = 30, high_col
     close = df[close_col].to_numpy()
 
     # Calculate the volatility.md using the Numba-accelerated function
-    vol_array = rogers_satchell_estimator(high, low, open_, close, window_size)
+    vol_array = _rogers_satchell_estimator(high, low, open_, close, window_size)
 
     # Create a Series and add the calculated volatility.md as a new column
     series = pd.Series(vol_array, name="rogers_satchell_vol", index=df.index)
@@ -113,7 +113,7 @@ def rogers_satchell_volatility(df: pd.DataFrame, window_size: int = 30, high_col
 
 
 @njit(nogil=True)
-def parkinson_estimator(high, low, window_size):
+def _parkinson_estimator(high, low, window_size):
     """
     Compute Parkinson's volatility.md estimator over a rolling window.
 
@@ -184,7 +184,7 @@ def parkinson_volatility(df: pd.DataFrame, window_size: int = 30, high_col: str 
     low = df[low_col].to_numpy()
 
     # Calculate the volatility.md using the Numba-accelerated function
-    vol_array = parkinson_estimator(high, low, window_size)
+    vol_array = _parkinson_estimator(high, low, window_size)
 
     # Create a Series and add the calculated volatility.md as a new column
     series = pd.Series(vol_array, name="rolling_volatility_vol", index=df.index)
@@ -193,7 +193,7 @@ def parkinson_volatility(df: pd.DataFrame, window_size: int = 30, high_col: str 
 
 
 @njit(nogil=True)
-def yang_zhang_estimator(high, low, open_, close, window_size, k=0.34):
+def _yang_zhang_estimator(high, low, open_, close, window_size, k=0.34):
     """
     Compute the Yang-Zhang volatility.md estimator using a single-pass approach,
     similar to the Rogers-Satchell method.
@@ -299,7 +299,7 @@ def yang_zhang_volatility(df: pd.DataFrame, window_size: int = 30, high_col: str
     close = df[close_col].to_numpy()
 
     # Compute volatility.md using Numba-accelerated function
-    vol_array = yang_zhang_estimator(high, low, open_, close, window_size, k)
+    vol_array = _yang_zhang_estimator(high, low, open_, close, window_size, k)
 
     # Convert to pandas Series and return
     return pd.Series(vol_array, name="yang_zhang_vol", index=df.index)

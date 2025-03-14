@@ -7,15 +7,15 @@ with open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='quantreo',  # The name of the package as it will appear on PyPI.
-    version='0.0.1',
+    version='0.0.5',
     description='Python library for quantitative trading',
     long_description=long_description,
     long_description_content_type='text/markdown',
     author='Lucas Inglese',
     author_email='lucas@quantreo.com',
     # url='https://github.com/your_username/my_quant_lib',
-    packages=find_packages(exclude=['tests', 'docs', '.github']),  # Automatically include your packages.
-    install_requires=[],
+    packages=['quantreo', 'quantreo.features_engineering'],
+    install_requires=["numpy", "pandas", "numba"],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',

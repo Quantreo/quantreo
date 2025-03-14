@@ -96,7 +96,7 @@ def auto_corr(df: pd.DataFrame, col: str, n: int = 50, lag: int = 10) -> pd.Seri
 
 
 @njit
-def std_numba(x):
+def _std_numba(x):
     """
     Fonction from the hurst library (https://github.com/Mottl/hurst/)
     of Dmitry A. Mottl (pimped using numba).
@@ -136,7 +136,7 @@ def std_numba(x):
 
 
 @njit
-def get_simplified_RS_random_walk(series):
+def _get_simplified_RS_random_walk(series):
     """
     Fonction from the hurst library (https://github.com/Mottl/hurst/)
     of Dmitry A. Mottl (pimped using numba).
@@ -166,14 +166,14 @@ def get_simplified_RS_random_walk(series):
     for i in range(n - 1):
         incs[i] = series[i + 1] - series[i]
     R = np.max(series) - np.min(series)
-    S = std_numba(incs)
+    S = _std_numba(incs)
     if R == 0.0 or S == 0.0:
         return 0.0
     return R / S
 
 
 @njit
-def get_simplified_RS_price(series):
+def _get_simplified_RS_price(series):
     """
     Fonction from the hurst library (https://github.com/Mottl/hurst/)
     of Dmitry A. Mottl (pimped using numba).
@@ -203,14 +203,14 @@ def get_simplified_RS_price(series):
     for i in range(n - 1):
         pcts[i] = series[i + 1] / series[i] - 1.0
     R = np.max(series) / np.min(series) - 1.0
-    S = std_numba(pcts)
+    S = _std_numba(pcts)
     if R == 0.0 or S == 0.0:
         return 0.0
     return R / S
 
 
 @njit
-def get_simplified_RS_change(series):
+def _get_simplified_RS_change(series):
     """
     Fonction from the hurst library (https://github.com/Mottl/hurst/)
     of Dmitry A. Mottl (pimped using numba).
@@ -241,14 +241,14 @@ def get_simplified_RS_change(series):
     for i in range(1, n + 1):
         _series[i] = _series[i - 1] + series[i - 1]
     R = np.max(_series) - np.min(_series)
-    S = std_numba(series)
+    S = _std_numba(series)
     if R == 0.0 or S == 0.0:
         return 0.0
     return R / S
 
 
 @njit
-def compute_average_RS(series, w, mode):
+def _compute_average_RS(series, w, mode):
     """
     Fonction from the hurst library (https://github.com/Mottl/hurst/)
     of Dmitry A. Mottl (pimped using numba).
@@ -282,11 +282,11 @@ def compute_average_RS(series, w, mode):
         window = series[start:start + w]
         rs = 0.0
         if mode == 0:
-            rs = get_simplified_RS_random_walk(window)
+            rs = _get_simplified_RS_random_walk(window)
         elif mode == 1:
-            rs = get_simplified_RS_price(window)
+            rs = _get_simplified_RS_price(window)
         elif mode == 2:
-            rs = get_simplified_RS_change(window)
+            rs = _get_simplified_RS_change(window)
         if rs != 0.0:
             total += rs
             count += 1
@@ -295,7 +295,7 @@ def compute_average_RS(series, w, mode):
     return total / count
 
 
-def compute_Hc(series, kind="random_walk", min_window=10, max_window=None, simplified=True, min_sample=100):
+def _compute_Hc(series, kind="random_walk", min_window=10, max_window=None, simplified=True, min_sample=100):
     """
     Compute the Hurst exponent H and constant c from the Hurst equation:
         E(R/S) = c * T^H
@@ -378,7 +378,7 @@ def compute_Hc(series, kind="random_walk", min_window=10, max_window=None, simpl
 
     RS_values = []
     for w in window_sizes:
-        rs_avg = compute_average_RS(series, w, mode)
+        rs_avg = _compute_average_RS(series, w, mode)
         RS_values.append(rs_avg)
 
     # Prepare the design matrix for least squares regression:
@@ -391,7 +391,7 @@ def compute_Hc(series, kind="random_walk", min_window=10, max_window=None, simpl
     return H, c, [window_sizes, RS_values]
 
 
-def hurst_exponent(series):
+def _hurst_exponent(series):
     """
     Calculates the Hurst exponent of a time series, which is a measure of the
     long-term memory of time series data.
@@ -408,7 +408,7 @@ def hurst_exponent(series):
     """
 
     try:
-        H, c, data = compute_Hc(series, kind='price')
+        H, c, data = _compute_Hc(series, kind='price')
     except:
         H = np.nan
     return H
@@ -444,6 +444,6 @@ def hurst(df: pd.DataFrame, col: str, window: int = 100) -> pd.DataFrame:
 
     # Compute the rolling Hurst exponent using a helper function
     df_copy[f"hurst_{window}"] = df_copy[col].rolling(window=window, min_periods=window) \
-        .apply(hurst_exponent, raw=False)
+        .apply(_hurst_exponent, raw=False)
 
     return df_copy[f"hurst_{window}"]
