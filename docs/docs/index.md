@@ -14,7 +14,7 @@ Currently, our focus is on **feature engineering and target engineering**, provi
 
 <div class="custom-card" style="flex: 1 1 calc(50% - 16px); min-width: 300px;">
     <b>
-        <a href="https://www.quantreo.com" style="text-decoration: none;">
+        <a href="/TUTORIALS/Quantreo_for_beginners/" style="text-decoration: none;">
             🏃 Getting Started
         </a>
     </b> – New to Quantreo? Check our beginner tutorials to learn how to create your first quant trading code. Let's get started!
@@ -23,7 +23,7 @@ Currently, our focus is on **feature engineering and target engineering**, provi
 
 <div class="custom-card" style="flex: 1 1 calc(50% - 16px); min-width: 300px;">
     <b>
-        <a href="https://www.quantreo.com" style="text-decoration: none;">
+        <a href="/TUTORIALS/features_Engineering_Candle/" style="text-decoration: none;">
             💻 Tutorials
         </a>
     </b> – Enhance your trading skills with our in-depth tutorials. Learn step by step how to build, test, and optimize your quant trading strategies!
@@ -32,7 +32,7 @@ Currently, our focus is on **feature engineering and target engineering**, provi
 
 <div class="custom-card" style="flex: 1 1 calc(50% - 16px); min-width: 300px;">
     <b>
-        <a href="https://www.quantreo.com" style="text-decoration: none;">
+        <a href="/FEATURES%20ENGINEERING/Get_started/" style="text-decoration: none;">
             📊 Features Engineering
         </a>
     </b> – Discover how to extract meaningful insights from raw market data. Master feature engineering techniques to improve your trading models!
@@ -41,10 +41,9 @@ Currently, our focus is on **feature engineering and target engineering**, provi
 
 <div class="custom-card" style="flex: 1 1 calc(50% - 16px); min-width: 300px;">
     <b>
-        <a href="https://www.quantreo.com" style="text-decoration: none;">
-            🎯 Target Engineering
-        </a>
-    </b> – Learn how to define the right target variable for your trading models. Improve prediction accuracy with advanced target engineering techniques!
+        
+        🎯 Target Engineering
+    </b> (coming soon) – Learn how to define the right target variable for your trading models. Improve prediction accuracy with advanced target engineering techniques!
 </div>
 
 

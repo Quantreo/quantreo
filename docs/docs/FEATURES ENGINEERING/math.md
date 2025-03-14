@@ -1,7 +1,7 @@
 # **Math**
 
 ``` py
-from quantreo.features_engineering import math
+import quantreo.features_engineering as fe
 ```
 
 
@@ -30,25 +30,27 @@ Given a price series \( P_t \):
     In practice, the function assumes $\Delta t = 1$ (e.g., one time step per observation)
     These approximations work well for discrete financial time series but may introduce noise, so **smoothing techniques** can be applied.
 
-```python
-def derivatives(df: pd.DataFrame, col: str) -> Tuple[pd.Series, pd.Series]:
-    """
-    Compute the first (velocity) and second (acceleration) derivatives of a specified column.
+```python title="How to call the derivatives function"
+fe.math.derivatives(df: pd.DataFrame, col: str)
+```
+``` title="derivatives function docstring"
+"""
+Compute the first (velocity) and second (acceleration) derivatives of a specified column.
 
-    Parameters
-    ----------
-    df : pandas.DataFrame
-        DataFrame containing the data.
-    col : str
-        The name of the column for which the derivatives are computed.
+Parameters
+----------
+df : pandas.DataFrame
+    DataFrame containing the data.
+col : str
+    The name of the column for which the derivatives are computed.
 
-    Returns
-    -------
-    velocity_series : pandas.Series
-        The first derivative (velocity) of the specified column.
-    acceleration_series : pandas.Series
-        The second derivative (acceleration) of the specified column.
-    """
+Returns
+-------
+velocity_series : pandas.Series
+    The first derivative (velocity) of the specified column.
+acceleration_series : pandas.Series
+    The second derivative (acceleration) of the specified column.
+"""
 ```
 📢 *For a practical example, check out the [educational notebook](https://www.quantreo.com).*
 

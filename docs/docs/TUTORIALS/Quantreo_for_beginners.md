@@ -6,6 +6,7 @@
 
 Quantreo is a Python library designed for **algorithmic trading** and **quantitative finance**. For now, it simplifies **Feature Engineering**, and soon, much more packages will be added.  
 
+<br> 
 
 💡 **Why use Quantreo?**  
 ✔ Standardizes and automates common data preprocessing in finance  
@@ -64,8 +65,9 @@ data = {
     "volume": [10000, 10050, 9950, 10000, 11500]
 }
 df = pd.DataFrame(data)
+
+print(df)
 ```
-**DataFrame Obtained**:
 
 | Open | High | Low | Close | Volume |
 |------|------|-----|-------|--------|
@@ -84,7 +86,8 @@ df = pd.DataFrame(data)
 ### **What is Feature Engineering?**
 In **quantitative trading**, Feature Engineering transforms **raw market data** into indicators that can be used in a model.
 
-✅ Example: Calculating **volatility, trend, logarithmic variation**, etc.  
+Example: Calculating **volatility, trend, logarithmic variation**, etc.  
+<br>
 
 With Quantreo, extracting this information is **optimized and efficient**.
 
@@ -95,65 +98,38 @@ Here’s how to use a **Feature Engineering function** in Quantreo. Let's calcul
 import quantreo.features_engineering as fe
 
 # Compute Yang-Zhang Volatility with a 3-period rolling window
-df["yang_zhang_vol"] = fe.yang_zhang_volatility(df, window_size=3)
+df["yang_zhang_vol"] = fe.volatility.yang_zhang_volatility(df, window_size=3)
+
+# Compute the spread between the high and low price
+df["spread"] = fe.candle.compute_spread(df)
 
 print(df)
 ```
 
-| Open | High | Low | Close | Volume | YZ Vol |
-|------|------|-----|-------|--------|--------|
-| 100  | 105  |  98 |  102  | 10000  | Nan    |
-| 102  | 107  | 100 |  104  | 10050  | Nan    |
-| 101  | 106  |  99 |  103  | 9950   | Nan    | 
-| 103  | 108  | 101 |  105  | 10000  |
-| 105  | 110  | 102 |  107  | 11500  |
+| Open | High | Low | Close | Volume | YZ Vol   | Spread |
+|------|------|-----|-------|--------|----------|--------|
+| 100  | 105  |  98 |  102  | 10000  | Nan      | 7      |
+| 102  | 107  | 100 |  104  | 10050  | Nan      | 7      |
+| 101  | 106  |  99 |  103  | 9950   | Nan      | 7      |
+| 103  | 108  | 101 |  105  | 10000  | 0.044204 | 7      |
+| 105  | 110  | 102 |  107  | 11500  | 0.043777 | 8      |
 
 
+!!! warning "Nan values"
+    It is 100% normal to have 3 Nan values into the first rows of the `YZ vol` column. It is because we compute the **volatily over the 3 last observations**. So, it is impossible to compute these values as we do not have the necessary information
+
+!!! info "The Features Structure"
+    To call a feature, we always use the same logic. If I have imported the features engineering package of Quantreo as fe, I will write
+    `fe.features_category.features_fonction(param1=..., param2=...)`.
+
+📢 More info about the Features Engineering Package [here](../FEATURES%20ENGINEERING/Get_Started.md).
 
 
-
-
-
-
-
-
-## 📊 Understanding Feature Engineering
-
-### **What is Feature Engineering?**
-In **quantitative trading**, Feature Engineering transforms **raw market data** into indicators that can be used in a model.
-
-✅ Example: Calculating **volatility, trend, logarithmic variation**, etc.  
-
-With Quantreo, extracting this information is **optimized and efficient**.
+<br>
 
 ---
 
-
-
-📌 **Explanation:**  
-- Creates a DataFrame with **OHLC price data**  
-- Uses `yang_zhang_volatility()` to **compute volatility**  
-
----
-
-## 🔍 Key Functions in Quantreo
-
-### 📌 **Volatility Estimators**
-- `yang_zhang_volatility(df, window_size=30)`: Advanced **Yang-Zhang** volatility  
-- `rogers_satchell_volatility(df, window_size=30)`: **Intraday** volatility measurement  
-- `parkinson_volatility(df, window_size=30)`: **High-Low range-based** volatility  
-
-### 📌 **Transformations & Derivatives**
-- `log_pct(df, col, n)`: **Logarithmic returns**  
-- `derivatives(df, col)`: **First & second derivative calculations**  
-
-### 📌 **Market Memory & Correlations**
-- `auto_corr(df, col, n, lag)`: **Rolling autocorrelation**  
-- `hurst(df, col, window)`: **Hurst exponent calculation**  
-
----
-
-## 🎯 Coming Soon: Target Engineering!
+## **Coming Soon**
 
 Quantreo will soon include **Target Engineering** functionalities.
 
@@ -165,10 +141,6 @@ Quantreo will soon include **Target Engineering** functionalities.
 
 ---
 
-## 🎓 Learn More
+## **Learn More**
 
-📚 Check out our tutorials:  
-- [Beginner’s Guide](https://www.quantreo.com)  
-- [Advanced Feature Engineering](https://www.quantreo.com/features)  
-
-🚀 **Ready to start? Install Quantreo and try it now!**  
+📚 Take a look to our "Machine Learning for Trading" course !
