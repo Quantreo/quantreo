@@ -4,7 +4,7 @@ import pandas as pd
 from numba import njit
 
 
-def close_to_close_volatility(df: pd.DataFrame, window_size: int = 30, close_col: str = 'close') -> pd.Series:
+def close_to_close_volatility(df: pd.DataFrame, close_col: str = 'close', window_size: int = 30) -> pd.Series:
     """
     Calculate the rolling close-to-close volatility.md using standard deviation.
 
@@ -15,10 +15,10 @@ def close_to_close_volatility(df: pd.DataFrame, window_size: int = 30, close_col
     ----------
     df : pd.DataFrame
         DataFrame containing the price data.
-    close_col : str, optional
-        Column name for the closing prices (default is 'close').
     window_size : int, optional
         The number of periods to include in the rolling calculation (default is 30).
+    close_col : str, optional
+        Column name for the closing prices (default is 'close').
 
     Returns
     -------
@@ -65,8 +65,8 @@ def _rogers_satchell_estimator(high, low, open_, close, window_size):
     return vol
 
 
-def rogers_satchell_volatility(df: pd.DataFrame, window_size: int = 30, high_col: str = 'high', low_col: str = 'low',
-                          open_col: str = 'open', close_col: str = 'close') -> pd.Series:
+def rogers_satchell_volatility(df: pd.DataFrame, high_col: str = 'high', low_col: str = 'low',
+                          open_col: str = 'open', close_col: str = 'close', window_size: int = 30) -> pd.Series:
     """
     Calculate Rogers-Satchell volatility.md estimator using numpy operations with Numba acceleration.
 
@@ -74,8 +74,6 @@ def rogers_satchell_volatility(df: pd.DataFrame, window_size: int = 30, high_col
     ----------
     df : pandas.DataFrame
         DataFrame containing the price data.
-    window_size : int, optional
-        The number of periods to include in the rolling calculation (default is 30).
     high_col : str, optional
         Column name for the high prices (default is 'high').
     low_col : str, optional
@@ -84,6 +82,8 @@ def rogers_satchell_volatility(df: pd.DataFrame, window_size: int = 30, high_col
         Column name for the open prices (default is 'open').
     close_col : str, optional
         Column name for the close prices (default is 'close').
+    window_size : int, optional
+        The number of periods to include in the rolling calculation (default is 30).
 
     Returns
     -------
@@ -151,7 +151,7 @@ def _parkinson_estimator(high, low, window_size):
     return vol
 
 
-def parkinson_volatility(df: pd.DataFrame, window_size: int = 30, high_col: str = 'high', low_col: str = 'low')\
+def parkinson_volatility(df: pd.DataFrame, high_col: str = 'high', low_col: str = 'low', window_size: int = 30)\
                         -> pd.Series:
     """
     Calculate Parkinson's volatility.md estimator using numpy operations with Numba acceleration.
@@ -160,12 +160,12 @@ def parkinson_volatility(df: pd.DataFrame, window_size: int = 30, high_col: str 
     ----------
     df : pandas.DataFrame
         DataFrame containing the price data.
-    window_size : int, optional
-        The number of periods to include in the rolling calculation (default is 30).
     high_col : str, optional
         Column name for the high prices (default is 'high').
     low_col : str, optional
         Column name for the low prices (default is 'low').
+    window_size : int, optional
+        The number of periods to include in the rolling calculation (default is 30).
 
     Returns
     -------

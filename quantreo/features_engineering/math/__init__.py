@@ -36,7 +36,7 @@ def derivatives(df: pd.DataFrame, col: str) -> Tuple[pd.Series, pd.Series]:
     return velocity_series, acceleration_series
 
 
-def log_pct(df: pd.DataFrame, col: str, n: int) -> pd.Series:
+def log_pct(df: pd.DataFrame, col: str, window_size: int) -> pd.Series:
     """
     Apply a logarithmic transformation to a specified column in a DataFrame and calculate
     the percentage change of the log-transformed values over a given window size.
@@ -47,24 +47,22 @@ def log_pct(df: pd.DataFrame, col: str, n: int) -> pd.Series:
         Input DataFrame containing the column to be logarithmically transformed.
     col : str
         The name of the column to which the logarithmic transformation is applied.
-    n : int
+    window_size : int
         The window size over which to calculate the percentage change of the log-transformed values.
 
     Returns
     -------
-    pd.DataFrame
-        A new DataFrame with two additional columns:
-            - log_{col}: Log-transformed values of the specified column.
-            - ret_log_{n}: Percentage change of the log-transformed values over the window size n.
+    pd.Series
+        A Series containing the rolling log returns over `n` periods.
     """
     df_copy = df.copy()
     df_copy[f"log_{col}"] = np.log(df_copy[col])
-    df_copy[f"ret_log_{n}"] = df_copy[f"log_{col}"].pct_change(n)
+    df_copy[f"ret_log_{window_size}"] = df_copy[f"log_{col}"].pct_change(window_size)
 
-    return df_copy[f"ret_log_{n}"]
+    return df_copy[f"ret_log_{window_size}"]
 
 
-def auto_corr(df: pd.DataFrame, col: str, n: int = 50, lag: int = 10) -> pd.Series:
+def auto_corr(df: pd.DataFrame, col: str, window_size: int = 50, lag: int = 10) -> pd.Series:
     """
     Calculate the rolling autocorrelation for a specified column in a DataFrame.
 
@@ -77,20 +75,19 @@ def auto_corr(df: pd.DataFrame, col: str, n: int = 50, lag: int = 10) -> pd.Seri
         Input DataFrame containing the data.
     col : str
         The name of the column for which to calculate autocorrelation.
-    n : int, optional
+    window_size : int, optional
         The window size for the rolling calculation (default is 50).
     lag : int, optional
         The lag value used when computing autocorrelation (default is 10).
 
     Returns
     -------
-    pd.DataFrame
-        A new DataFrame with an additional column named 'autocorr_{lag}', containing the rolling
-        autocorrelation values computed for the specified column.
+    pd.Series
+        A Series containing the rolling autocorrelation values.
     """
     df_copy = df.copy()
     col_name = f'autocorr_{lag}'
-    df_copy[col_name] = df_copy[col].rolling(window=n, min_periods=n).apply(
+    df_copy[col_name] = df_copy[col].rolling(window=window_size, min_periods=window_size).apply(
         lambda x: x.autocorr(lag=lag), raw=False)
     return df_copy[col_name]
 
@@ -414,7 +411,7 @@ def _hurst_exponent(series):
     return H
 
 
-def hurst(df: pd.DataFrame, col: str, window: int = 100) -> pd.DataFrame:
+def hurst(df: pd.DataFrame, col: str, window_size: int = 100) -> pd.DataFrame:
     """
     Compute the rolling Hurst exponent for a given column in a DataFrame.
 
@@ -432,7 +429,7 @@ def hurst(df: pd.DataFrame, col: str, window: int = 100) -> pd.DataFrame:
         Input DataFrame containing the time series data.
     col : str
         Column name on which the Hurst exponent is calculated.
-    window : int, optional
+    window_size : int, optional
         Rolling window size for the Hurst exponent computation (default = 100).
 
     Returns
@@ -443,7 +440,7 @@ def hurst(df: pd.DataFrame, col: str, window: int = 100) -> pd.DataFrame:
     df_copy = df.copy()
 
     # Compute the rolling Hurst exponent using a helper function
-    df_copy[f"hurst_{window}"] = df_copy[col].rolling(window=window, min_periods=window) \
+    df_copy[f"hurst_{window_size}"] = df_copy[col].rolling(window=window_size, min_periods=window_size) \
         .apply(_hurst_exponent, raw=False)
 
-    return df_copy[f"hurst_{window}"]
+    return df_copy[f"hurst_{window_size}"]

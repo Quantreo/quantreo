@@ -67,25 +67,29 @@ r_t  = \ln(P_t) - \ln(P_{t-n})
 
 Where: $P_t$ is the price at time $t$ and $n$ is the window size.
 
-```python
-def log_pct(df: pd.DataFrame, col: str, n: int) -> pd.Series:
-    """
-    Compute the log-transformed percentage change over a given window.
+```python title="How to call the logarithmic percentage function"
+def log_pct(df: pd.DataFrame, col: str, window_size: int)
+```
+```title="loc_pct function docstring"
 
-    Parameters
-    ----------
-    df : pandas.DataFrame
-        Input DataFrame containing the column to be transformed.
-    col : str
-        Column name to apply the transformation.
-    n : int
-        Window size for the percentage change.
+"""
+Apply a logarithmic transformation to a specified column in a DataFrame and calculate
+the percentage change of the log-transformed values over a given window size.
 
-    Returns
-    -------
-    pd.Series
-        A Series containing the rolling log returns over `n` periods.
-    """
+Parameters
+----------
+df : pd.DataFrame
+    Input DataFrame containing the column to be logarithmically transformed.
+col : str
+    The name of the column to which the logarithmic transformation is applied.
+window_size : int
+    The window size over which to calculate the percentage change of the log-transformed values.
+
+Returns
+-------
+pd.Series
+    A Series containing the rolling log returns over `window_size` periods.
+"""
 ```
 📢 *For a practical example, check out the [educational notebook](https://www.quantreo.com).*
 
@@ -101,27 +105,30 @@ r_k = \frac{\sum_{t=1}^{N-k} (X_t - \bar{X})(X_{t+k} - \bar{X})}{\sum_{t=1}^{N} 
 
 Where $X_t$ is the value at time $t$, $k$ is the lag,  $N$ is the rolling window size.
 
-```python
-def auto_corr(df: pd.DataFrame, col: str, n: int = 50, lag: int = 10) -> pd.Series:
-    """
-    Compute the rolling autocorrelation for a specified column.
+```python title="How to call the Auto Correlation function"
+def auto_corr(df: pd.DataFrame, col: str, n: int = 50, lag: int = 10)
+```
 
-    Parameters
-    ----------
-    df : pd.DataFrame
-        Input DataFrame containing the data.
-    col : str
-        Column name to compute autocorrelation.
-    n : int, optional
-        Rolling window size (default = 50).
-    lag : int, optional
-        Lag for autocorrelation computation (default = 10).
+```title="auto_corr function docstring"
+"""
+Compute the rolling autocorrelation for a specified column.
 
-    Returns
-    -------
-    pd.Series
-        A Series containing the rolling autocorrelation values.
-    """
+Parameters
+----------
+df : pd.DataFrame
+    Input DataFrame containing the data.
+col : str
+    Column name to compute autocorrelation.
+n : int, optional
+    Rolling window size (default = 50).
+lag : int, optional
+    Lag for autocorrelation computation (default = 10).
+
+Returns
+-------
+pd.Series
+    A Series containing the rolling autocorrelation values.
+"""
 ```
 
 
@@ -152,26 +159,29 @@ Where $R$ is the range of the cumulative deviations, $S$ is the standard deviati
 - **\( H \approx 0.5 \)** → **Random walk** (e.g., Brownian motion, efficient markets).
 - **\( H > 0.5 \)** → **Trending** (e.g., momentum-driven assets).
 
-```python
-def hurst(df: pd.DataFrame, col: str, window: int = 100) -> pd.DataFrame:
-    """
-    Compute the rolling Hurst exponent for a given column in a DataFrame.
+```python title="How to call the Hurst function"
+def hurst(df: pd.DataFrame, col: str, window_size: int = 100)
+```
 
-    The Hurst exponent is a measure of the **long-term memory** of a time series.
-    It helps determine whether a series is **mean-reverting**, **random**, or **trending**.
+``` title="hurst function docstring"
+"""
+Compute the rolling Hurst exponent for a given column in a DataFrame.
 
-    Parameters
-    ----------
-    df : pd.DataFrame
-        Input DataFrame containing the time series data.
-    col : str
-        Column name on which the Hurst exponent is calculated.
-    window : int, optional
-        Rolling window size for the Hurst exponent computation (default = 100).
+The Hurst exponent is a measure of the **long-term memory** of a time series.
+It helps determine whether a series is **mean-reverting**, **random**, or **trending**.
 
-    Returns
-    -------
-    pd.Series
-        A Series containing the rolling Hurst exponent values over the given window.
-    """
+Parameters
+----------
+df : pd.DataFrame
+    Input DataFrame containing the time series data.
+col : str
+    Column name on which the Hurst exponent is calculated.
+window : int, optional
+    Rolling window size for the Hurst exponent computation (default = 100).
+
+Returns
+-------
+pd.Series
+    A Series containing the rolling Hurst exponent values over the given window.
+"""
 ```
