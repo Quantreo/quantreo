@@ -7,7 +7,7 @@ with open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='quantreo',  # The name of the package as it will appear on PyPI.
-    version='0.0.9',
+    version='0.0.10',
     description='Python library for quantitative trading',
     long_description=long_description,
     long_description_content_type='text/markdown',

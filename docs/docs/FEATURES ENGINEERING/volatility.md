@@ -1,12 +1,13 @@
 # **Volatility**
 
-!!! danger "à rajouter"
-    N'oubliez pas que la valeur de la volatilité va varier en fonction du timeframe utilisé
+
 
 ``` py
 import quantreo.features_engineering import fe
 ```
 
+!!! warning "Warning"
+    Volatility values depend on both the price scale and the timeframe you are analyzing. Higher timeframes or assets with larger price magnitudes can exhibit higher absolute volatility. Always normalize volatility when comparing across different assets or timeframes.
 
 
 ---
@@ -26,7 +27,7 @@ Where:
 
 
 ```python title="How to call the close_to_close_volatility function"
-def close_to_close_volatility(df: pd.DataFrame, window_size: int = 30, close_col: str = 'close')
+fe.volatility.close_to_close_volatility(df: pd.DataFrame, window_size: int = 30, close_col: str = 'close')
 ```
 ``` title="close_to_close_volatility function docstring"
 """
@@ -86,7 +87,7 @@ Where:
     ✔ Assumes that price movements follow a **Brownian motion** without drift.  
 
 ```python title="How to call the parkinson_volatility function"
-def parkinson_volatility(df: pd.DataFrame, high_col: str = 'high', low_col: str = 'low', window_size: int = 30)
+fe.volatility.parkinson_volatility(df: pd.DataFrame, high_col: str = 'high', low_col: str = 'low', window_size: int = 30)
 ``` 
 ``` title="parkinson_volatility function docstring"
 """
@@ -148,7 +149,7 @@ Where:
     ✔ Is **computationally efficient** while reducing bias in the variance estimate.  
 
 ```python title="How to call the rogers_satchell_volatility function"
-def rogers_satchell_volatility(df: pd.DataFrame, high_col: str = 'high', low_col: str = 'low', open_col: str = 'open',
+fe.volatility.rogers_satchell_volatility(df: pd.DataFrame, high_col: str = 'high', low_col: str = 'low', open_col: str = 'open',
                                close_col: str = 'close', window_size: int = 30)
 ```
 
@@ -215,7 +216,7 @@ Where:
     ✔ Provides a better measure of realized volatility.
 
 ```python title="How to call the yang_zhang_volatility function"
-def yang_zhang_volatility(df: pd.DataFrame, high_col: str = 'high', low_col: str = 'low',
+fe.volatility.yang_zhang_volatility(df: pd.DataFrame, high_col: str = 'high', low_col: str = 'low',
                           open_col: str = 'open', close_col: str = 'close', window_size: int = 30, k: float = 0.34)
 ```
 ``` title="yang_zhang_volatility function docstring"

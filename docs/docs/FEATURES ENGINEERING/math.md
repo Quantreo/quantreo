@@ -68,7 +68,7 @@ r_t  = \ln(P_t) - \ln(P_{t-n})
 Where: $P_t$ is the price at time $t$ and $n$ is the window size.
 
 ```python title="How to call the logarithmic percentage function"
-def log_pct(df: pd.DataFrame, col: str, window_size: int)
+fe.math.log_pct(df: pd.DataFrame, col: str, window_size: int)
 ```
 ```title="loc_pct function docstring"
 
@@ -106,7 +106,7 @@ r_k = \frac{\sum_{t=1}^{N-k} (X_t - \bar{X})(X_{t+k} - \bar{X})}{\sum_{t=1}^{N} 
 Where $X_t$ is the value at time $t$, $k$ is the lag,  $N$ is the rolling window size.
 
 ```python title="How to call the Auto Correlation function"
-def auto_corr(df: pd.DataFrame, col: str, n: int = 50, lag: int = 10)
+fe.math.auto_corr(df: pd.DataFrame, col: str, window_size: int = 50, lag: int = 10)
 ```
 
 ```title="auto_corr function docstring"
@@ -119,7 +119,7 @@ df : pd.DataFrame
     Input DataFrame containing the data.
 col : str
     Column name to compute autocorrelation.
-n : int, optional
+window_size : int, optional
     Rolling window size (default = 50).
 lag : int, optional
     Lag for autocorrelation computation (default = 10).
@@ -160,7 +160,7 @@ Where $R$ is the range of the cumulative deviations, $S$ is the standard deviati
 - **\( H > 0.5 \)** → **Trending** (e.g., momentum-driven assets).
 
 ```python title="How to call the Hurst function"
-def hurst(df: pd.DataFrame, col: str, window_size: int = 100)
+fe.math.hurst(df: pd.DataFrame, col: str, window_size: int = 100)
 ```
 
 ``` title="hurst function docstring"
@@ -176,7 +176,7 @@ df : pd.DataFrame
     Input DataFrame containing the time series data.
 col : str
     Column name on which the Hurst exponent is calculated.
-window : int, optional
+window_size : int, optional
     Rolling window size for the Hurst exponent computation (default = 100).
 
 Returns
