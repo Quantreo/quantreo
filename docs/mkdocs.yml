@@ -1,5 +1,7 @@
 site_name: QUANTREO
-site_url: https://www.quantreo.com
+site_url: https://docs.quantreo.com/
+use_directory_urls: true
+
 theme:
   name: material
   custom_dir: overrides
@@ -22,18 +24,19 @@ theme:
 
   language: en
   palette:
-    - scheme: default
-      toggle:
-        icon: material/toggle-switch-off-outline
-        name: Switch to dark mode
-      primary: black
-      accent: teal
     - scheme: slate
       toggle:
         icon: material/toggle-switch
         name: Switch to light mode
       primary: black
       accent: lime
+
+    - scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+      primary: black
+      accent: teal
 
 
 plugins:
@@ -43,6 +46,7 @@ plugins:
 
 
 extra:
+  base: ''
   social:
     - icon: fontawesome/brands/github-alt
       link: https://github.com/Quantreo
@@ -77,7 +81,7 @@ extra_javascript:
   - assets/custom.js
 
 extra_css:
-  - /stylesheets/custom.css
+  - stylesheets/custom.css
 
 copyright: |
   &copy; 2025 <a href="https://github.com/"  target="_blank" rel="noopener">Quantreo

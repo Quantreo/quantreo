@@ -26,3 +26,6 @@ test.py
 # Jupyter / mkdocs cache & checkpoints
 .cache/
 **/.ipynb_checkpoints/
+
+# Ignore the website
+site

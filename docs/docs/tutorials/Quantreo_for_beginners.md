@@ -122,7 +122,6 @@ print(df)
     To call a feature, we always use the same logic. If I have imported the features engineering package of Quantreo as fe, I will write
     `fe.features_category.features_fonction(param1=..., param2=...)`.
 
-📢 More info about the Features Engineering Package [here](../FEATURES%20ENGINEERING/Get_Started.md).
 
 
 <br>
