@@ -19,3 +19,10 @@ eggs/
 
 # macOS
 .DS_Store
+
+# Custom files to ignore
+test.py
+
+# Jupyter / mkdocs cache & checkpoints
+.cache/
+**/.ipynb_checkpoints/
