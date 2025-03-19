@@ -3,10 +3,9 @@ import pandas as pd
 from numba import njit
 
 
-def sma(df: pd.DataFrame, col: str, window: int = 30) -> pd.Series:
+def sma(df: pd.DataFrame, col: str, window_size: int = 30) -> pd.Series:
     """
-    Calculate the Simple Moving Average (SMA) using Pandas rolling.mean,
-    following the standard conventions of our library.
+    Calculate the Simple Moving Average (SMA) using Pandas rolling.mean.
 
     Parameters
     ----------
@@ -14,7 +13,7 @@ def sma(df: pd.DataFrame, col: str, window: int = 30) -> pd.Series:
         DataFrame containing the input data.
     col : str
         Name of the column on which to compute the SMA.
-    window : int, optional
+    window_size : int, optional
         The window size for computing the SMA (default is 30).
 
     Returns
@@ -28,10 +27,10 @@ def sma(df: pd.DataFrame, col: str, window: int = 30) -> pd.Series:
         raise ValueError(f"The column '{col}' is not present in the DataFrame.")
 
     # Compute the SMA using Pandas' rolling.mean()
-    sma_series = df[col].rolling(window=window).mean()
+    sma_series = df[col].rolling(window=window_size).mean()
 
     # Rename the series for clarity
-    sma_series.name = f"sma_{window}"
+    sma_series.name = f"sma_{window_size}"
 
     return sma_series
 

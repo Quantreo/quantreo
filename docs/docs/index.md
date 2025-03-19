@@ -1,6 +1,6 @@
-# **QUANTREO**
+# **Quantreo**
 
-[![PyPI version](https://img.shields.io/pypi/v/nom-de-ta-lib.svg)](https://pypi.org/project/nom-de-ta-lib/)
+[![PyPI version](https://img.shields.io/pypi/v/quantreo.svg)](https://pypi.org/project/quantreo/)
 [![License](https://img.shields.io/github/license/ton-compte/nom-de-ta-lib.svg)](https://github.com/ton-compte/nom-de-ta-lib/blob/main/LICENSE)
 
 The **Quantreo Python library** is designed to simplify the workflow of **quantitative traders** by offering powerful tools for **feature engineering, target engineering, feature selection, and much more**.  

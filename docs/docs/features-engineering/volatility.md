@@ -1,4 +1,5 @@
 # **Volatility**
+You can find a series of examples on how to create these features in the [educational notebooks](/../tutorials/features-engineering-volatility) provided by Quantreo.
 
 
 
@@ -55,7 +56,7 @@ volatility_series : pd.Series
 ```
 
 
-📢 *For a practical example, check out the [educational notebook](https://www.quantreo.com).*
+📢 *For a practical example, check out this [educational notebook](/../tutorials/features-engineering-volatility/#ctc-volatility).*
 
 ---
 ## **Parkinson Volatility**
@@ -113,7 +114,7 @@ volatility_series : pandas.Series
 """
 ```
 
-📢 *For a practical example, check out the [educational notebook](https://www.quantreo.com).*
+📢 *For a practical example, check out this [educational notebook](/../tutorials/features-engineering-volatility/#parkinson-volatility).*
 
 
 
@@ -180,7 +181,7 @@ pd.Series
 """
 ```
 
-📢 *For a practical example, check out the [educational notebook](https://www.quantreo.com).*
+📢 *For a practical example, check out this [educational notebook](/../tutorials/features-engineering-volatility/#rogers-satchell-volatility).*
 
 
 ---
@@ -250,5 +251,5 @@ fe.volatility.yang_zhang_volatility(df: pd.DataFrame, high_col: str = 'high', lo
 
 ```
 
-📢 *For a practical example, check out the [educational notebook](https://www.quantreo.com).*
+📢 *For a practical example, check out this [educational notebook](/../tutorials/features-engineering-volatility/#yang-zhang-volatility-estimator).*
 

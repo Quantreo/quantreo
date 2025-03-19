@@ -1,4 +1,5 @@
 # **Math**
+You can find a series of examples on how to create these features in the [educational notebooks](/../tutorials/features-engineering-math) provided by Quantreo.
 
 ``` py
 import quantreo.features_engineering as fe
@@ -52,7 +53,7 @@ acceleration_series : pandas.Series
     The second derivative (acceleration) of the specified column.
 """
 ```
-📢 *For a practical example, check out the [educational notebook](https://www.quantreo.com).*
+📢 *For a practical example, check out this [educational notebook](/../tutorials/features-engineering-math/#derivatives).*
 
 
 
@@ -91,7 +92,7 @@ pd.Series
     A Series containing the rolling log returns over `window_size` periods.
 """
 ```
-📢 *For a practical example, check out the [educational notebook](https://www.quantreo.com).*
+📢 *For a practical example, check out this [educational notebook](/../tutorials/features-engineering-math/#logarithmic-percentage-change).*
 
 
 ---
@@ -130,6 +131,7 @@ pd.Series
     A Series containing the rolling autocorrelation values.
 """
 ```
+📢 *For a practical example, check out this [educational notebook](/../tutorials/features-engineering-math/#auto-correlation).*
 
 
 
@@ -185,3 +187,5 @@ pd.Series
     A Series containing the rolling Hurst exponent values over the given window.
 """
 ```
+📢 *For a practical example, check out this [educational notebook](/../tutorials/features-engineering-math/#hurst).*
+

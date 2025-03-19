@@ -1,51 +1,57 @@
-import pandas as pd
+import numpy as np
 from ..trend import kama
 
 
-def kama_market_regime(df, col, n, m):
+def kama_market_regime(df, col,
+                       l1_fast=50, l2_fast=2, l3_fast=30,
+                       l1_slow=200, l2_slow=2, l3_slow=30):
     """
-    Calculate the market regime using Kaufman's Adaptive Moving Average (KAMA).
+    Compute a market regime indicator based on the difference between two KAMA (fast and slow).
 
-    The function computes two KAMA values using two different periods (n and m), then calculates
-    the difference between them to determine the market regime. A trend indicator is derived:
-    - 1 indicates a positive trend (kama_diff > 0)
-    - -1 indicates a negative trend (kama_diff <= 0)
+    This function calculates two KAMA indicators using two different parameter sets (fast and slow).
+    It then derives a market regime signal based on the difference between the fast KAMA and slow KAMA:
+
+    - Returns 1 when the fast KAMA is above the slow KAMA (bullish regime).
+    - Returns -1 when the fast KAMA is below the slow KAMA (bearish regime).
 
     Parameters
     ----------
     df : pandas.DataFrame
-        Input DataFrame containing the price data or numeric series.
+        DataFrame containing the input price series.
     col : str
-        Column name on which to apply the KAMA calculation.
-    n : int
-        Period length for the first KAMA calculation.
-    m : int
-        Period length for the second KAMA calculation.
+        Column name on which to apply the KAMA calculation (e.g., 'close').
+    l1_fast : int, optional
+        Efficiency ratio lookback window for the fast KAMA (default is 50).
+    l2_fast : int, optional
+        Fastest EMA constant for the fast KAMA (default is 2).
+    l3_fast : int, optional
+        Slowest EMA constant for the fast KAMA (default is 30).
+    l1_slow : int, optional
+        Efficiency ratio lookback window for the slow KAMA (default is 200).
+    l2_slow : int, optional
+        Fastest EMA constant for the slow KAMA (default is 2).
+    l3_slow : int, optional
+        Slowest EMA constant for the slow KAMA (default is 30).
 
     Returns
     -------
-    regime_df : pandas.DataFrame
-        A copy of the original DataFrame with two additional columns:
-            - 'kama_diff': the difference between KAMA computed with period m and period n.
-            - 'kama_trend': an indicator of market trend (1 for positive, -1 for negative).
+    pandas.Series
+        A Series containing the market regime indicator:
+        - 1 for bullish regime
+        - -1 for bearish regime
     """
-    # Check that the required column exists in the DataFrame
     if col not in df.columns:
         raise ValueError(f"The required column '{col}' is not present in the DataFrame.")
 
-    # Create a copy of the DataFrame to avoid modifying the original
     df_copy = df.copy()
 
-    # Calculate KAMA for both periods.
-    df_copy = kama(df_copy, col, n)
-    df_copy = kama(df_copy, col, m)
+    # Calculate both KAMA values
+    df_copy["kama_fast"] = kama(df_copy, col, l1=l1_fast, l2=l2_fast, l3=l3_fast)
+    df_copy["kama_slow"] = kama(df_copy, col, l1=l1_slow, l2=l2_slow, l3=l3_slow)
 
-    # Calculate the difference between the two KAMA values.
-    df_copy["kama_diff"] = df_copy[f"kama_{m}"] - df_copy[f"kama_{n}"]
+    # Difference & regime detection
+    df_copy["kama_diff"] = df_copy["kama_fast"] - df_copy["kama_slow"]
+    df_copy["kama_trend"] = np.where(df_copy["kama_diff"] > 0, 1, -1)
 
-    # Determine the market regime based on the difference:
-    # 1 if kama_diff > 0, -1 otherwise.
-    df_copy["kama_trend"] = -1
-    df_copy.loc[df_copy["kama_diff"] > 0, "kama_trend"] = 1
+    return df_copy["kama_trend"]
 
-    return df_copy

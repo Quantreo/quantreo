@@ -3,7 +3,21 @@ document.addEventListener("DOMContentLoaded", function() {
     if (sidebarInner) {
         let imgDiv = document.createElement("div");
         imgDiv.classList.add("sidebar-image");
-        imgDiv.innerHTML = '<img src="/assets/backtesting_thumbnail.png" style="width: 80%; border-radius: 10px; margin-top: 50px; display: block;">';
-        sidebarInner.appendChild(imgDiv);  // Insère l'image à la fin, au lieu du début
+        imgDiv.innerHTML = `
+            <a href="https://www.quantreo.com" target="_blank" style="text-decoration: none;">
+                <img src="/assets/pub_aqp.webp" class="sidebar-img" style="width: 80%; border-radius: 10px; margin-top: 50px; display: block; transition: transform 0.3s ease;">
+            </a>
+        `;
+        sidebarInner.appendChild(imgDiv);
+
+        // Ajouter le style hover dynamiquement via JS
+        let style = document.createElement('style');
+        style.innerHTML = `
+            .sidebar-img:hover {
+                transform: scale(1.02);
+                cursor: pointer;
+            }
+        `;
+        document.head.appendChild(style);
     }
 });

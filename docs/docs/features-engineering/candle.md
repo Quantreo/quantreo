@@ -1,5 +1,5 @@
 # **Candle Information**
-You can find a series of examples on how to create these features in the [educational notebooks](https://www.quantreo.com) provided by [Quantreo](https://www.quantreo.com).
+You can find a series of examples on how to create these features in the [educational notebooks](/../tutorials/features-engineering-candle) provided by Quantreo.
 
 
 ``` py
@@ -56,7 +56,7 @@ Tuple[pd.Series, pd.Series, pd.Series]
 """
 ```
 
-📢 "For a practical example, check out the [educational notebook](examples/Features_Engineering_Candle.ipynb)."
+📢 "For a practical example, check out the [educational notebook](/../tutorials/features-engineering-candle/#basic-candle-information)."
 
 !!! tip "Tip"
     These three variables (`candle_way`, `filling` and `amplitude`) are often very correlated. Do not hesitate to keep only the best feature related to your problem or combine them smartly into one variable.
@@ -95,6 +95,6 @@ spread_series : pandas.Series
     A Series indexed the same as `df`, containing the spread values.
 """
 ```
-📢 "For a practical example, check out the [educational notebook](https://www.quantreo.com)."
+📢 "For a practical example, check out the [educational notebook](/../tutorials/features-engineering-candle/#spread)."
 
 
