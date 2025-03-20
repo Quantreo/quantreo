@@ -29,3 +29,6 @@ test.py
 
 # Ignore the website
 site
+
+# Ignore Personnal notes
+lucas_notes.md
