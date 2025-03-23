@@ -5,6 +5,12 @@ Quantreo is a Python library to streamline feature engineering, target engineeri
 - 🔗 **Documentation**: [https://www.quantreo.com/docs](https://www.quantreo.com/docs)
 - 💻 **Repository**: [https://github.com/Quantreo/quantreo](https://github.com/Quantreo/quantreo)
 
+## Install Quantreo
+```bash
+pip install quantreo
+```
+
+
 ## Why use Quantreo?
 
 - Save time with ready-to-use trading features (volatility, trend, candle patterns, market regimes).
