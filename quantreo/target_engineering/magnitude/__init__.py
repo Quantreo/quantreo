@@ -59,7 +59,8 @@ def future_returns(df, close_col='close', window_size=10, log_return=True):
     return df_copy["fut_ret"]
 
 
-def future_volatility(df, method='close_to_close', window_size=20, shift_forward=True, **kwargs):
+def future_volatility(df: pd.DataFrame, method: str = 'close_to_close', window_size: int = 20,
+                      shift_forward: bool = True, **kwargs) -> pd.Series:
     """
     Compute the volatility over the next 'future_window' periods.
 

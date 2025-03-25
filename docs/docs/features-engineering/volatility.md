@@ -186,7 +186,7 @@ pd.Series
 
 ---
 
-## **Yang-Zhang Volatility Estimator**
+## **Yang-Zhang Volatility**
 
 The `yang_zhang_volatility` function computes the **Yang-Zhang volatility**, an advanced estimator that integrates **overnight, close-to-close, and intra-day price movements**. This method is particularly useful for assets with **significant overnight gaps**, making it more robust than traditional measures.
 

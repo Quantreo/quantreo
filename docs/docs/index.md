@@ -1,7 +1,7 @@
 # **Quantreo**
 
 [![PyPI version](https://img.shields.io/pypi/v/quantreo.svg)](https://pypi.org/project/quantreo/)
-[![License](https://img.shields.io/github/license/ton-compte/nom-de-ta-lib.svg)](https://github.com/ton-compte/nom-de-ta-lib/blob/main/LICENSE)
+[![License](https://img.shields.io/github/license/Quantreo/quantreo.svg)](https://github.com/Quantreo/quantreo/blob/main/LICENSE.txt)
 
 The **Quantreo Python library** is designed to simplify the workflow of **quantitative traders** by offering powerful tools for **feature engineering, target engineering, feature selection, and much more**.  
 
@@ -14,7 +14,7 @@ Currently, our focus is on **feature engineering and target engineering**, provi
 
 <div class="custom-card" style="flex: 1 1 calc(50% - 16px); min-width: 300px;">
     <b>
-        <a href="/TUTORIALS/Quantreo_for_beginners/" style="text-decoration: none;">
+        <a href="/tutorials/Quantreo-for-beginners/" style="text-decoration: none;">
             🏃 Getting Started
         </a>
     </b> – New to Quantreo? Check our beginner tutorials to learn how to create your first quant trading code. Let's get started!
@@ -23,7 +23,7 @@ Currently, our focus is on **feature engineering and target engineering**, provi
 
 <div class="custom-card" style="flex: 1 1 calc(50% - 16px); min-width: 300px;">
     <b>
-        <a href="/TUTORIALS/features_Engineering_Candle/" style="text-decoration: none;">
+        <a href="/tutorials/features-engineering-candle/" style="text-decoration: none;">
             💻 Tutorials
         </a>
     </b> – Enhance your trading skills with our in-depth tutorials. Learn step by step how to build, test, and optimize your quant trading strategies!
@@ -32,7 +32,7 @@ Currently, our focus is on **feature engineering and target engineering**, provi
 
 <div class="custom-card" style="flex: 1 1 calc(50% - 16px); min-width: 300px;">
     <b>
-        <a href="/FEATURES%20ENGINEERING/Get_started/" style="text-decoration: none;">
+        <a href="/features-engineering/Get-started/" style="text-decoration: none;">
             📊 Features Engineering
         </a>
     </b> – Discover how to extract meaningful insights from raw market data. Master feature engineering techniques to improve your trading models!

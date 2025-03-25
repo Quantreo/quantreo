@@ -3,8 +3,9 @@ import pandas as pd
 from ..magnitude import future_returns
 
 
-def future_returns_sign(df, close_col='close', window_size=10, log_return=True,
-                                    positive_label=1, negative_label=0):
+def future_returns_sign(df: pd.DataFrame, close_col: str = 'close', window_size: int = 10, log_return: bool = True,
+                        positive_label: int = 1, negative_label: int = 0) -> pd.Series:
+
     """
     Generate a directional target by computing future returns and binarizing them.
 
@@ -51,9 +52,11 @@ def future_returns_sign(df, close_col='close', window_size=10, log_return=True,
     return pd.Series(labels, index=fut_ret.index)
 
 
-def quantile_label(df, col, upper_quantile_level=0.67, lower_quantile_level=None,
-                   q_high=None, q_low=None, return_thresholds=False,
-                   positive_label=1, negative_label=-1, neutral_label=0):
+def quantile_label(df: pd.DataFrame, col: str, upper_quantile_level: float = 0.67,
+                   lower_quantile_level: float | None = None, q_high: float | None = None, q_low: float | None = None,
+                   return_thresholds: bool = False, positive_label: int = 1, negative_label: int = -1,
+                   neutral_label: int = 0) -> pd.Series | tuple[pd.Series, float, float]:
+
     """
     Generate quantile-based labels (custom values for upper, lower, and neutral) and optionally return thresholds.
 
