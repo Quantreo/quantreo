@@ -22,6 +22,7 @@ eggs/
 
 # Custom files to ignore
 test.py
+test.ipynb
 
 # Jupyter / mkdocs cache & checkpoints
 .cache/
@@ -29,3 +30,6 @@ test.py
 
 # Ignore the website
 site
+
+# Ignore Personnal notes
+lucas_notes.md

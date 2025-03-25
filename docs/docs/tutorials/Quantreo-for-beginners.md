@@ -81,9 +81,9 @@ print(df)
 
 ---
 
-## **The Feature Engineering Package**
+## **The Features Engineering Package**
 
-### **What is Feature Engineering?**
+### **What is Features Engineering?**
 In **quantitative trading**, Feature Engineering transforms **raw market data** into indicators that can be used in a model.
 
 Example: Calculating **volatility, trend, logarithmic variation**, etc.  
@@ -128,18 +128,48 @@ print(df)
 
 ---
 
-## **Coming Soon**
+## **The Target Engineering Package**
+In **quantitative trading**, Target Engineering defines the **output** your models are trained to predict.
 
-Quantreo will soon include **Target Engineering** functionalities.
+Instead of using arbitrary labels, Quantreo helps you generate **consistent, interpretable, and practical targets** from market data.
 
-✔ Define **robust target variables** for supervised learning  
-✔ Adapt target definitions to **various trading strategies**  
-✔ Handle **prediction horizons** and complex **labeling** mechanisms  
+Example: Predicting **future returns**, detecting **price reversals**, or estimating **future volatility amplitude**.
+<br>
 
-📢 *Stay tuned for the next updates!*
+With Quantreo, creating these targets is **automated, robust, and flexible**.
+
+Here’s how to use a **Target Engineering function** in Quantreo. Let's create a **future return target** (based on our existing dataframe):
+
+```python
+import quantreo.target_engineering as te
+
+# Compute the future log return over 3 periods
+df["fut_ret"] = te.magnitude.future_returns(df, window_size=3, log_return=True)
+
+# Generate a directional label: 1 if return > 0, else 0
+df["direction"] = te.directional.future_returns_sign(df, window_size=3)
+
+print(df)
+```
+
+| Close | Future Return | Direction |
+|-------|---------------|-----------|
+| 102   | 0.0296        | 1         |
+| 104   | -0.0287       | -1        |
+| 103   | 0.0376        | 1         |
+| 105   | NaN           | 0         |
+| 107   | NaN           | 0         |
+
+!!! warning "Missing values at the end"
+    Just like moving averages or volatility features, most target functions need **future values** to be computed. 
+    Therefore, you will get `NaN` values at the **end** of the series for the rows where there is not enough data ahead.
+
+
+<br>
+
 
 ---
 
 ## **Learn More**
 
-📚 Take a look to our "Machine Learning for Trading" course !
+📚 Join our 100% free [newsletter](https://www.newsletter.quantreo.com) to get actionable insights straight to your inbox.
