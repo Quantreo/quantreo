@@ -60,8 +60,10 @@ The `quantile_label` function is designed to generate **quantile-based multi-cla
 
 Additionally, this function allows you to **predefine thresholds** (`q_high`, `q_low`) or return them along with the labels if `return_thresholds=True`. This is particularly useful for building classification datasets with clearly segmented zones such as **bullish**, **neutral**, and **bearish** phases.
 
-!!! tip "Tip"
-    The flexibility of `quantile_label()` makes it suitable for **dynamic labeling** in trading systems, e.g., to build multi-class models that adapt to market regimes.
+!!! danger "Quantile Target Caution"
+    When using quantile-based targets, always compute the **quantile thresholds on the training set only**, and apply them to the test set to generate labels.  
+    Computing quantiles on the full dataset would introduce a **look-ahead bias**, leaking future information into your model.
+
 
 ```python title="How to call quantile_label"
 te.directional.quantile_label(df: pd.DataFrame, col: str, upper_quantile_level: float = 0.67,
