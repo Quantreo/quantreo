@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
         imgDiv.classList.add("sidebar-image");
         imgDiv.innerHTML = `
             <a href="https://www.quantreo.com" target="_blank" style="text-decoration: none;">
-                <img src="/assets/pub_aqp.webp" class="sidebar-img" style="width: 80%; border-radius: 10px; margin-top: 50px; display: block; transition: transform 0.3s ease;">
+                <img src="/assets/newsletter.webp" class="sidebar-img" style="width: 80%; border-radius: 10px; margin-top: 50px; display: block; transition: transform 0.3s ease;">
             </a>
         `;
         sidebarInner.appendChild(imgDiv);
