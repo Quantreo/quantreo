@@ -2,7 +2,7 @@
 
 In quantitative trading, **target engineering** is as critical as feature engineering. It defines the **objective** your models will learn to predict. The **Quantreo library** provides multiple methods to create custom targets based on **returns**, **events**, and **price magnitudes**.
 
-We also provide **detailed documentation** and **ready-to-use notebooks** inside the [tutorials](/../tutorials/quantreo-for-beginners) folder to help you master target creation.
+We also provide **detailed documentation** and **ready-to-use notebooks** inside the [tutorials](/../tutorials/Quantreo-for-beginners) folder to help you master target creation.
 
 !!! warning "📦 Installation & Import"
     Be sure you have installed the quantreo library before using these functions. To install it, just run:

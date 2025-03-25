@@ -32,7 +32,7 @@ Currently, our focus is on **feature engineering and target engineering**, provi
 
 <div class="custom-card" style="flex: 1 1 calc(50% - 16px); min-width: 300px;">
     <b>
-        <a href="/features-engineering/Get-started/" style="text-decoration: none;">
+        <a href="/features-engineering/Get-Started/" style="text-decoration: none;">
             📊 Features Engineering
         </a>
     </b> – Discover how to extract meaningful insights from raw market data. Master feature engineering techniques to improve your trading models!
@@ -41,9 +41,10 @@ Currently, our focus is on **feature engineering and target engineering**, provi
 
 <div class="custom-card" style="flex: 1 1 calc(50% - 16px); min-width: 300px;">
     <b>
-        
-        🎯 Target Engineering
-    </b> (coming soon) – Learn how to define the right target variable for your trading models. Improve prediction accuracy with advanced target engineering techniques!
+        <a href="/target-engineering/Get-started/" style="text-decoration: none;">
+            🎯 Target Engineering
+        </a>
+    </b> – Learn how to define the right target variable for your trading models. Improve prediction accuracy with advanced target engineering techniques!
 </div>
 
 

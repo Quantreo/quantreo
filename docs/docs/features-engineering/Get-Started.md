@@ -2,7 +2,7 @@
 
 Feature engineering is a <u>crucial step</u> in **quantitative trading**. The **Quantreo library** provides several optimized functions to extract meaningful insights from raw market data.
 
-To help you understand how to use each function, we provide **detailed explanations** and **Jupyter Notebook examples** in the [tutorials](/../tutorials/quantreo-for-beginners)  folder.
+To help you understand how to use each function, we provide **detailed explanations** and **Jupyter Notebook examples** in the [tutorials](/../tutorials/Quantreo-for-beginners)  folder.
 
 !!! warning "📦 Installation & Import"
     Be sure you have installed the quantreo library before running any of these codes. To install it, just run ``pip install quantreo`` in your terminal.
