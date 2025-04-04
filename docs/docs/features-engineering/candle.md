@@ -3,7 +3,7 @@ You can find a series of examples on how to create these features in the [educat
 
 
 ``` py
-import quantreo.features_engineering import fe
+import quantreo.features_engineering as fe
 ```
 
 ---
@@ -97,4 +97,53 @@ spread_series : pandas.Series
 ```
 📢 "For a practical example, check out the [educational notebook](/../tutorials/features-engineering-candle/#spread)."
 
+---
 
+## **Price Distribution**
+
+The `price_distribution` function calculates the **percentage of closing prices** that lie within a given **relative range** of their **rolling high-low interval**.
+
+This feature is especially helpful to identify **price compression** (when many prices cluster in the center of the range) or **volatility bursts** (when price spreads out to the extremes).
+
+It works by:
+
+- Computing the **min** and **max** price in each rolling window.
+
+- Evaluating the **number of prices** that fall between two dynamic thresholds: `start_percentage` (e.g., 0.25) of the range and `end_percentage` (e.g., 0.75) of the range
+
+
+```python title="How to call price_distribution"
+fe.candle.price_distribution(df: pd.DataFrame, col: str = 'close', window_size: int = 60,
+                            start_percentage: float = 0.25, end_percentage: float = 0.75)
+```
+
+```python title="price_distribution docstring"
+"""
+Compute the percentage of close prices within a relative range of their local low-high interval,
+over a rolling window.
+
+This function calculates, for each window, how many values lie within a given percentage band
+of the [low, high] range. It is useful to detect price compression or expansion around a zone.
+
+Parameters
+----------
+df : pd.DataFrame
+    Input DataFrame containing the time series data.
+col : str
+    Name of the column containing the close prices.
+window_size : int, optional
+    Size of the rolling window (default is 60).
+start_percentage : float, optional
+    Start of the relative range as a percentage of (high - low). Default is 0.25 (25%).
+end_percentage : float, optional
+    End of the relative range as a percentage of (high - low). Default is 0.75 (75%).
+
+Returns
+-------
+pd.Series
+    Series with the same index as the input, containing the computed percentage values for each window.
+    First (window_size - 1) rows will be NaN.
+"""
+```
+
+📢 "For a practical example, check out the [educational notebook](/../tutorials/features-engineering-candle/#price-distribution)."

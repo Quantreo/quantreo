@@ -3,7 +3,7 @@ import numpy as np
 from scipy.signal import find_peaks
 
 
-def detect_peaks_valleys(df: pd.DataFrame, col: str = 'close', distance: int = 5, prominence: float = 0.5) -> pd.Series:
+def detect_peaks_valleys(df: pd.DataFrame, col: str = 'close', **kwargs) -> pd.Series:
     """
     Detect peaks and valleys in a time series using scipy's find_peaks.
 
@@ -20,15 +20,9 @@ def detect_peaks_valleys(df: pd.DataFrame, col: str = 'close', distance: int = 5
         DataFrame containing the price data.
     col : str, optional
         The column name of the series to analyze (default is 'close').
-    distance : int, optional
-        Minimum number of samples between two peaks or valleys.
-        This parameter is passed to `scipy.signal.find_peaks`.
-        A higher value will ignore smaller fluctuations and detect only well-separated turning points.
-    prominence : float, optional
-        Required prominence of peaks/valleys.
-        Also passed to `scipy.signal.find_peaks`.
-        Prominence represents how much a peak stands out from the surrounding data (in the "col" input unit).
-        A higher value filters out smaller movements and keeps only significant peaks/valleys.
+    **kwargs :
+        Additional keyword arguments passed directly to scipy.signal.find_peaks
+        (e.g., distance=5, prominence=0.5, wlen=20, height=1.0, etc.)
 
     Returns
     -------
@@ -50,8 +44,8 @@ def detect_peaks_valleys(df: pd.DataFrame, col: str = 'close', distance: int = 5
     prices = df[col].values
 
     # Peak detection
-    peaks, _ = find_peaks(prices, distance=distance, prominence=prominence)
-    valleys, _ = find_peaks(-prices, distance=distance, prominence=prominence)
+    peaks, _ = find_peaks(prices, **kwargs)
+    valleys, _ = find_peaks(-prices, **kwargs)
 
     # Initialize columns
     df['peak'] = np.nan

@@ -4,7 +4,7 @@ You can find a series of examples on how to create these features in the [educat
 
 
 ``` py
-import quantreo.features_engineering import fe
+import quantreo.features_engineering as fe
 ```
 
 !!! warning "Warning"

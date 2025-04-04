@@ -18,7 +18,7 @@ The `detect_peaks_valleys` function identifies **structural turning points** in 
     You can combine this function with magnitude-based targets like `future_returns()` to detect **how strong the move is after a turning point**.
 
 ```python title="How to call detect_peaks_valleys"
-te.event_based.detect_peaks_valleys(df: pd.DataFrame, col: str = 'close', distance: int = 5, prominence: float = 0.5)
+te.event_based.detect_peaks_valleys(df: pd.DataFrame, col: str = 'close', **kwargs)
 ```
 
 ``` title="detect_peaks_valleys docstring"
@@ -38,15 +38,9 @@ df : pd.DataFrame
     DataFrame containing the price data.
 col : str, optional
     The column name of the series to analyze (default is 'close').
-distance : int, optional
-    Minimum number of samples between two peaks or valleys.
-    This parameter is passed to `scipy.signal.find_peaks`.
-    A higher value will ignore smaller fluctuations and detect only well-separated turning points.
-prominence : float, optional
-    Required prominence of peaks/valleys.
-    Also passed to `scipy.signal.find_peaks`.
-    Prominence represents how much a peak stands out from the surrounding data (in the "col" input unit).
-    A higher value filters out smaller movements and keeps only significant peaks/valleys.
+**kwargs :
+        Additional keyword arguments passed directly to scipy.signal.find_peaks
+        (e.g., distance=5, prominence=0.5, wlen=20, height=1.0, etc.)
 
 Returns
 -------

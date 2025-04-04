@@ -3,7 +3,7 @@ You can find a series of examples on how to create these features in the [educat
 
 
 ``` py
-import quantreo.features_engineering import fe
+import quantreo.features_engineering as fe
 ```
 
 ---
@@ -106,3 +106,52 @@ pandas.Series
 
 ```
 📢 "For a practical example, check out the [educational notebook](/../tutorials/features-engineering-trend/#kaufmans-adaptive-moving-average-kama)."
+
+---
+
+## **Linear Slope**
+
+The `linear_slope` function computes the **slope of a linear regression line** over a rolling window on a given column.  
+This slope is often used to detect **momentum shifts**, **trend strength**, or simply **directional bias** over a moving window.
+
+It works by fitting a **simple linear regression** of the form $y = ax + b$ on the rolling window and returning the value of the slope $a$ at each point in time.
+
+A positive slope implies **upward momentum**, a negative slope implies **downward momentum**.
+
+
+
+```python title="How to call linear_slope"
+fe.trend.linear_slope(df: pd.DataFrame, col: str = 'close', window_size: int = 60)
+```
+
+```python title="linear_slope docstring"
+"""
+Compute the slope of a linear regression line over a rolling window.
+
+This function applies a linear regression on a rolling window of a selected column,
+returning the slope of the fitted line at each time step. It uses a fast internal implementation
+(`_get_linear_regression_slope`) for efficient computation.
+
+Parameters
+----------
+df : pandas.DataFrame
+    Input DataFrame containing the time series data.
+col : str
+    Name of the column on which to compute the slope.
+window_size : int, optional
+    Size of the rolling window used to fit the linear regression (default is 60).
+
+Returns
+-------
+slope_series : pandas.Series
+    A Series containing the slope of the regression line at each time step.
+    The first (window_size - 1) values will be NaN due to insufficient data for the initial windows.
+
+Notes
+-----
+This indicator is useful to assess short- or medium-term price trends.
+A positive slope indicates an upward trend, while a negative slope reflects a downward trend.
+"""
+```
+
+📢 "For a practical example, check out the [educational notebook](/../tutorials/features-engineering-trend/#linear-slope)."
