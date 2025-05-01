@@ -49,3 +49,24 @@ print(df)
 | 105  | 110  | 102 |  107  | 11500  |
 
 <br>
+
+---
+## Features Available
+
+| **Category**        | **Function Name**             | **Quick Explanation**                                                             |
+|---------------------|-------------------------------|-----------------------------------------------------------------------------------|
+| Candle Information  | `candle_information`          | Returns the candle’s color, its fill state, and its range.                        |
+| Candle Information  | `compute_spread`              | Computes the difference between the high and the low (spread).                    |
+| Candle Information  | `price_distribution`          | Percentage of closes falling between two dynamic bounds within a rolling window.  |
+| Market Regime       | `kama_market_regime`          | Detects market phases (bull / bear) using two KAMA curves.                        |
+| Math                | `derivatives`                 | Computes speed (1st derivative) and acceleration (2nd derivative).                |
+| Math                | `log_pct`                     | Logarithmic return over a rolling window.                                         |
+| Math                | `auto_corr`                   | Rolling autocorrelation on a given column.                                        |
+| Math                | `hurst`                       | Computes the Hurst exponent over a rolling window.                                |
+| Trend               | `sma`                         | Simple moving average.                                                            |
+| Trend               | `kama`                        | Kaufman Adaptive Moving Average (noise-adaptive).                                 |
+| Trend               | `linear_slope`                | Slope of a linear regression over a rolling window.                               |
+| Volatility          | `close_to_close_volatility`   | Volatility based on the standard deviation of log returns.                        |
+| Volatility          | `parkinson_volatility`        | Volatility based on high/low prices only.                                         |
+| Volatility          | `rogers_satchell_volatility`  | Volatility that accounts for drift and intraday prices.                           |
+| Volatility          | `yang_zhang_volatility`       | Gap-robust volatility combining multiple measures.                                |

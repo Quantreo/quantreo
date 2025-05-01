@@ -52,3 +52,17 @@ print(df)
 | 105  | 110  | 102 |  107  | 11500  |
 
 <br>
+
+---
+## Targets Available
+| **Category** | **Function Name**        | **Quick Explanation**                                                                                                                    |
+|-------------|--------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| Directional | `future_returns_sign`    | Binary target indicating whether the future return is positive.                                                                          |
+| Directional | `quantile_label`         | Creates a multi-class target based on quantiles (e.g., bearish, neutral, bullish).                                                       |
+| Event-Based | `detect_peaks_valleys`   | Detects structural peaks and valleys in a price series.                                                                                  |
+| Magnitude   | `future_returns`         | Future return (log or simple), often used in regression models.                                                                          |
+| Magnitude   | `future_volatility`      | Future volatility derived from several methods, such as close-to-close or Parkinson.                                                     |
+| Magnitude  | `continuous_barrier_labeling`  | Computes the time (in hours) to reach TP or SL. Inspired by Marco Lopez de Prado's labeling methodology.                                 |
+| Directional | `double_barrier_labeling`      | Discrete version of the barrier labeling: returns `1`, `-1`, or `0`.                                                                     |
+| Directional | `triple_barrier_labeling`      | Discrete version of the barrier labeling includeing a time limit for labeling. If no barrier is hit within a set duration, label is `0`. |
+

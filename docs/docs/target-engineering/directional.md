@@ -113,3 +113,145 @@ q_low : float (optional)
 📢 "For a practical example, check out the [educational notebook](/../tutorials/target-engineering-directional/#quantile-label)."
 
 
+---
+## **Double Barrier Labeling**
+
+The `double_barrier_labeling` function transforms the **continuous time-to-barrier** output into a **classification target**.  
+It assigns a **discrete label** depending on whether the price hit the **Take Profit (TP)** or **Stop Loss (SL)** level first.
+
+This method is particularly useful for building **binary classifiers** or **directional models** in event-based trading strategies.
+
+!!! danger "⏱ Time-based requirement"
+    Like the continuous version, this method **requires**:
+
+    - A **DatetimeIndex** (named `'time'`).
+    - Two timestamp columns: `high_time` and `low_time`, indicating **when the high and low occurred**.
+
+    These allow the function to infer the correct sequence of TP/SL hits with **high precision**.
+
+```python title="How to call double_barrier_labeling"
+te.directional.double_barrier_labeling(df: pd.DataFrame, open_col: str = "open", high_col: str = "high", low_col: str = "low",
+    high_time_col: str = "high_time", low_time_col: str = "low_time", tp: float = 0.015, sl: float = -0.015, buy: bool = True)
+```
+
+``` title="double_barrier_labeling docstring"
+"""
+Compute double barrier classification labels based on TP/SL logic.
+
+This function wraps `continuous_barrier_labeling` and converts the continuous
+duration-based output into discrete labels:
+    - 1  → Take Profit was hit first
+    - -1 → Stop Loss was hit first
+    - 0  → No barrier hit within max horizon
+
+Parameters
+----------
+df : pd.DataFrame
+    Input DataFrame with a DatetimeIndex named 'time'.
+    Must include the following columns:
+    - Price: open_col, high_col, low_col
+    - Timestamps: high_time_col, low_time_col (datetime when the high/low occurred)
+open_col : str, optional
+    Name of the column containing the open price (default is 'open').
+high_col : str, optional
+    Name of the column containing the high price (default is 'high').
+low_col : str, optional
+    Name of the column containing the low price (default is 'low').
+high_time_col : str, optional
+    Column name for the timestamp when the high occurred (default is 'high_time').
+low_time_col : str, optional
+    Column name for the timestamp when the low occurred (default is 'low_time').
+tp : float, optional
+    Take Profit threshold (as % variation from open). Must be > 0.
+sl : float, optional
+    Stop Loss threshold (as % variation from open). Must be < 0.
+buy : bool, optional
+    Whether to simulate a long trade (True) or a short trade (False). Default is True.
+
+Returns
+-------
+pandas.Series
+    A Series of labels indicating the event outcome:
+    - 1 → TP hit first
+    - -1 → SL hit first
+    - 0 → No barrier was hit
+"""
+```
+
+📢 "For a practical example, check out the [educational notebook](/../tutorials/target-engineering-directional/#double-barrier-labeling)."
+
+
+---
+## **Triple Barrier Labeling**
+
+The `triple_barrier_labeling` function generates **discrete classification labels** based on **three criteria**:
+
+- A **Take Profit (TP)** level,
+- A **Stop Loss (SL)** level,
+- A **maximum holding duration** (in hours).
+
+It extends the **double barrier** approach by assigning a **neutral label (0)** when neither barrier is reached within a given time limit.
+
+This target is especially useful in **backtesting** and **reinforcement learning**, where decisions depend not only on price movement but also on **timing constraints**.
+
+!!! danger "⏱ Time-based requirement"
+    This method **requires**:
+
+    - A **DatetimeIndex** named `'time'`.
+    - Two timestamp columns: `high_time` and `low_time`, representing the **exact time the high and low were hit**.
+    - A value for `max_duration_h` (the **maximum holding time** allowed).
+
+```python title="How to call triple_barrier_labeling"
+te.directional.triple_barrier_labeling(df: pd.DataFrame, max_duration_h: float,
+    open_col: str = "open", high_col: str = "high", low_col: str = "low",
+    high_time_col: str = "high_time", low_time_col: str = "low_time",
+    tp: float = 0.015, sl: float = -0.015, buy: bool = True)
+```
+
+``` title="triple_barrier_labeling docstring"
+"""
+Compute triple barrier classification labels based on TP/SL and a max holding time.
+
+This function wraps `continuous_barrier_labeling` and converts its continuous time output into:
+    -  1 → TP was hit within the maximum duration
+    - -1 → SL was hit within the maximum duration
+    -  0 → Neither was hit in time (timeout)
+
+Parameters
+----------
+df : pd.DataFrame
+    Input DataFrame with a DatetimeIndex named 'time'.
+    Must include the following columns:
+    - Price: open_col, high_col, low_col
+    - Timestamps: high_time_col, low_time_col (when the high/low occurred)
+max_duration_h : float
+    Maximum allowed time (in hours) to hit a barrier.
+open_col : str, optional
+    Column name for the open price (default is 'open').
+high_col : str, optional
+    Column name for the high price (default is 'high').
+low_col : str, optional
+    Column name for the low price (default is 'low').
+high_time_col : str, optional
+    Timestamp column for the high point (default is 'high_time').
+low_time_col : str, optional
+    Timestamp column for the low point (default is 'low_time').
+tp : float, optional
+    Take Profit threshold (must be > 0).
+sl : float, optional
+    Stop Loss threshold (must be < 0).
+buy : bool, optional
+    Whether to simulate a long (True) or short (False) trade.
+
+Returns
+-------
+pandas.Series
+    A Series of labels for each row:
+    - 1 → TP hit before SL and within max time
+    - -1 → SL hit before TP and within max time
+    - 0 → Timeout (neither TP nor SL hit within the allowed time)
+"""
+
+```
+📢 "For a practical example, check out the [educational notebook](/../tutorials/target-engineering-directional/#triple-barrier-labeling)."
+

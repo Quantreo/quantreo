@@ -85,3 +85,65 @@ pandas.Series
 
 📢 "For a practical example, check out the [educational notebook](/../tutorials/target-engineering-magnitude/#future-volatility)."
 
+
+---
+## **Continuous Barrier Labeling**
+
+The `continuous_barrier_labeling` function estimates the **exact time (in hours)** it takes for the price to hit either a **Take Profit (TP)** or a **Stop Loss (SL)** level, starting from each index.  
+It belongs to the family of **event-based targets** and provides **continuous labels** that reflect the **speed** of a movement rather than just its direction.
+
+This labeling approach is useful for **timing analysis**, **position sizing**, and training models that incorporate the notion of **time-to-event**.
+
+!!! warning "⏱ Time-based requirement"
+    Unlike other targets, this method **requires**:
+
+    - A **DatetimeIndex** (named `'time'`).
+    - Two timestamp columns: `high_time` and `low_time`, indicating **when the high and low of the candle occurred** (not the end of the bar).
+    
+    These columns are essential to compute the more accurate label possible without using the ticks.
+
+```python title="How to call continuous_barrier_labeling"
+te.magnitude.continuous_barrier_labeling(df: pd.DataFrame, open_col: str = "open", high_col: str = "high", low_col: str = "low", high_time_col: str = "high_time",
+    low_time_col: str = "low_time", tp: float = 0.015, sl: float = -0.015, buy: bool = True)
+```
+
+``` title="continuous_barrier_labeling docstring"
+"""
+Compute the time (in hours) to hit either a Take Profit (TP) or Stop Loss (SL) level
+after entering a trade, using a fast Numba-accelerated barrier labeling method.
+
+Parameters
+----------
+df : pandas.DataFrame
+    Input DataFrame with a DatetimeIndex named 'time'.
+    Must include the following columns:
+    - Price: open_col, high_col, low_col
+    - Timestamps: high_time_col, low_time_col (datetime when the high/low occurred)
+open_col : str, optional
+    Column name for the open price (default is 'open').
+high_col : str, optional
+    Column name for the high price (default is 'high').
+low_col : str, optional
+    Column name for the low price (default is 'low').
+high_time_col : str, optional
+    Column name for the timestamp when the high occurred (default is 'high_time').
+low_time_col : str, optional
+    Column name for the timestamp when the low occurred (default is 'low_time').
+tp : float, optional
+    Take Profit threshold (as % variation from open). Must be > 0.
+sl : float, optional
+    Stop Loss threshold (as % variation from open). Must be < 0.
+buy : bool, optional
+    Whether to simulate a long trade (True) or a short trade (False). Default is True.
+
+Returns
+-------
+pandas.Series
+    A Series with the same index as the input DataFrame.
+    Each value represents the time in **hours** before hitting TP or SL:
+    - Positive value → TP was hit first.
+    - Negative value → SL was hit first.
+    - Zero → Neither was hit or data ended too early.
+"""
+```
+📢 "For a practical example, check out the [educational notebook](/../tutorials/target-engineering-magnitude/#continuous-barrier-labeling)."
