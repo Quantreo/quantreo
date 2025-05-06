@@ -67,6 +67,13 @@ print(df)
 | Math               | `kurtosis`                    | Rolling kurtosis: detects tail heaviness.                                           |
 | Math       | `adf_test`                    | Rolling Augmented Dickey-Fuller test to detect unit roots (non-stationarity).       |
 | Math | `arch_test`                   | Rolling Engle ARCH test to detect conditional heteroskedasticity (vol clustering).  |
+| Math               | `sample_entropy`              | Measures local signal unpredictability; higher = more irregular behavior.           |
+| Math               | `spectral_entropy`            | Frequency-domain entropy; higher = flatter spectrum, more randomness.              |
+| Math               | `permutation_entropy`         | Entropy based on ordinal patterns in data; robust to noise and nonlinearity.        |
+| Math               | `detrended_fluctuation`       | Detects fractal memory and persistence in time series via DFA exponent.             |
+| Math               | `petrosian_fd`                | Estimates structural complexity using directional changes in the signal.            |
+| Math               | `tail_index`                  | Estimates the tail index (α̂) to characterize the heaviness of distribution tails.   |
+| Math               | `rolling_shapiro_wilk`        | Rolling Shapiro-Wilk test for local normality detection.                            |
 | Trend              | `sma`                         | Simple moving average.                                                              |
 | Trend              | `kama`                        | Kaufman Adaptive Moving Average (noise-adaptive).                                   |
 | Trend              | `linear_slope`                | Slope of a linear regression over a rolling window.                                 |

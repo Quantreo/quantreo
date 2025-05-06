@@ -4,6 +4,8 @@ from typing import Tuple
 import math
 import pandas as pd
 from scipy.stats import norm, chi2
+import antropy as ant
+from scipy.stats import shapiro
 
 
 def derivatives(df: pd.DataFrame, col: str) -> Tuple[pd.Series, pd.Series]:
@@ -766,3 +768,339 @@ def kurtosis(df: pd.DataFrame, col: str, window_size: int = 60) -> pd.Series:
         raise ValueError(f"'window_size' must be a positive integer. Got {window_size}.")
 
     return df[col].rolling(window=window_size).kurt().rename("kurtosis")
+
+
+def sample_entropy(df: pd.DataFrame, col: str = "close", window_size: int = 100, order: int = 2) -> pd.Series:
+    """
+    Calculate the rolling Sample Entropy of a time series.
+
+    Sample Entropy quantifies the level of irregularity or unpredictability
+    in a signal. It is often used to detect dynamic changes in structural
+    complexity over time.
+
+    This function applies Sample Entropy on a sliding window, allowing you
+    to observe how entropy evolves across a time series.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The DataFrame containing the time series.
+    col : str, default="close"
+        The name of the column on which to compute the entropy.
+    window_size : int, default=100
+        Size of the rolling window (must be >= 10).
+    order : int, default=2
+        Embedding dimension used in the entropy calculation (must be >= 1).
+
+    Returns
+    -------
+    pd.Series
+        A Series containing the rolling Sample Entropy values. The first
+        (window_size - 1) values will be NaN.
+
+    Notes
+    -----
+    This function uses AntroPy's implementation of Sample Entropy.
+    AntroPy is licensed under the BSD 3-Clause License.
+    © 2018–2025 Raphael Vallat — https://github.com/raphaelvallat/antropy
+    """
+    if window_size < 10:
+        raise ValueError("Sample entropy requires window_size >= 10.")
+
+    if order < 1:
+        raise ValueError("Parameter 'order' must be >= 1.")
+
+    return df[col].rolling(window=window_size).apply(
+        lambda x: ant.sample_entropy(x, order=order) if len(x) == window_size else np.nan,
+        raw=True)
+
+
+def spectral_entropy(df: pd.DataFrame, col: str = "close", window_size: int = 100, sf: int = 1,
+                             method: str = 'welch', normalize: bool = True, nperseg: int = None) -> pd.Series:
+    """
+    Calculate the rolling Spectral Entropy of a time series.
+
+    Spectral Entropy quantifies the flatness or complexity of the power
+    spectral density of a signal. It provides insight into the frequency
+    content and structure of a time series.
+
+    This function applies spectral entropy over a rolling window, allowing
+    dynamic tracking of complexity in the frequency domain.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The DataFrame containing the time series.
+    col : str, default="close"
+        The name of the column on which to compute the entropy.
+    window_size : int, default=100
+        Size of the rolling window (must be >= 16).
+    sf : int, default=1
+        Sampling frequency used in spectral estimation (must be > 0).
+    method : str, default="welch"
+        Method used to compute the power spectral density ("welch" or "fft").
+    normalize : bool, default=True
+        Whether to normalize entropy to [0, 1].
+    nperseg : int, optional
+        Segment length for Welch's method. If None, defaults to min(window_size, window_size // 2).
+
+    Returns
+    -------
+    pd.Series
+        A Series containing the rolling Spectral Entropy values. The first
+        (window_size - 1) values will be NaN.
+
+    Notes
+    -----
+    This function uses AntroPy's implementation of Spectral Entropy.
+    AntroPy is licensed under the BSD 3-Clause License.
+    © 2018–2025 Raphael Vallat — https://github.com/raphaelvallat/antropy
+    """
+    if window_size < 16:
+        raise ValueError("Spectral entropy requires window_size >= 16 for stable estimation.")
+
+    if sf <= 0:
+        raise ValueError("Sampling frequency 'sf' must be strictly positive.")
+
+    if method not in ["welch", "fft"]:
+        raise ValueError("Method must be 'welch' or 'fft'.")
+
+    def compute_entropy(x):
+        local_nperseg = nperseg if nperseg is not None else min(window_size, window_size // 2)
+        return ant.spectral_entropy(x, sf=sf, method=method, normalize=normalize, nperseg=local_nperseg)
+
+    return df[col].rolling(window=window_size).apply(
+        lambda x: compute_entropy(x) if len(x) == window_size else np.nan,
+        raw=True)
+
+
+def permutation_entropy(df: pd.DataFrame, col: str = "close", window_size: int = 100, order: int = 3,
+                                delay: int = 1, normalize: bool = True) -> pd.Series:
+    """
+    Calculate the rolling Permutation Entropy of a time series.
+
+    Permutation Entropy quantifies the complexity of temporal ordering in a signal.
+    It is particularly useful for detecting subtle dynamic changes in structure.
+
+    This function computes Permutation Entropy over a sliding window,
+    providing a real-time view of signal complexity.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The DataFrame containing the time series.
+    col : str, default="close"
+        The name of the column on which to compute the entropy.
+    window_size : int, default=100
+        Size of the rolling window (must be >= 10).
+    order : int, default=3
+        Embedding dimension for permutation patterns (must be >= 2).
+    delay : int, default=1
+        Time delay between points used in embedding (must be >= 1).
+    normalize : bool, default=True
+        Whether to normalize entropy to [0, 1].
+
+    Returns
+    -------
+    pd.Series
+        A Series containing the rolling Permutation Entropy values.
+        The first (window_size - 1) values will be NaN.
+
+    Notes
+    -----
+    This function uses AntroPy's implementation of Permutation Entropy.
+    AntroPy is licensed under the BSD 3-Clause License.
+    © 2018–2025 Raphael Vallat — https://github.com/raphaelvallat/antropy
+    """
+    if window_size < 10:
+        raise ValueError("Permutation entropy requires window_size >= 10.")
+
+    if order < 2:
+        raise ValueError("Embedding 'order' must be >= 2.")
+
+    if delay < 1:
+        raise ValueError("Delay must be >= 1.")
+
+    return df[col].rolling(window=window_size).apply(
+        lambda x: ant.perm_entropy(x, order=order, delay=delay, normalize=normalize)
+        if len(x) == window_size else np.nan,
+        raw=True)
+
+
+def detrended_fluctuation(df: pd.DataFrame, col: str = "close", window_size: int = 100) -> pd.Series:
+    """
+    Calculate the rolling Detrended Fluctuation Analysis (DFA) exponent of a time series.
+
+    DFA measures long-term memory and fractal scaling in a time series,
+    making it suitable for detecting persistence or anti-persistence in market regimes.
+
+    This function applies DFA over a rolling window, producing a time-varying
+    indicator of signal regularity and self-similarity.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The DataFrame containing the time series.
+    col : str, default="close"
+        The name of the column on which to compute the DFA exponent.
+    window_size : int, default=100
+        Size of the rolling window (must be >= 100).
+
+    Returns
+    -------
+    pd.Series
+        A Series containing the rolling DFA exponents.
+        The first (window_size - 1) values will be NaN.
+
+    Notes
+    -----
+    This function uses AntroPy's implementation of DFA.
+    AntroPy is licensed under the BSD 3-Clause License.
+    © 2018–2025 Raphael Vallat — https://github.com/raphaelvallat/antropy
+    """
+    if window_size < 100:
+        raise ValueError("DFA requires window_size >= 100 for stable estimation.")
+
+    return df[col].rolling(window=window_size).apply(
+        lambda x: ant.detrended_fluctuation(x)
+        if len(x) == window_size else pd.NA,
+        raw=True)
+
+
+def petrosian_fd(df: pd.DataFrame, col: str = "close", window_size: int = 100) -> pd.Series:
+    """
+    Calculate the rolling Petrosian Fractal Dimension (FD) of a time series.
+
+    Petrosian FD measures the structural complexity of a signal based on
+    changes in the direction of the signal's first derivative.
+
+    This function applies the Petrosian FD over a rolling window,
+    producing a time series that tracks signal complexity in real-time.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The DataFrame containing the time series.
+    col : str, default="close"
+        The name of the column on which to compute the fractal dimension.
+    window_size : int, default=100
+        Size of the rolling window (must be >= 10).
+
+    Returns
+    -------
+    pd.Series
+        A Series containing the rolling Petrosian FD values.
+        The first (window_size - 1) values will be NaN.
+
+    Notes
+    -----
+    This function uses AntroPy's implementation of Petrosian FD.
+    AntroPy is licensed under the BSD 3-Clause License.
+    © 2018–2025 Raphael Vallat — https://github.com/raphaelvallat/antropy
+    """
+    if window_size < 10:
+        raise ValueError("Petrosian fractal dimension requires window_size >= 10.")
+
+    return df[col].rolling(window=window_size).apply(
+        lambda x: ant.petrosian_fd(x) if len(x) == window_size else np.nan,
+        raw=True)
+
+
+def tail_index(df: pd.DataFrame, col: str = "close", window_size: int = 250, k_ratio: float = 0.10) -> pd.Series:
+    """
+    Rolling Hill tail‑index (α̂, *without* the +1 bias‑correction).
+
+    *Right‑tail* estimator – **`df[col]` must contain strictly positive values**
+    (e.g. absolute returns, drawdown magnitudes).
+    Any window that includes ≤ 0 is skipped.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Input data frame.
+    col : str, default "close"
+        Column on which to compute α̂(t).
+    window_size : int, default 250
+        Rolling window length *n*.
+    k_ratio : float, default 0.10
+        Fraction of the window regarded as the tail
+        (`k = max(1, int(round(k_ratio * window_size)))`).
+        5 – 15 % is a common compromise between bias and variance.
+
+    Returns
+    -------
+    pd.Series
+        α̂(t) aligned with `df.index`; the first `window_size−1` points are `NaN`.
+
+    """
+    if not 0 < k_ratio < 1:
+        raise ValueError("k_ratio must lie in the interval (0, 1).")
+
+    k = max(1, int(round(k_ratio * window_size)))
+    if k >= window_size:
+        raise ValueError("k_ratio * window_size must be < window_size.")
+
+    if col not in df.columns:
+        raise KeyError(f"Column '{col}' not found in df.")
+
+    ts = df[col].values.astype("float64") + 10e-10
+    out = np.full_like(ts, np.nan)
+
+    for end in range(window_size, len(ts) + 1):
+        w = ts[end - window_size : end]
+
+        # Require strictly positive values for right‑tail estimation
+        if np.any(w <= 0.0):
+            continue
+
+        # k largest observations (O(n))
+        x_tail = np.partition(w, window_size - k)[-k:]
+        xmin = x_tail.min()                         # k‑th order statistic
+        out[end - 1] = k / np.log(x_tail / xmin).sum()
+
+    return pd.Series(out, index=df.index, name=f"hill_{col}")
+
+
+def shapiro_wilk(df: pd.DataFrame, col: str, window_size: int) -> tuple[pd.Series, pd.Series]:
+    """
+    Rolling Shapiro-Wilk test for normality on a time series column.
+
+    This function evaluates the null hypothesis that the data in the specified column
+    comes from a normal distribution. It applies the test over a rolling window
+    of fixed size and returns both the test statistic (W) and the associated p-value
+    at each time step.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        DataFrame containing the time series.
+    col : str
+        Name of the column to test for normality.
+    window_size : int
+        Rolling window size.
+
+    Returns
+    -------
+    stat_series : pd.Series
+        Series of W statistics from the Shapiro-Wilk test.
+    pval_series : pd.Series
+        Series of p-values corresponding to each window.
+    """
+    values = df[col].values
+    stat_results = []
+    pval_results = []
+
+    for i in range(window_size, len(values) + 1):
+        window_data = values[i - window_size:i]
+        if np.any(np.isnan(window_data)):
+            stat_results.append(np.nan)
+            pval_results.append(np.nan)
+        else:
+            w_stat, p_val = shapiro(window_data)
+            stat_results.append(w_stat)
+            pval_results.append(p_val)
+
+    pad = [np.nan] * (window_size - 1)
+    index = df.index
+    return (pd.Series(pad + stat_results, index=index, name=f"{col}_shapiro_stat"),
+        pd.Series(pad + pval_results, index=index, name=f"{col}_shapiro_pval"))
