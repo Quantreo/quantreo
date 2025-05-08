@@ -128,25 +128,25 @@ def _fast_barrier_buy(i: int, open_arr: np.ndarray, high_arr: np.ndarray, low_ar
         var_high = (high_price - open_price) / open_price
         var_low = (low_price - open_price) / open_price
 
-        if (tp < var_high) and (var_low < sl):
-            if high_time_arr[i + j] < low_time_arr[i + j]:
+        if (tp <= var_high) and (var_low <= sl):
+            if high_time_arr[i + j] <= low_time_arr[i + j]:
                 delta = high_time_arr[i + j] - time_arr[i]
                 return delta / 3600
             else:
                 delta = low_time_arr[i + j] - time_arr[i]
                 return -delta / 3600
 
-        elif tp < var_high:
+        elif tp <= var_high:
             delta = high_time_arr[i + j] - time_arr[i]
             return delta / 3600
 
-        elif var_low < sl:
+        elif var_low <= sl:
             delta = low_time_arr[i + j] - time_arr[i]
             return -delta / 3600
 
     return 0.0
 
-
+@njit
 def _fast_barrier_sell(i: int, open_arr: np.ndarray, high_arr: np.ndarray, low_arr: np.ndarray,
                        high_time_arr: np.ndarray, low_time_arr: np.ndarray, time_arr: np.ndarray,
                        tp: float = 0.015, sl: float = -0.015) -> float:
@@ -163,19 +163,19 @@ def _fast_barrier_sell(i: int, open_arr: np.ndarray, high_arr: np.ndarray, low_a
         var_high = (high_price - open_price) / open_price
         var_low = (low_price - open_price) / open_price
 
-        if (tp < -var_low) and (-var_high < sl):
-            if low_time_arr[i + j] < high_time_arr[i + j]:
+        if (tp <= -var_low) and (-var_high <= sl):
+            if low_time_arr[i + j] <= high_time_arr[i + j]:
                 delta = low_time_arr[i + j] - time_arr[i]
                 return delta / 3600
             else:
                 delta = high_time_arr[i + j] - time_arr[i]
                 return -delta / 3600
 
-        elif tp < -var_low:
+        elif tp <= -var_low:
             delta = low_time_arr[i + j] - time_arr[i]
             return delta / 3600
 
-        elif -var_high < sl:
+        elif -var_high <= sl:
             delta = high_time_arr[i + j] - time_arr[i]
             return -delta / 3600
 

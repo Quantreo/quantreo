@@ -147,3 +147,48 @@ pd.Series
 ```
 
 📢 "For a practical example, check out the [educational notebook](/../tutorials/features-engineering-candle/#price-distribution)."
+
+---
+## **Internal Bar Strength**
+
+The `internal_bar_strength` function computes the **relative position of the closing price within the bar's range**, making it a useful feature for detecting short-term **overbought or oversold conditions**.
+
+IBS is especially relevant in **mean-reversion strategies** or when identifying **compression zones** within a bar.
+
+The formula used is:
+
+\[
+\text{IBS} = \frac{\text{Close} - \text{Low}}{\text{High} - \text{Low}}
+\]
+
+- IBS close to **1** → the price closed near the **high** of the day  
+- IBS close to **0** → the price closed near the **low** of the day  
+- IBS around **0.5** → the price closed in the **middle of the range**
+
+---
+
+```python title="How to call internal_bar_strength"
+fe.candle.internal_bar_strength(df: pd.DataFrame, high_col: str = 'high', low_col: str = 'low', close_col: str = 'close')
+```
+
+``` python title="internal_bar_strength docstring"
+"""
+Compute the Internal Bar Strength (IBS) indicator.
+
+The IBS is defined as:
+    IBS = (Close - Low) / (High - Low)
+
+It measures where the closing price is located within the day's range,
+and is commonly used to detect short-term overbought or oversold conditions.
+
+Args:
+    df (pd.DataFrame): DataFrame containing OHLC data.
+    high_col (str): Name of the column representing the high price.
+    low_col (str): Name of the column representing the low price.
+    close_col (str): Name of the column representing the closing price.
+
+Returns:
+    pd.Series: A Series with the IBS values, indexed like the input DataFrame.
+"""
+```
+📢 "For a practical example, check out the [educational notebook](/../tutorials/features-engineering-candle/#internal-bar-strength)."
