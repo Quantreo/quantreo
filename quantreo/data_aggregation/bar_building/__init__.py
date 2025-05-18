@@ -20,15 +20,30 @@ def _build_time_bars(prices, volumes, timestamps_ns, window_ns):
     bar_start_idx = np.full(n_bins, -1, dtype=np.int64)
     bar_end_idx = np.full(n_bins, -1, dtype=np.int64)
 
+    high_time = np.zeros(n_bins, dtype=np.int64)
+    low_time = np.zeros(n_bins, dtype=np.int64)
+
     for i in range(len(timestamps_ns)):
-        bin_idx = (timestamps_ns[i] - start_ts) // window_ns
+        ts = timestamps_ns[i]
+        price = prices[i]
+        volume = volumes[i]
+        bin_idx = (ts - start_ts) // window_ns
+
         if bar_count[bin_idx] == 0:
-            bar_open[bin_idx] = prices[i]
+            bar_open[bin_idx] = price
             bar_start_idx[bin_idx] = i
-        bar_high[bin_idx] = max(bar_high[bin_idx], prices[i])
-        bar_low[bin_idx] = min(bar_low[bin_idx], prices[i])
-        bar_close[bin_idx] = prices[i]
-        bar_volume[bin_idx] += volumes[i]
+            high_time[bin_idx] = ts
+            low_time[bin_idx] = ts
+
+        if price > bar_high[bin_idx]:
+            bar_high[bin_idx] = price
+            high_time[bin_idx] = ts
+        if price < bar_low[bin_idx]:
+            bar_low[bin_idx] = price
+            low_time[bin_idx] = ts
+
+        bar_close[bin_idx] = price
+        bar_volume[bin_idx] += volume
         bar_count[bin_idx] += 1
         bar_end_idx[bin_idx] = i + 1
 
@@ -42,10 +57,12 @@ def _build_time_bars(prices, volumes, timestamps_ns, window_ns):
         bar_volume[valid],
         bar_count[valid],
         bar_start_idx[valid],
-        bar_end_idx[valid]
+        bar_end_idx[valid],
+        high_time[valid],
+        low_time[valid]
     )
 
-def ticks_to_time_bars(df: pd.DataFrame, col_price: str = "price", col_volume: str = "volume",resample_factor: str = "60min",
+def ticks_to_time_bars(df: pd.DataFrame, resample_factor: str = "60min", col_price: str = "price", col_volume: str = "volume",
     additional_metrics: List[Tuple[Callable, str, List[str]]] = []) -> pd.DataFrame:
     """
     Convert tick-level data into fixed time bars using Numba, with optional additional metrics.
@@ -77,7 +94,7 @@ def ticks_to_time_bars(df: pd.DataFrame, col_price: str = "price", col_volume: s
     window_ns = pd.to_timedelta(resample_factor).value
 
     # Call numba-accelerated function
-    times, opens, highs, lows, closes, vols, counts, start_idxs, end_idxs = _build_time_bars(
+    times, opens, highs, lows, closes, vols, counts, start_idxs, end_idxs, high_times, low_times = _build_time_bars(
         prices, volumes, timestamps_ns, window_ns)
 
     # Base output dictionary
@@ -87,7 +104,9 @@ def ticks_to_time_bars(df: pd.DataFrame, col_price: str = "price", col_volume: s
         "low": lows,
         "close": closes,
         "volume": vols,
-        "number_ticks": counts
+        "number_ticks": counts,
+        "high_time": pd.to_datetime(high_times),
+        "low_time": pd.to_datetime(low_times),
     }
 
     # Compute additional metrics
@@ -647,6 +666,8 @@ def _build_tick_run_bars(prices, volumes, timestamps_ns, expected_run):
 def ticks_to_tick_run_bars(df: pd.DataFrame, expected_run: int = 50, col_price: str = "price", col_volume: str = "volume",
     additional_metrics: List[Tuple[Callable[[np.ndarray], float], str, List[str]]] = []) -> pd.DataFrame:
     """
+    BETA --> WILL BE MODIFIED IN THE NEXT VERSION OF QUANTREO
+
     Convert tick-level data into Tick Run Bars (TRBs) based on the dominance of buy or sell activity,
     with support for additional custom metrics.
 
@@ -780,6 +801,8 @@ def ticks_to_volume_run_bars(df: pd.DataFrame, expected_volume_run: float = 1_00
     col_volume: str = "volume", additional_metrics: List[Tuple[Callable[[np.ndarray], float], str, List[str]]] = []
 ) -> pd.DataFrame:
     """
+    BETA --> WILL BE MODIFIED IN THE NEXT VERSION OF QUANTREO
+
     Convert tick-level data into volume run bars with optional custom metrics.
 
     Parameters

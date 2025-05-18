@@ -49,3 +49,25 @@ def load_generated_ohlcv_with_time() -> pd.DataFrame:
     })
 
     return df
+
+
+def load_generated_ticks() -> pd.DataFrame:
+    """
+    Load the generated tick-level dataset with price and volume.
+
+    Returns
+    -------
+    df : pandas.DataFrame
+        DataFrame with the following columns:
+        ['price', 'volume']
+        and a DatetimeIndex named 'datetime'.
+    """
+    with importlib.resources.open_text('quantreo.datasets', 'generated_ticks.csv') as f:
+        df = pd.read_csv(f, index_col='datetime', parse_dates=['datetime'])
+
+    df = df.astype({
+        'price': 'float64',
+        'volume': 'int64'
+    })
+
+    return df
