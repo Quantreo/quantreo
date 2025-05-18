@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from numba import njit
-
+from typing import Tuple
 
 def sma(df: pd.DataFrame, col: str, window_size: int = 30) -> pd.Series:
     """
@@ -145,6 +145,59 @@ def _get_linear_regression_slope(series: np.ndarray) -> float:
 
     return numerator / denominator
 
+@njit
+def _get_linear_regression_slope_and_r2(series: np.ndarray) -> Tuple[float, float]:
+    """
+    Compute the slope of a linear regression and the R^2 of this locally fit line using a
+    fast implementation with Numba.
+
+    This function calculates the slope of the best-fit line through a 1D array of values
+    using the least squares method. It is optimized for performance using the @njit decorator from Numba.
+    The R^2 is then computed to quantify the goodness of a linear fit. Useful for tuning the window size,
+    and detectiong regions of local non-linearity.
+
+    Parameters
+    ----------
+    series : np.ndarray
+        A one-dimensional NumPy array representing the input time series values.
+
+    Returns
+    -------
+    float
+        The slope of the linear regression line fitted to the input series.
+
+    Notes
+    -----
+    This function is mainly used internally for rolling or local trend estimation.
+    It is not intended to be called directly with a full DataFrame. Use it within a windowed operation.
+    """
+
+    n = len(series)
+    x = np.arange(n)
+    y = series
+
+    sum_x = np.sum(x)
+    sum_y = np.sum(y)
+    sum_xy = np.sum(x * y)
+    sum_x2 = np.sum(x * x)
+
+
+    numerator = n * sum_xy - sum_x * sum_y
+    denominator = n * sum_x2 - sum_x ** 2
+
+    slope = numerator / denominator
+
+    intercept = (sum_y - slope * sum_x) / n
+
+    y_pred = intercept + slope * x
+
+    # R^2 = SSR/SST, that is the sum squared residual over the total sum of squares.
+    SST = np.sum((y-np.mean(y))**2)
+    SSR = np.sum((y-y_pred)**2)
+    R2 = 1 - SSR/SST
+
+    return slope, R2
+
 
 def linear_slope(df: pd.DataFrame, col: str, window_size: int = 60) -> pd.Series:
     """
@@ -177,3 +230,57 @@ def linear_slope(df: pd.DataFrame, col: str, window_size: int = 60) -> pd.Series
     lin_slope = df[col].rolling(window_size).apply(_get_linear_regression_slope, raw=True)
     lin_slope.name = f"linear_slope_{window_size}"
     return lin_slope
+
+
+def linear_slope_and_r2(df: pd.DataFrame, col: str, window_size: int = 60) -> pd.DataFrame:
+    """
+    Compute the slope and R^2 of a linear regression line over a rolling window.
+
+    This function applies a linear regression on a rolling window of a selected column,
+    returning the slope and R^2 of the fitted line at each time step. It uses a fast internal implementation
+    (`_get_linear_regression_slope_and_r2`) for efficient computation.
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        Input DataFrame containing the time series data.
+    col : str
+        Name of the column on which to compute the slope.
+    window_size : int, optional
+        Size of the rolling window used to fit the linear regression (default is 60).
+
+    Returns
+    -------
+    df_trend_r2 : pandas.DataFrame
+        A DataFrame containing the slope and R^2 of the regression line at each time step.
+        The first (windows_size - 1) values will be NaN due to insufficient data for the initial windows.
+        Index matches that of the input DataFrame, such that the columns can be directly joined.
+
+    Notes
+    -----
+    The slope indicator is useful to assess short- or medium-term price trends.
+    A positive slope indicates an upward trend, while a negative slope reflects a downward trend.
+    The R^2 indicator helps to quantify how good of a fit one has in the local region. This can be used as 
+    a sort of confidence metric for the trend, or to detect regions of local non-linearity.
+    """
+    df_trend_r2 = pd.DataFrame(index=df.index)
+    
+    # Create a numpy array from the values for better performance
+    values = df[col].values
+    n = len(values)
+    slopes = np.full(n, np.nan)
+    r2s = np.full(n, np.nan)
+    
+    # Calculate for each window manually, since apply + Numba will not play well 
+    # with a multi column return from .apply().
+    for i in range(window_size - 1, n):
+        window = values[i - window_size + 1:i + 1]
+        slope, r2 = _get_linear_regression_slope_and_r2(window)
+        slopes[i] = slope
+        r2s[i] = r2
+    
+    # Create the DataFrame columns
+    df_trend_r2[f"linear_slope_{window_size}"] = slopes
+    df_trend_r2[f"linear_r2_{window_size}"] = r2s
+    
+    return df_trend_r2
