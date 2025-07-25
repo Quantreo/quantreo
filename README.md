@@ -2,7 +2,7 @@
 
 Quantreo is a Python library to streamline feature engineering, target engineering, and soon much more, for quantitative trading strategies. Built for traders and quants, Quantreo helps you create high-value signals and targets for your machine learning models.
 
-- 🔗 **Documentation**: [https://www.quantreo.com/docs](https://www.quantreo.com/docs)
+- 🔗 **Documentation**: [https://docs.quantreo.com](https://docs.quantreo.com)
 - 💻 **Repository**: [https://github.com/Quantreo/quantreo](https://github.com/Quantreo/quantreo)
 
 ## Install Quantreo

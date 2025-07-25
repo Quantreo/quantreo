@@ -68,6 +68,8 @@ The function will sequentially split ticks into equal-sized chunks and compute *
 
 It is also possible to add **custom metrics** to each bar using the `additional_metrics` parameter — see the [dedicated tutorial](/../data-aggregation/bar-metrics/#custom-metrics) for a detailed walkthrough.
 
+This type of bars comes from the book "Advances in Financial Machine Learning" (Marco Lopez de Prado)
+
 ```python title="How to call the ticks_to_tick_bars function"
 def ticks_to_tick_bars(df: pd.DataFrame, tick_per_bar: int = 1000, col_price: str = "price", col_volume: str = "volume",
     additional_metrics: List[Tuple[Callable, str, List[str]]] = []) -> pd.DataFrame:
@@ -109,6 +111,8 @@ The `ticks_to_volume_bars` function aggregates raw tick data into bars based on 
 The function sequentially accumulates volume and computes **OHLCV**, tick count, duration, and extrema timestamps for each volume bar.
 
 It is also possible to add **custom metrics** to each bar using the `additional_metrics` parameter — see the [dedicated tutorial](/../data-aggregation/bar-metrics/#custom-metrics) for a detailed walkthrough.
+
+This type of bars comes from the book "Advances in Financial Machine Learning" (Marco Lopez de Prado)
 
 ```python title="How to call the ticks_to_volume_bars function"
 def ticks_to_volume_bars(df: pd.DataFrame, volume_per_bar: float = 1_000_000, col_price: str = "price",
@@ -171,6 +175,8 @@ Each incoming tick contributes to a running total based on its **signed directio
 \]
 
 A new bar is created **when the absolute value of the cumulative signed imbalance** exceeds the `expected_imbalance` threshold.
+
+This type of bars comes from the book "Advances in Financial Machine Learning" (Marco Lopez de Prado)
 
 
 ```python title="How to call the ticks_to_tick_imbalance_bars function"
@@ -235,6 +241,8 @@ The volume imbalance is computed as:
 
 Where \( V_t \) is the tick volume at time \( t \).  
 A new bar is created when the **cumulative sum** of signed volume exceeds `expected_imbalance`.
+
+This type of bars comes from the book "Advances in Financial Machine Learning" (Marco Lopez de Prado)
 
 
 ```python title="How to call the ticks_to_volume_imbalance_bars function"
