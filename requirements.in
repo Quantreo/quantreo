@@ -1,0 +1,6 @@
+numpy
+pandas
+numba
+scipy
+tqdm
+antropy>=0.1.9

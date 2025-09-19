@@ -53,34 +53,40 @@ print(df)
 ---
 ## Features Available
 
-| **Category**       | **Function Name**            | **Quick Explanation**                                                                  |
-|--------------------|------------------------------|----------------------------------------------------------------------------------------|
-| Candle Information | `candle_information`         | Returns the candle’s color, its fill state, and its range.                             |
-| Candle Information | `compute_spread`             | Computes the difference between the high and the low (spread).                         |
-| Candle Information | `price_distribution`         | Percentage of closes falling between two dynamic bounds within a rolling window.       |
-| Candle Information | `internal_bar_strength`      | Normalized position of the close price within the candle's high-low range.             |
-| Market Regime      | `kama_market_regime`         | Detects market phases (bull / bear) using two KAMA curves.                             |
-| Math               | `derivatives`                | Computes speed (1st derivative) and acceleration (2nd derivative).                     |
-| Math               | `log_pct`                    | Logarithmic return over a rolling window.                                              |
-| Math               | `auto_corr`                  | Rolling autocorrelation on a given column.                                             |
-| Math               | `hurst`                      | Computes the Hurst exponent over a rolling window.                                     |
-| Math               | `skewness`                   | Rolling skewness: detects asymmetry.                                                   |
-| Math               | `kurtosis`                   | Rolling kurtosis: detects tail heaviness.                                              |
-| Math               | `adf_test`                   | Rolling Augmented Dickey-Fuller test to detect unit roots (non-stationarity).          |
-| Math               | `arch_test`                  | Rolling Engle ARCH test to detect conditional heteroskedasticity (vol clustering).     |
-| Math               | `sample_entropy`             | Measures local signal unpredictability; higher = more irregular behavior.              |
-| Math               | `spectral_entropy`           | Frequency-domain entropy; higher = flatter spectrum, more randomness.                  |
-| Math               | `permutation_entropy`        | Entropy based on ordinal patterns in data; robust to noise and nonlinearity.           |
-| Math               | `detrended_fluctuation`      | Detects fractal memory and persistence in time series via DFA exponent.                |
-| Math               | `petrosian_fd`               | Estimates structural complexity using directional changes in the signal.               |
-| Math               | `tail_index`                 | Estimates the tail index (α̂) to characterize the heaviness of distribution tails.     |
-| Math               | `shapiro_wilk`               | Rolling Shapiro-Wilk test for local normality detection.                               |
-| Transformation     | `fisher_transform`           | Transforms normalized price data into a Gaussian-like signal for detecting extremes.   |
-| Transformation     | `savgol_filter`              | Causal smoothing filter preserving local structure using polynomial regression.        |
-| Trend              | `sma`                        | Simple moving average.                                                                 |
-| Trend              | `kama`                       | Kaufman Adaptive Moving Average (noise-adaptive).                                      |
-| Trend              | `linear_slope`               | Slope of a linear regression over a rolling window.                                    |
-| Volatility         | `close_to_close_volatility`  | Volatility based on the standard deviation of log returns.                             |
-| Volatility         | `parkinson_volatility`       | Volatility based on high/low prices only.                                              |
-| Volatility         | `rogers_satchell_volatility` | Volatility that accounts for drift and intraday prices.                                |
-| Volatility         | `yang_zhang_volatility`      | Gap-robust volatility combining multiple measures.                                     |
+| **Category**       | **Function Name**            | **Quick Explanation**                                                                |
+|--------------------|------------------------------|--------------------------------------------------------------------------------------|
+| Candle Information | `candle_information`         | Returns the candle’s color, its fill state, and its range.                           |
+| Candle Information | `compute_spread`             | Computes the difference between the high and the low (spread).                       |
+| Candle Information | `price_distribution`         | Percentage of closes falling between two dynamic bounds within a rolling window.     |
+| Candle Information | `internal_bar_strength`      | Normalized position of the close price within the candle's high-low range.           |
+| Market Regime      | `kama_market_regime`         | Detects market phases (bull / bear) using two KAMA curves.                           |
+| Math               | `derivatives`                | Computes speed (1st derivative) and acceleration (2nd derivative).                   |
+| Math               | `log_pct`                    | Logarithmic return over a rolling window.                                            |
+| Math               | `auto_corr`                  | Rolling autocorrelation on a given column.                                           |
+| Math               | `hurst`                      | Computes the Hurst exponent over a rolling window.                                   |
+| Math               | `skewness`                   | Rolling skewness: detects asymmetry.                                                 |
+| Math               | `kurtosis`                   | Rolling kurtosis: detects tail heaviness.                                            |
+| Math               | `bimodality_coefficient`     | Detects unimodal vs. bimodal/multimodal regimes using skewness and kurtosis.         |
+| Math               | `adf_test`                   | Rolling Augmented Dickey-Fuller test to detect unit roots (non-stationarity).        |
+| Math               | `arch_test`                  | Rolling Engle ARCH test to detect conditional heteroskedasticity (vol clustering).   |
+| Math               | `sample_entropy`             | Measures local signal unpredictability; higher = more irregular behavior.            |
+| Math               | `spectral_entropy`           | Frequency-domain entropy; higher = flatter spectrum, more randomness.                |
+| Math               | `permutation_entropy`        | Entropy based on ordinal patterns in data; robust to noise and nonlinearity.         |
+| Math               | `detrended_fluctuation`      | Detects fractal memory and persistence in time series via DFA exponent.              |
+| Math               | `petrosian_fd`               | Estimates structural complexity using directional changes in the signal.             |
+| Math               | `tail_index`                 | Estimates the tail index (α̂) to characterize the heaviness of distribution tails.   |
+| Math               | `shapiro_wilk`               | Rolling Shapiro-Wilk test for local normality detection.                             |
+| Transformation     | `fisher_transform`           | Transforms normalized price data into a Gaussian-like signal for detecting extremes. |
+| Transformation     | `savgol_filter`              | Causal smoothing filter preserving local structure using polynomial regression.      |
+| Transformation     | `mma`                        | Median moving average, ideal to smooth a curve                                       |
+| Transformation     | `fourier_reconstructor`      | Rolling Fourier transform for cycle extraction or noise reduction.                   |
+| Transformation     | `wavelet_reconstructor`      | Rolling Wavelet transform for low/high-frequency signal reconstruction.              |
+| Transformation     | `logit_transform`            | Applies the logit transformation to features bounded in (0, 1).                      |
+| Transformation     | `neg_log_transform`          | Applies the negative logarithm to values in (0, 1], highlighting small values.       |
+| Trend              | `sma`                        | Simple moving average.                                                               |
+| Trend              | `kama`                       | Kaufman Adaptive Moving Average (noise-adaptive).                                    |
+| Trend              | `linear_slope`               | Slope of a linear regression over a rolling window.                                  |
+| Volatility         | `close_to_close_volatility`  | Volatility based on the standard deviation of log returns.                           |
+| Volatility         | `parkinson_volatility`       | Volatility based on high/low prices only.                                            |
+| Volatility         | `rogers_satchell_volatility` | Volatility that accounts for drift and intraday prices.                              |
+| Volatility         | `yang_zhang_volatility`      | Gap-robust volatility combining multiple measures.                                   |

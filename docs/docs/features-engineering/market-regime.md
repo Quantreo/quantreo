@@ -28,7 +28,6 @@ The **fast KAMA** reacts more quickly to price changes due to its shorter parame
     The choice of `l1`, `l2`, and `l3` parameters for each KAMA influences both **trend reactivity** and **noise filtering**. 
     For trend-following strategies, using `l1_fast = 50` and `l1_slow = 200` is common, but you can adjust them depending on your timeframe.
 
----
 
 ```python title="How to call the kama_market_regime function"
 fe.market_regime.kama_market_regime(df: pd.DataFrame, col: str, 

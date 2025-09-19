@@ -382,6 +382,82 @@ pd.Series
 📢 *For a practical example, check out this [educational notebook](/../tutorials/features-engineering-math/#kurtosis).*
 
 
+## **Bimodality Coefficient**
+
+The `bimodality_coefficient` function computes the **Bimodality Coefficient (BC)**, a statistical measure used to detect whether a distribution is **unimodal** (single regime) or **bimodal/multimodal** (multiple regimes).  
+
+It combines **skewness ($γ$)** and **kurtosis ($κ$)** into a single rolling indicator.  
+A BC greater than **0.55** typically indicates the presence of bimodality or regime-switching behavior.
+
+The formula is:
+
+$$
+BC = \frac{γ^2 + 1}{κ + \frac{3(n-1)^2}{(n-2)(n-3)}}
+$$
+
+- $γ$ = skewness  
+- $κ$ = excess kurtosis (normal distribution = 0)
+- $n$ = rolling window size  
+
+<br>
+
+**Typical use-cases** 
+
+- Detecting **market regime shifts** (calm vs volatile regimes).  
+- Identifying **mixture distributions** in returns or volatility.  
+- Pre-filtering signals for **regime-dependent strategies**.  
+
+
+!!! tip "Interpretation"
+    - **BC < 0.55** → distribution is likely **unimodal** (stable regime).  
+    - **BC > 0.55** → distribution is likely **bimodal/multimodal** (two or more regimes coexisting).  
+
+
+
+```python title="How to call bimodality_coefficient"
+fe.features.statistics.bimodality_coefficient(df: pd.DataFrame, col: str, window_size: int = 100)
+```
+
+``` title="bimodality_coefficient function docstring"
+"""
+Compute the rolling Bimodality Coefficient (BC).
+
+The BC quantifies whether a distribution is unimodal (single regime)
+or bimodal/multimodal (multi-regime). A BC > 0.55 typically indicates
+bimodality or regime-switching behavior.
+
+Formula:
+    BC = (γ^2 + 1) / (κ + 3*(n-1)^2 / ((n-2)*(n-3)))
+
+where
+    γ = skewness
+    κ = excess kurtosis (normal=0 with Pandas .kurt())
+    n = rolling window size
+
+Parameters
+----------
+df : pd.DataFrame
+    DataFrame containing the input column.
+col : str
+    Column name to compute BC on (e.g. returns, volatility).
+window_size : int, default=100
+    Rolling window size (must be >= 50).
+
+Returns
+-------
+pd.Series
+    Series of rolling Bimodality Coefficient values, aligned with `df.index`.
+
+Notes
+-----
+- BC > 0.55 suggests bimodality or multimodality.
+- Default of 100 provides robust estimation for daily or intraday data.
+- NaNs are returned for the first (window_size - 1) values.
+"""
+```
+📢 *For a practical example, check out this [educational notebook](/../tutorials/features-engineering-math/#bimodality-coefficient).*
+
+
 ---
 ## Sample Entropy
 
