@@ -3,4 +3,5 @@ pandas
 numba
 scipy
 tqdm
+PyWavelets
 antropy>=0.1.9
