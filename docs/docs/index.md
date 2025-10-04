@@ -1,77 +1,136 @@
-# **Quantreo**
+# **Welcome to Quantreo**
+**A faster way to build quantitative features, targets, and alternative bars in Python. Powered by Numba.**
 
-
-The **Quantreo Python library** is designed to simplify the workflow of **quantitative traders** by offering powerful tools for **feature engineering, target engineering, feature selection, and much more**.  
-
-Currently, our focus is on **feature engineering and target engineering**, providing efficient solutions to process and transform financial data. We are actively working on expanding the library to cover **feature selection, model evaluation, and other essential aspects of quantitative trading**. Stay tuned for updates! 
+[![PyPI](https://img.shields.io/pypi/v/quantreo.svg)](https://pypi.org/project/quantreo/)
+![Python versions](https://img.shields.io/pypi/pyversions/quantreo.svg)
+[![Downloads](https://static.pepy.tech/personalized-badge/quantreo?period=total&units=international_system&left_color=grey&right_color=blue&left_text=downloads)](https://pepy.tech/project/quantreo)
+[![Documentation Status](https://img.shields.io/badge/docs-online-blue.svg)](https://docs.quantreo.com)
+[![License](https://img.shields.io/github/license/Quantreo/quantreo.svg)](https://github.com/Quantreo/quantreo/blob/main/LICENSE.txt)
+![Last Commit](https://img.shields.io/github/last-commit/Quantreo/quantreo)
 
 <br>
 
-<div class="grid cards" style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: center;">
+Quantreo provides a high-performance research framework for building features, targets, and alternative bars in Python.
+Its goal is to help quantitative researchers transform raw market data into machine-learning-ready datasets quickly, efficiently, and without data leakage.
+
+Each module is built around the principles of clarity, reproducibility, and performance, using Numba for just-in-time optimization.
+Whether your goal is alpha research, backtesting, or production-ready model development, Quantreo offers a consistent and modular workflow.
+<br>
 
 
-<div class="custom-card" style="flex: 1 1 calc(50% - 16px); min-width: 300px;">
-    <b>
-        <a href="/tutorials/Quantreo-for-beginners/" style="text-decoration: none;">
-            🏃 Getting Started
-        </a>
-    </b> – New to Quantreo? Check our beginner tutorials to learn how to create your first quant trading code. Let's get started!
-</div>
+
+<p align="center" style="margin-top: 24px;">
+
+<a class="md-button"
+   style="color: white; border: 1px solid #607CF6; background: transparent; border-radius: 8px; padding: 15px 30px; transition: 0.2s;"
+   onmouseover="this.style.background='#607CF6';"
+   onmouseout="this.style.background='transparent';"
+   href="/tutorials/Quantreo-for-beginners/">
+  💡 Get Started
+</a>
 
 
-<div class="custom-card" style="flex: 1 1 calc(50% - 16px); min-width: 300px;">
-    <b>
-        <a href="/tutorials/features-engineering-candle/" style="text-decoration: none;">
-            💻 Tutorials
-        </a>
-    </b> – Enhance your trading skills with our in-depth tutorials. Learn step by step how to build, test, and optimize your quant trading strategies!
-</div>
+<a class="md-button"
+   style="color: white; border: 1px solid #607CF6; background: transparent; border-radius: 8px; padding: 15px 30px; transition: 0.2s;"
+   onmouseover="this.style.background='#607CF6';"
+   onmouseout="this.style.background='transparent';"
+   href="/data-aggregation/Get-Started/">
+  📘 Documentation
+</a>
 
+<a class="md-button"
+   style="color: white; border: 1px solid #607CF6; background: transparent; border-radius: 8px; padding: 15px 30px; transition: 0.2s;"
+   onmouseover="this.style.background='#607CF6';"
+   onmouseout="this.style.background='transparent';"
+   href="https://github.com/Quantreo/quantreo">
+  ⚙️ GitHub
+</a>
+</p>
 
-<div class="custom-card" style="flex: 1 1 calc(50% - 16px); min-width: 300px;">
-    <b>
-        <a href="/features-engineering/Get-Started/" style="text-decoration: none;">
-            📊 Features Engineering
-        </a>
-    </b> – Discover how to extract meaningful insights from raw market data. Master feature engineering techniques to improve your trading models!
-</div>
-
-
-<div class="custom-card" style="flex: 1 1 calc(50% - 16px); min-width: 300px;">
-    <b>
-        <a href="/target-engineering/Get-started/" style="text-decoration: none;">
-            🎯 Target Engineering
-        </a>
-    </b> – Learn how to define the right target variable for your trading models. Improve prediction accuracy with advanced target engineering techniques!
-</div>
-
-
-</div>
 
 ---
 
-## 📦 **Installation**
+## Main Packages
+
+Quantreo is built for quantitative research, Numba-optimized, leakage-safe, and fully compatible with pandas and scikit-learn,
+ensuring fast and reproducible data transformations across all modules.
+
+| Package                                                      | Purpose | Example Capabilities |
+|:-------------------------------------------------------------|:---------|:--------------------|
+| [`Data Aggregation`](/data-aggregation/Get-Started/)         | Transform raw tick data into structured OHLCV bars | Time bars, tick bars, volume bars, run bars |
+| [`Features Engineering`](/features-engineering/Get-Started/) | Extract predictive information from price and volume | Volatility, entropy, trend, statistical structure |
+| [`Target Engineering`](/target-engineering/Get-Started/)      | Build machine-learning targets without data leakage | Triple-barrier, meta-labeling, event-based labeling |
+
+Each module can be used independently or combined into a complete research pipeline, from raw data to model-ready datasets.
+
+
+---
+## Installation
+
+Quantreo is available on [PyPI](https://pypi.org/project/quantreo/) and can be installed with `pip`:
 
 ```bash
 pip install quantreo
 ```
 
----
+To verify your installation:
 
-## **About Quantreo**  
-[Quantreo](https://quantreo.com) is a leading platform dedicated to automated trading education. Our mission is to provide traders with **real-life projects** and **hands-on experience** to develop robust trading algorithms. With **7-day-a-week support**, we ensure that every trader, from beginner to expert, gets the guidance needed to succeed in the world of algorithmic trading.  
-
----
-
-## **Why Use This Library?**  
-
-- **Easy to Use**: Designed for simplicity and efficiency.  
-- **Optimized for Performance**: Leveraging **vectorized computations** and **Numba acceleration** for fast data processing.  
-- **Compatible with Machine Learning Algorithms**: Seamless integration with **scikit-learn, TensorFlow, and other ML frameworks** for advanced quantitative trading strategies.  
+```python
+import quantreo
+print(quantreo.__version__)
+```
 
 ---
+## Quick Start
+Compute a ready-to-use volatility feature in just two lines.
 
-## **Contact me**
-You have any questions? Feel free to contact me to lucas@quantreo.com
+```python
+import quantreo.features_engineering as fe
 
-<br>
+df["parkinson_vol"] = fe.volatility.parkinson_volatility(df=df, high_col="high",
+                                                         low_col="low", window_size=30)
+```
+Then, you can easily visualize your computed feature to check its behavior over time:
+
+![Parkinson Volatility Feature example](assets/figures/quick_start_example_dark_mode.png)
+
+---
+## Real-Life Applications
+
+Quantreo is not just a feature library, it’s designed for real research workflows. Explore practical examples demonstrating how to apply Quantreo in end-to-end trading research pipelines.
+
+Each notebook showcases real-world use cases of Quantreo, from feature design to model-ready data generation.
+
+| Example                                                                                               | Description |
+|:------------------------------------------------------------------------------------------------------|:-------------|
+| [**Meta-Labelling Explained**](/applications/Meta-Labelling-Explained/)                               | Learn how to apply meta-labelling to improve signal precision and reduce false positives in trading strategies. |
+| [**Multi-Asset Feature Engineering in Financial ML**](/applications/Multi-Asset-Feature-Engineering/) | Discover how to build and standardize multi-asset features for cross-asset modeling and synthetic dataset generation. |
+| [**Dimensionality Reduction in Trading**](/applications/Dimensionality-Reduction-in-Trading/)         | Use Kernel PCA to create synthetic volatility features and reduce feature space complexity in ML models. |
+
+
+---
+
+## Troubleshooting & Support
+
+If you encounter any issue with installation or usage, please don’t hesitate to reach out.
+
+You can:
+
+- **Contact the maintainer:** [lucas@quantreo.com](mailto:lucas@quantreo.com)  
+- **Open an issue:** [GitHub Issues](https://github.com/Quantreo/quantreo/issues)
+
+All feedback and bug reports are welcome, they help improve Quantreo’s performance, reliability, and usability for the quantitative research community.
+
+
+=== "Latest"
+
+    ```bash
+    pip install mkdocs-material
+    ```
+
+=== "9.x"
+
+    ```bash
+    pip install mkdocs-material==9.*
+    ```
+

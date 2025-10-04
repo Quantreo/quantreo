@@ -1,3 +1,4 @@
+/*
 document.addEventListener("DOMContentLoaded", function() {
     let sidebarInner = document.querySelector(".md-sidebar__inner");
     if (sidebarInner) {
@@ -21,3 +22,4 @@ document.addEventListener("DOMContentLoaded", function() {
         document.head.appendChild(style);
     }
 });
+*/

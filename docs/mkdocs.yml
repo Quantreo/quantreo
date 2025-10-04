@@ -5,38 +5,78 @@ use_directory_urls: true
 theme:
   name: material
   custom_dir: overrides
-  logo: assets/figures/quantreo_icon.png
+  logo: assets/figures/quantreo_logo.png
   favicon: assets/figures/quantreo_icon.png
   features:
     - navigation.tabs
-    - navigation.sections
-    - navigation.indexes
-    - toc.integrate
     - navigation.top
+    - toc.integrate
     - search.suggest
     - search.highlight
-    - content.tabs.link
-    - content.code.annotation
+    #- content.tabs.link
+    - content.tabs
     - content.code.copy
+    - content.code.annotation
+    - content.icon
     - navigation.footer
+
 
 
 
   language: en
   palette:
     - scheme: slate
-      toggle:
-        icon: material/toggle-switch
-        name: Switch to light mode
-      primary: black
-      accent: lime
 
-    - scheme: default
-      toggle:
-        icon: material/toggle-switch-off-outline
-        name: Switch to dark mode
-      primary: black
-      accent: teal
+nav:
+  - Home: index.md
+
+  - Documentation:
+      - Data Aggregation:
+          - Get Started: data-aggregation/Get-Started.md
+          - Bar Building: data-aggregation/bar-building.md
+          - Bar Metrics: data-aggregation/bar-metrics.md
+
+      - Features Engineering:
+          - Get Started: features-engineering/Get-Started.md
+          - Candle Features: features-engineering/candle.md
+          - Market Regime: features-engineering/market-regime.md
+          - Math Functions: features-engineering/math.md
+          - Transformations: features-engineering/transformation.md
+          - Trend Features: features-engineering/trend.md
+          - Volatility Estimators: features-engineering/volatility.md
+
+      - Target Engineering:
+          - Get Started: target-engineering/Get-started.md
+          - Directional Targets: target-engineering/directional.md
+          - Event-Based Targets: target-engineering/event-based.md
+          - Magnitude Targets: target-engineering/magnitude.md
+
+  - Tutorials:
+      - Get Started:
+        - Quantreo for Beginners: tutorials/Quantreo-for-beginners.md
+      - Data Aggregation Tutorials:
+          - Bar Building: tutorials/data-aggregation-bar-building.ipynb
+          - Bar Metrics: tutorials/data-aggregation-bar-metrics.ipynb
+      - Features Engineering Tutorials:
+          - Candle Features: tutorials/features-engineering-candle.ipynb
+          - Market Regime: tutorials/features-engineering-market-regime.ipynb
+          - Math Functions: tutorials/features-engineering-math.ipynb
+          - Transformations: tutorials/features-engineering-transformation.ipynb
+          - Trend Features: tutorials/features-engineering-trend.ipynb
+          - Volatility Estimators: tutorials/features-engineering-volatility.ipynb
+      - Target Engineering Tutorials:
+          - Directional Targets: tutorials/target-engineering-directional.ipynb
+          - Event-Based Targets: tutorials/target-engineering-event-based.ipynb
+          - Magnitude Targets: tutorials/target-engineering-magnitude.ipynb
+
+  - Applications:
+      - Meta-Labeling: tutorials/tutorial-meta-labeling.ipynb
+      - Multi-Asset Feature Engineering: tutorials/tutorial-multi-asset-feature-engineering-in-financial-ml.ipynb
+      - PCA in Trading: tutorials/tutorial-pca-in-trading.ipynb
+
+  - GitHub: https://github.com/Quantreo/quantreo
+
+
 
 
 plugins:
@@ -47,13 +87,15 @@ plugins:
 
 extra:
   base: ''
+  text: Roboto
   social:
     - icon: fontawesome/brands/github-alt
-      link: https://github.com/Quantreo
+      link: https://github.com/Quantreo/quantreo
     - icon: fontawesome/brands/youtube
       link: https://www.youtube.com/@quantreo
     - icon: fontawesome/brands/linkedin
       link: https://www.linkedin.com/in/lucas-inglese-75574817b/
+
 
 markdown_extensions:
   - pymdownx.highlight:
@@ -69,6 +111,9 @@ markdown_extensions:
   - pymdownx.mark
   - attr_list
   - md_in_html
+  - pymdownx.tabbed:
+        alternate_style: true
+
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg

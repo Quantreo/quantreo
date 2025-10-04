@@ -4,7 +4,7 @@ In quantitative trading, **target engineering** is as critical as feature engine
 
 We also provide **detailed documentation** and **ready-to-use notebooks** inside the [tutorials](/../tutorials/Quantreo-for-beginners) folder to help you master target creation.
 
-!!! warning "📦 Installation & Import"
+??? warning "📦 Installation & Import"
     Be sure you have installed the quantreo library before using these functions. To install it, just run:
     ```bash
     pip install quantreo

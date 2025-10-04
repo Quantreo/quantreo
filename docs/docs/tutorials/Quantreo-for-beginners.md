@@ -13,8 +13,6 @@ Quantreo is a Python library designed for **algorithmic trading** and **quantita
 ✔ Compatible with **scikit-learn, pandas, NumPy**  
 ✔ Optimized with **Numba** and **vectorized calculations** for high performance  
 
-!!! info "Coming Soon"
-    Target Engineering will be added soon!
 
 <br>
 
@@ -164,12 +162,3 @@ print(df)
     Just like moving averages or volatility features, most target functions need **future values** to be computed. 
     Therefore, you will get `NaN` values at the **end** of the series for the rows where there is not enough data ahead.
 
-
-<br>
-
-
----
-
-## **Learn More**
-
-📚 Join our 100% free [newsletter](https://www.newsletter.quantreo.com) to get actionable insights straight to your inbox.
