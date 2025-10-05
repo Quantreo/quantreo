@@ -8,7 +8,7 @@ with open(os.path.join(this_directory, "README.md"), encoding="utf-8") as f:
 
 setup(
     name="quantreo",  # The name of the package as it will appear on PyPI.
-    version="0.0.30",
+    version="0.1.0",
     description="Python library for quantitative trading",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -20,9 +20,12 @@ setup(
     include_package_data=True,
     package_data={"quantreo.datasets": ["*.csv"]},
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
+        "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
     ],
 )

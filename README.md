@@ -1,4 +1,4 @@
-![Quantreo LIB logo](docs/docs/assets/figures/quantreo_logo.png)
+![Quantreo LIB logo](docs/docs/assets/figures/quantreo_logo_readme.png)
 
 ---
 
