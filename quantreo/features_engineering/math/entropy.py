@@ -3,7 +3,9 @@ import pandas as pd
 import antropy as ant
 
 
-def sample_entropy(df: pd.DataFrame, col: str = "close", window_size: int = 100, order: int = 2) -> pd.Series:
+def sample_entropy(
+    df: pd.DataFrame, col: str = "close", window_size: int = 100, order: int = 2
+) -> pd.Series:
     """
     Calculate the rolling Sample Entropy of a time series.
 
@@ -43,13 +45,25 @@ def sample_entropy(df: pd.DataFrame, col: str = "close", window_size: int = 100,
     if order < 1:
         raise ValueError("Parameter 'order' must be >= 1.")
 
-    return df[col].rolling(window=window_size).apply(
-        lambda x: ant.sample_entropy(x, order=order) if len(x) == window_size else np.nan,
-        raw=True)
+    return (
+        df[col]
+        .rolling(window=window_size)
+        .apply(
+            lambda x: ant.sample_entropy(x, order=order) if len(x) == window_size else np.nan,
+            raw=True,
+        )
+    )
 
 
-def spectral_entropy(df: pd.DataFrame, col: str = "close", window_size: int = 100, sf: int = 1,
-                             method: str = 'welch', normalize: bool = True, nperseg: int = None) -> pd.Series:
+def spectral_entropy(
+    df: pd.DataFrame,
+    col: str = "close",
+    window_size: int = 100,
+    sf: int = 1,
+    method: str = "welch",
+    normalize: bool = True,
+    nperseg: int = None,
+) -> pd.Series:
     """
     Calculate the rolling Spectral Entropy of a time series.
 
@@ -100,15 +114,25 @@ def spectral_entropy(df: pd.DataFrame, col: str = "close", window_size: int = 10
 
     def compute_entropy(x):
         local_nperseg = nperseg if nperseg is not None else min(window_size, window_size // 2)
-        return ant.spectral_entropy(x, sf=sf, method=method, normalize=normalize, nperseg=local_nperseg)
+        return ant.spectral_entropy(
+            x, sf=sf, method=method, normalize=normalize, nperseg=local_nperseg
+        )
 
-    return df[col].rolling(window=window_size).apply(
-        lambda x: compute_entropy(x) if len(x) == window_size else np.nan,
-        raw=True)
+    return (
+        df[col]
+        .rolling(window=window_size)
+        .apply(lambda x: compute_entropy(x) if len(x) == window_size else np.nan, raw=True)
+    )
 
 
-def permutation_entropy(df: pd.DataFrame, col: str = "close", window_size: int = 100, order: int = 3,
-                                delay: int = 1, normalize: bool = True) -> pd.Series:
+def permutation_entropy(
+    df: pd.DataFrame,
+    col: str = "close",
+    window_size: int = 100,
+    order: int = 3,
+    delay: int = 1,
+    normalize: bool = True,
+) -> pd.Series:
     """
     Calculate the rolling Permutation Entropy of a time series.
 
@@ -154,10 +178,18 @@ def permutation_entropy(df: pd.DataFrame, col: str = "close", window_size: int =
     if delay < 1:
         raise ValueError("Delay must be >= 1.")
 
-    return df[col].rolling(window=window_size).apply(
-        lambda x: ant.perm_entropy(x, order=order, delay=delay, normalize=normalize)
-        if len(x) == window_size else np.nan,
-        raw=True)
+    return (
+        df[col]
+        .rolling(window=window_size)
+        .apply(
+            lambda x: (
+                ant.perm_entropy(x, order=order, delay=delay, normalize=normalize)
+                if len(x) == window_size
+                else np.nan
+            ),
+            raw=True,
+        )
+    )
 
 
 def petrosian_fd(df: pd.DataFrame, col: str = "close", window_size: int = 100) -> pd.Series:
@@ -194,6 +226,8 @@ def petrosian_fd(df: pd.DataFrame, col: str = "close", window_size: int = 100) -
     if window_size < 10:
         raise ValueError("Petrosian fractal dimension requires window_size >= 10.")
 
-    return df[col].rolling(window=window_size).apply(
-        lambda x: ant.petrosian_fd(x) if len(x) == window_size else np.nan,
-        raw=True)
+    return (
+        df[col]
+        .rolling(window=window_size)
+        .apply(lambda x: ant.petrosian_fd(x) if len(x) == window_size else np.nan, raw=True)
+    )

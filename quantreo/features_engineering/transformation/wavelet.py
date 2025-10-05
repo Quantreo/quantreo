@@ -3,8 +3,13 @@ import pandas as pd
 import pywt
 
 
-def _wavelet_last_point(x: np.ndarray, wavelet: str = "sym2", level: int = 3, keep: str = "approx",
-    mode: str = "symmetric") -> float:
+def _wavelet_last_point(
+    x: np.ndarray,
+    wavelet: str = "sym2",
+    level: int = 3,
+    keep: str = "approx",
+    mode: str = "symmetric",
+) -> float:
     """
     Compute the last reconstructed value of a 1D window using a DWT.
 
@@ -164,4 +169,3 @@ def wavelet_transform(
     if name is None:
         name = f"{col}_wavelet_{keep}_L{level_eff}_{wavelet}"
     return out.rename(name)
-

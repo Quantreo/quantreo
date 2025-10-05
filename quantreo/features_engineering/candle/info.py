@@ -2,8 +2,14 @@ import pandas as pd
 from typing import Tuple
 import numpy as np
 
-def candle_information(df: pd.DataFrame, open_col: str = 'open', high_col: str = 'high', low_col: str = 'low',
-                       close_col: str = 'close') -> Tuple[pd.Series, pd.Series, pd.Series]:
+
+def candle_information(
+    df: pd.DataFrame,
+    open_col: str = "open",
+    high_col: str = "high",
+    low_col: str = "low",
+    close_col: str = "close",
+) -> Tuple[pd.Series, pd.Series, pd.Series]:
     """
     Compute candle information indicators for a given OHLC DataFrame.
 
@@ -42,10 +48,13 @@ def candle_information(df: pd.DataFrame, open_col: str = 'open', high_col: str =
     df_copy.loc[df_copy[open_col] < df_copy[close_col], "candle_way"] = 1
 
     # Filling percentage: |close - open| / |high - low|
-    df_copy["filling"] = np.abs(df_copy[close_col] - df_copy[open_col]) / np.abs(df_copy[high_col] - df_copy[low_col])
+    df_copy["filling"] = np.abs(df_copy[close_col] - df_copy[open_col]) / np.abs(
+        df_copy[high_col] - df_copy[low_col]
+    )
 
     # Amplitude: |close - open| / ((open + close)/2)
-    df_copy["amplitude"] = (np.abs(df_copy[close_col] - df_copy[open_col]) / (
-            (df_copy[open_col] + df_copy[close_col]) / 2))
+    df_copy["amplitude"] = np.abs(df_copy[close_col] - df_copy[open_col]) / (
+        (df_copy[open_col] + df_copy[close_col]) / 2
+    )
 
     return df_copy["candle_way"], df_copy["filling"], df_copy["amplitude"]

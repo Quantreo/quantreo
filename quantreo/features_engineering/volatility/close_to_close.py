@@ -2,7 +2,9 @@ import numpy as np
 import pandas as pd
 
 
-def close_to_close_volatility(df: pd.DataFrame, close_col: str = 'close', window_size: int = 30) -> pd.Series:
+def close_to_close_volatility(
+    df: pd.DataFrame, close_col: str = "close", window_size: int = 30
+) -> pd.Series:
     """
     Calculate the rolling close-to-close volatility.md using standard deviation.
 

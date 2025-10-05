@@ -3,7 +3,7 @@ import numpy as np
 from scipy.signal import find_peaks
 
 
-def detect_peaks_valleys(df: pd.DataFrame, col: str = 'close', **kwargs) -> pd.Series:
+def detect_peaks_valleys(df: pd.DataFrame, col: str = "close", **kwargs) -> pd.Series:
     """
     Detect peaks and valleys in a time series using scipy's find_peaks.
 
@@ -48,14 +48,14 @@ def detect_peaks_valleys(df: pd.DataFrame, col: str = 'close', **kwargs) -> pd.S
     valleys, _ = find_peaks(-prices, **kwargs)
 
     # Initialize columns
-    df['peak'] = np.nan
-    df['valley'] = np.nan
-    df['label'] = 0
+    df["peak"] = np.nan
+    df["valley"] = np.nan
+    df["label"] = 0
 
     # Assign peaks and valleys
-    df.iloc[peaks, df.columns.get_loc('peak')] = df.iloc[peaks][col]
-    df.iloc[valleys, df.columns.get_loc('valley')] = df.iloc[valleys][col]
-    df.iloc[peaks, df.columns.get_loc('label')] = 1
-    df.iloc[valleys, df.columns.get_loc('label')] = -1
+    df.iloc[peaks, df.columns.get_loc("peak")] = df.iloc[peaks][col]
+    df.iloc[valleys, df.columns.get_loc("valley")] = df.iloc[valleys][col]
+    df.iloc[peaks, df.columns.get_loc("label")] = 1
+    df.iloc[valleys, df.columns.get_loc("label")] = -1
 
     return df["label"]

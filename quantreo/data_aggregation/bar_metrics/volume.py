@@ -4,7 +4,9 @@ from typing import Tuple
 
 
 @njit
-def volume_profile_features(prices: np.ndarray, volumes: np.ndarray, n_bins: int = 20) -> Tuple[float, float]:
+def volume_profile_features(
+    prices: np.ndarray, volumes: np.ndarray, n_bins: int = 20
+) -> Tuple[float, float]:
     """
     Extract POC (Point of Control) and its normalized position within the price range.
 
@@ -43,7 +45,9 @@ def volume_profile_features(prices: np.ndarray, volumes: np.ndarray, n_bins: int
     max_idx = np.argmax(volume_per_bin)
     poc_price = (bin_edges[max_idx] + bin_edges[max_idx + 1]) / 2
 
-    poc_position = (poc_price - price_min) / (price_max - price_min) if price_max > price_min else 0.0
+    poc_position = (
+        (poc_price - price_min) / (price_max - price_min) if price_max > price_min else 0.0
+    )
 
     return poc_price, poc_position
 

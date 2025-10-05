@@ -41,9 +41,13 @@ def _close_percentage_in_range(close_window: np.ndarray, start_pct: float, end_p
     return (count / total) * 100 if total > 0 else 0.0
 
 
-
-def price_distribution(df: pd.DataFrame, col: str, window_size: int = 60,
-                       start_percentage: float = 0.25, end_percentage: float = 0.75) -> pd.Series:
+def price_distribution(
+    df: pd.DataFrame,
+    col: str,
+    window_size: int = 60,
+    start_percentage: float = 0.25,
+    end_percentage: float = 0.75,
+) -> pd.Series:
     """
     Compute the percentage of close prices within a relative range of their local low-high interval,
     over a rolling window.
@@ -70,6 +74,8 @@ def price_distribution(df: pd.DataFrame, col: str, window_size: int = 60,
         Series with the same index as the input, containing the computed percentage values for each window.
         First (window_size - 1) rows will be NaN.
     """
-    return df[col].rolling(window_size).apply(
-        lambda x: _close_percentage_in_range(x, start_percentage, end_percentage),
-        raw=True)
+    return (
+        df[col]
+        .rolling(window_size)
+        .apply(lambda x: _close_percentage_in_range(x, start_percentage, end_percentage), raw=True)
+    )

@@ -2,8 +2,14 @@ import numpy as np
 import pandas as pd
 
 
-def _fourier_last_point(x: np.ndarray, mode: str = "topk", top_k: int = 10, fmax_ratio: float | None = None,
-    dt: float = 1.0, keep_dc: bool = True) -> float:
+def _fourier_last_point(
+    x: np.ndarray,
+    mode: str = "topk",
+    top_k: int = 10,
+    fmax_ratio: float | None = None,
+    dt: float = 1.0,
+    keep_dc: bool = True,
+) -> float:
     """
     Return the last reconstructed value of a window using a band-limited FFT.
 
@@ -76,9 +82,18 @@ def _fourier_last_point(x: np.ndarray, mode: str = "topk", top_k: int = 10, fmax
     return float(recon_last)
 
 
-def fourier_transform(df: pd.DataFrame, col: str, window_size: int = 256,  mode: str = "topk",
-    top_k: int = 10,  fmax_ratio: float | None = None,  dt: float | None = None,  keep_dc: bool = True,
-    min_periods: int | None = None,  name: str | None = None) -> pd.Series:
+def fourier_transform(
+    df: pd.DataFrame,
+    col: str,
+    window_size: int = 256,
+    mode: str = "topk",
+    top_k: int = 10,
+    fmax_ratio: float | None = None,
+    dt: float | None = None,
+    keep_dc: bool = True,
+    min_periods: int | None = None,
+    name: str | None = None,
+) -> pd.Series:
     """
     Rolling Fourier reconstruction (pointwise) for feature engineering.
 

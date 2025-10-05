@@ -11,9 +11,8 @@ To help you understand how to use each function, we provide **detailed explanati
     ```python
     import quantreo.features_engineering as fe
     ```
+---
 
-
-<br>
 ## **Data Format**
 
 Quantreo is designed to work with **OHLCV (Open, High, Low, Close, Volume) data**, which is the standard format in financial markets.  

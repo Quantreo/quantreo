@@ -5,9 +5,17 @@ import pandas as pd
 
 
 @njit
-def _fast_barrier_buy(i: int, open_arr: np.ndarray, high_arr: np.ndarray, low_arr: np.ndarray,
-                      high_time_arr: np.ndarray,
-                      low_time_arr: np.ndarray, time_arr: np.ndarray, tp: float = 0.015, sl: float = -0.015) -> float:
+def _fast_barrier_buy(
+    i: int,
+    open_arr: np.ndarray,
+    high_arr: np.ndarray,
+    low_arr: np.ndarray,
+    high_time_arr: np.ndarray,
+    low_time_arr: np.ndarray,
+    time_arr: np.ndarray,
+    tp: float = 0.015,
+    sl: float = -0.015,
+) -> float:
     n = len(open_arr)
     for j in range(n):
         idx = i + j
@@ -39,10 +47,19 @@ def _fast_barrier_buy(i: int, open_arr: np.ndarray, high_arr: np.ndarray, low_ar
 
     return 0.0
 
+
 @njit
-def _fast_barrier_sell(i: int, open_arr: np.ndarray, high_arr: np.ndarray, low_arr: np.ndarray,
-                       high_time_arr: np.ndarray, low_time_arr: np.ndarray, time_arr: np.ndarray,
-                       tp: float = 0.015, sl: float = -0.015) -> float:
+def _fast_barrier_sell(
+    i: int,
+    open_arr: np.ndarray,
+    high_arr: np.ndarray,
+    low_arr: np.ndarray,
+    high_time_arr: np.ndarray,
+    low_time_arr: np.ndarray,
+    time_arr: np.ndarray,
+    tp: float = 0.015,
+    sl: float = -0.015,
+) -> float:
     n = len(open_arr)
     for j in range(n):
         idx = i + j
@@ -75,18 +92,39 @@ def _fast_barrier_sell(i: int, open_arr: np.ndarray, high_arr: np.ndarray, low_a
     return 0.0
 
 
-def _fast_ind_barrier(i: int, open_arr: np.ndarray, high_arr: np.ndarray, low_arr: np.ndarray,
-                      high_time_arr: np.ndarray, low_time_arr: np.ndarray, time_arr: np.ndarray,
-                      tp: float = 0.015, sl: float = -0.015, buy: bool = True) -> float:
+def _fast_ind_barrier(
+    i: int,
+    open_arr: np.ndarray,
+    high_arr: np.ndarray,
+    low_arr: np.ndarray,
+    high_time_arr: np.ndarray,
+    low_time_arr: np.ndarray,
+    time_arr: np.ndarray,
+    tp: float = 0.015,
+    sl: float = -0.015,
+    buy: bool = True,
+) -> float:
     if buy:
-        return _fast_barrier_buy(i, open_arr, high_arr, low_arr, high_time_arr, low_time_arr, time_arr, tp, sl)
+        return _fast_barrier_buy(
+            i, open_arr, high_arr, low_arr, high_time_arr, low_time_arr, time_arr, tp, sl
+        )
     else:
-        return _fast_barrier_sell(i, open_arr, high_arr, low_arr, high_time_arr, low_time_arr, time_arr, tp, sl)
+        return _fast_barrier_sell(
+            i, open_arr, high_arr, low_arr, high_time_arr, low_time_arr, time_arr, tp, sl
+        )
 
 
-def continuous_barrier_labeling(df: pd.DataFrame, open_col: str = "open", high_col: str = "high", low_col: str = "low",
-                 high_time_col: str = "high_time", low_time_col: str = "low_time", tp: float = 0.015,
-                 sl: float = -0.015, buy: bool = True) -> pd.Series:
+def continuous_barrier_labeling(
+    df: pd.DataFrame,
+    open_col: str = "open",
+    high_col: str = "high",
+    low_col: str = "low",
+    high_time_col: str = "high_time",
+    low_time_col: str = "low_time",
+    tp: float = 0.015,
+    sl: float = -0.015,
+    buy: bool = True,
+) -> pd.Series:
     """
     Compute the time (in hours) to hit either a Take Profit (TP) or Stop Loss (SL) level
     after entering a trade, using a fast Numba-accelerated barrier labeling method.
@@ -141,13 +179,14 @@ def continuous_barrier_labeling(df: pd.DataFrame, open_col: str = "open", high_c
     if len(df_copy) < 2:
         raise ValueError("DataFrame is too short to compute barriers.")
 
-
     df_copy.index.name = "time"
     df_copy = df_copy.reset_index(drop=False)
 
     # Convert timestamps to UNIX seconds
     df_copy["time_int"] = pd.to_datetime(df_copy["time"]).astype("int64") // 1_000_000_000
-    df_copy["high_time_int"] = pd.to_datetime(df_copy[high_time_col]).astype("int64") // 1_000_000_000
+    df_copy["high_time_int"] = (
+        pd.to_datetime(df_copy[high_time_col]).astype("int64") // 1_000_000_000
+    )
     df_copy["low_time_int"] = pd.to_datetime(df_copy[low_time_col]).astype("int64") // 1_000_000_000
 
     # Extract arrays
@@ -162,8 +201,18 @@ def continuous_barrier_labeling(df: pd.DataFrame, open_col: str = "open", high_c
     results = []
     for i in tqdm(range(len(df_copy))):
         try:
-            label = _fast_ind_barrier(i, open_arr, high_arr, low_arr,
-                                      high_time_arr, low_time_arr, time_arr, tp=tp, sl=sl, buy=buy)
+            label = _fast_ind_barrier(
+                i,
+                open_arr,
+                high_arr,
+                low_arr,
+                high_time_arr,
+                low_time_arr,
+                time_arr,
+                tp=tp,
+                sl=sl,
+                buy=buy,
+            )
         except Exception as e:
             print(f"Error at index {i}: {e}")
             label = 0.0

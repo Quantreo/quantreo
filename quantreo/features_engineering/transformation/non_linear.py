@@ -2,7 +2,9 @@ import pandas as pd
 import numpy as np
 
 
-def fisher_transform(df: pd.DataFrame, high_col: str = "high", low_col: str = "low", window_size: int = 10) -> pd.Series:
+def fisher_transform(
+    df: pd.DataFrame, high_col: str = "high", low_col: str = "low", window_size: int = 10
+) -> pd.Series:
     """
     Compute the Fisher Transform indicator.
 

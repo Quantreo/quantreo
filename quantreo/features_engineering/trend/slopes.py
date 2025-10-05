@@ -37,7 +37,7 @@ def _get_linear_regression_slope(series: np.ndarray) -> float:
     sum_x2 = np.sum(x * x)
 
     numerator = n * sum_xy - sum_x * sum_y
-    denominator = n * sum_x2 - sum_x ** 2
+    denominator = n * sum_x2 - sum_x**2
 
     return numerator / denominator
 

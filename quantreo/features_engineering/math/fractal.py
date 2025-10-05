@@ -189,7 +189,7 @@ def _compute_average_RS(series, w, mode):
     for start in range(0, n, w):
         if start + w > n:
             break
-        window = series[start:start + w]
+        window = series[start : start + w]
         rs = 0.0
         if mode == 0:
             rs = _get_simplified_RS_random_walk(window)
@@ -205,7 +205,9 @@ def _compute_average_RS(series, w, mode):
     return total / count
 
 
-def _compute_Hc(series, kind="random_walk", min_window=10, max_window=None, simplified=True, min_sample=100):
+def _compute_Hc(
+    series, kind="random_walk", min_window=10, max_window=None, simplified=True, min_sample=100
+):
     """
     Compute the Hurst exponent H and constant c from the Hurst equation:
         E(R/S) = c * T^H
@@ -270,11 +272,11 @@ def _compute_Hc(series, kind="random_walk", min_window=10, max_window=None, simp
         raise ValueError("Series contains NaNs")
 
     # Determine mode for RS calculation based on kind
-    if kind == 'random_walk':
+    if kind == "random_walk":
         mode = 0
-    elif kind == 'price':
+    elif kind == "price":
         mode = 1
-    elif kind == 'change':
+    elif kind == "change":
         mode = 2
     else:
         raise ValueError("Unknown kind. Valid options are 'random_walk', 'price', 'change'.")
@@ -283,7 +285,7 @@ def _compute_Hc(series, kind="random_walk", min_window=10, max_window=None, simp
     # Create a list of window sizes as powers of 10 with a step of 0.25 in log scale
     log_min = math.log10(min_window)
     log_max = math.log10(max_window)
-    window_sizes = [int(10 ** x) for x in np.arange(log_min, log_max, 0.25)]
+    window_sizes = [int(10**x) for x in np.arange(log_min, log_max, 0.25)]
     window_sizes.append(len(series))
 
     RS_values = []
@@ -297,7 +299,7 @@ def _compute_Hc(series, kind="random_walk", min_window=10, max_window=None, simp
     b = np.log10(np.array(RS_values))
     # Solve the least squares problem (this part remains in pure Python)
     H, c = np.linalg.lstsq(A, b, rcond=None)[0]
-    c = 10 ** c
+    c = 10**c
     return H, c, [window_sizes, RS_values]
 
 
@@ -318,7 +320,7 @@ def _hurst_exponent(series):
     """
 
     try:
-        H, c, data = _compute_Hc(series, kind='price')
+        H, c, data = _compute_Hc(series, kind="price")
     except:
         H = np.nan
     return H
@@ -353,13 +355,18 @@ def hurst(df: pd.DataFrame, col: str, window_size: int = 100) -> pd.DataFrame:
     df_copy = df.copy()
 
     # Compute the rolling Hurst exponent using a helper function
-    df_copy[f"hurst_{window_size}"] = df_copy[col].rolling(window=window_size, min_periods=window_size) \
+    df_copy[f"hurst_{window_size}"] = (
+        df_copy[col]
+        .rolling(window=window_size, min_periods=window_size)
         .apply(_hurst_exponent, raw=False)
+    )
 
     return df_copy[f"hurst_{window_size}"]
 
 
-def detrended_fluctuation(df: pd.DataFrame, col: str = "close", window_size: int = 100) -> pd.Series:
+def detrended_fluctuation(
+    df: pd.DataFrame, col: str = "close", window_size: int = 100
+) -> pd.Series:
     """
     Calculate the rolling Detrended Fluctuation Analysis (DFA) exponent of a time series.
 
@@ -393,7 +400,8 @@ def detrended_fluctuation(df: pd.DataFrame, col: str = "close", window_size: int
     if window_size < 100:
         raise ValueError("DFA requires window_size >= 100 for stable estimation.")
 
-    return df[col].rolling(window=window_size).apply(
-        lambda x: ant.detrended_fluctuation(x)
-        if len(x) == window_size else pd.NA,
-        raw=True)
+    return (
+        df[col]
+        .rolling(window=window_size)
+        .apply(lambda x: ant.detrended_fluctuation(x) if len(x) == window_size else pd.NA, raw=True)
+    )

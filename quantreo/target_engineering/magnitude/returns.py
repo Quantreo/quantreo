@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def future_returns(df, close_col='close', window_size=10, log_return=True):
+def future_returns(df, close_col="close", window_size=10, log_return=True):
     """
     Compute future returns over a specified window size.
 

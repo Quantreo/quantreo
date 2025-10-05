@@ -66,7 +66,9 @@ def kurtosis(df: pd.DataFrame, col: str, window_size: int = 60) -> pd.Series:
     return df[col].rolling(window=window_size).kurt().rename("kurtosis")
 
 
-def tail_index(df: pd.DataFrame, col: str = "close", window_size: int = 250, k_ratio: float = 0.10) -> pd.Series:
+def tail_index(
+    df: pd.DataFrame, col: str = "close", window_size: int = 250, k_ratio: float = 0.10
+) -> pd.Series:
     """
     Rolling Hill tail‑index (α̂, *without* the +1 bias‑correction).
 
@@ -115,7 +117,7 @@ def tail_index(df: pd.DataFrame, col: str = "close", window_size: int = 250, k_r
 
         # k largest observations (O(n))
         x_tail = np.partition(w, window_size - k)[-k:]
-        xmin = x_tail.min()                         # k‑th order statistic
+        xmin = x_tail.min()  # k‑th order statistic
         out[end - 1] = k / np.log(x_tail / xmin).sum()
 
     return pd.Series(out, index=df.index, name=f"hill_{col}")
@@ -175,7 +177,7 @@ def bimodality_coefficient(df: pd.DataFrame, col: str, window_size: int = 100) -
     bc = pd.Series(
         [_bc_func(s, k, window_size) for s, k in zip(skew_series, kurt_series)],
         index=series.index,
-        name=f"bimodality_coefficient_{window_size}"
+        name=f"bimodality_coefficient_{window_size}",
     )
 
     return bc

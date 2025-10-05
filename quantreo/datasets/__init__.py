@@ -12,18 +12,8 @@ def load_generated_ohlcv():
         Dataframe contenant les colonnes ['open', 'high', 'low', 'close', 'volume']
         avec un index DatetimeIndex nommé 'time'.
     """
-    with importlib.resources.open_text('quantreo.datasets', 'generated_ohlcv.csv') as f:
-        df = pd.read_csv(f, index_col='time', parse_dates=['time'])
-
-    df = df.astype({
-        'open': 'float64',
-        'high': 'float64',
-        'low': 'float64',
-        'close': 'float64',
-        'volume': 'float64'
-    })
-
-    return df
+    path = importlib.resources.files("quantreo.datasets") / "generated_ohlcv.csv"
+    return pd.read_csv(path, parse_dates=["time"], index_col="time")
 
 
 def load_generated_ohlcv_with_time() -> pd.DataFrame:
@@ -37,16 +27,18 @@ def load_generated_ohlcv_with_time() -> pd.DataFrame:
         ['open', 'high', 'low', 'close', 'volume', 'high_time', 'low_time']
         and a DatetimeIndex named 'time'.
     """
-    with importlib.resources.open_text('quantreo.datasets', 'generated_ohlcv_with_time.csv') as f:
-        df = pd.read_csv(f, index_col='time', parse_dates=['time', 'high_time', 'low_time'])
+    with importlib.resources.open_text("quantreo.datasets", "generated_ohlcv_with_time.csv") as f:
+        df = pd.read_csv(f, index_col="time", parse_dates=["time", "high_time", "low_time"])
 
-    df = df.astype({
-        'open': 'float64',
-        'high': 'float64',
-        'low': 'float64',
-        'close': 'float64',
-        'volume': 'float64'
-    })
+    df = df.astype(
+        {
+            "open": "float64",
+            "high": "float64",
+            "low": "float64",
+            "close": "float64",
+            "volume": "float64",
+        }
+    )
 
     return df
 
@@ -62,12 +54,9 @@ def load_generated_ticks() -> pd.DataFrame:
         ['price', 'volume']
         and a DatetimeIndex named 'datetime'.
     """
-    with importlib.resources.open_text('quantreo.datasets', 'generated_ticks.csv') as f:
-        df = pd.read_csv(f, index_col='datetime', parse_dates=['datetime'])
+    with importlib.resources.open_text("quantreo.datasets", "generated_ticks.csv") as f:
+        df = pd.read_csv(f, index_col="datetime", parse_dates=["datetime"])
 
-    df = df.astype({
-        'price': 'float64',
-        'volume': 'int64'
-    })
+    df = df.astype({"price": "float64", "volume": "int64"})
 
     return df

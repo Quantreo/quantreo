@@ -59,11 +59,17 @@ def _build_time_bars(prices, volumes, timestamps_ns, window_ns):
         bar_start_idx[valid],
         bar_end_idx[valid],
         high_time[valid],
-        low_time[valid]
+        low_time[valid],
     )
 
-def ticks_to_time_bars(df: pd.DataFrame, resample_factor: str = "60min", col_price: str = "price", col_volume: str = "volume",
-    additional_metrics: List[Tuple[Callable, str, List[str]]] = []) -> pd.DataFrame:
+
+def ticks_to_time_bars(
+    df: pd.DataFrame,
+    resample_factor: str = "60min",
+    col_price: str = "price",
+    col_volume: str = "volume",
+    additional_metrics: List[Tuple[Callable, str, List[str]]] = [],
+) -> pd.DataFrame:
     """
     Convert tick-level data into fixed time bars using Numba, with optional additional metrics.
 
@@ -94,8 +100,9 @@ def ticks_to_time_bars(df: pd.DataFrame, resample_factor: str = "60min", col_pri
     window_ns = pd.to_timedelta(resample_factor).value
 
     # Call numba-accelerated function
-    times, opens, highs, lows, closes, vols, counts, start_idxs, end_idxs, high_times, low_times = _build_time_bars(
-        prices, volumes, timestamps_ns, window_ns)
+    times, opens, highs, lows, closes, vols, counts, start_idxs, end_idxs, high_times, low_times = (
+        _build_time_bars(prices, volumes, timestamps_ns, window_ns)
+    )
 
     # Base output dictionary
     out = {
@@ -116,9 +123,14 @@ def ticks_to_time_bars(df: pd.DataFrame, resample_factor: str = "60min", col_pri
         elif source == "volume":
             data = [func(volumes[start:end]) for start, end in zip(start_idxs, end_idxs)]
         elif source == "price_volume":
-            data = [func(prices[start:end], volumes[start:end]) for start, end in zip(start_idxs, end_idxs)]
+            data = [
+                func(prices[start:end], volumes[start:end])
+                for start, end in zip(start_idxs, end_idxs)
+            ]
         else:
-            raise ValueError(f"Invalid source '{source}'. Must be 'price', 'volume', or 'price_volume'.")
+            raise ValueError(
+                f"Invalid source '{source}'. Must be 'price', 'volume', or 'price_volume'."
+            )
 
         if isinstance(data[0], tuple):
             for i, name in enumerate(col_names):
