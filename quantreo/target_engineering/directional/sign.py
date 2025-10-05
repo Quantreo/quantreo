@@ -3,9 +3,14 @@ import pandas as pd
 from ..magnitude import future_returns
 
 
-def future_returns_sign(df: pd.DataFrame, close_col: str = 'close', window_size: int = 10, log_return: bool = True,
-                        positive_label: int = 1, negative_label: int = 0) -> pd.Series:
-
+def future_returns_sign(
+    df: pd.DataFrame,
+    close_col: str = "close",
+    window_size: int = 10,
+    log_return: bool = True,
+    positive_label: int = 1,
+    negative_label: int = 0,
+) -> pd.Series:
     """
     Generate a directional target by computing future returns and binarizing them.
 
@@ -36,6 +41,12 @@ def future_returns_sign(df: pd.DataFrame, close_col: str = 'close', window_size:
     -----
     This method is part of the "Directional Targets" family within the Quantreo Target Engineering package.
     """
-    fut_ret = future_returns(df, close_col=close_col, window_size=window_size, log_return=log_return)
+
+    if window_size <= 0:
+        raise ValueError("window_size must be strictly positive.")
+
+    fut_ret = future_returns(
+        df, close_col=close_col, window_size=window_size, log_return=log_return
+    )
     labels = np.where(fut_ret > 0, positive_label, negative_label)
     return pd.Series(labels, index=fut_ret.index)

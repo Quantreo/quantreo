@@ -35,25 +35,31 @@ def derivatives(df: pd.DataFrame, col: str) -> Tuple[pd.Series, pd.Series]:
 
 def log_pct(df: pd.DataFrame, col: str, window_size: int) -> pd.Series:
     """
-    Apply a logarithmic transformation to a specified column in a DataFrame and calculate
-    the percentage change of the log-transformed values over a given window size.
+    Compute the logarithmic percentage change (log return) over a specified window.
+
+    Mathematically:
+        log_pct[t] = log(P_t) - log(P_{t - window_size})
+                   = log(P_t / P_{t - window_size})
 
     Parameters
     ----------
     df : pd.DataFrame
-        Input DataFrame containing the column to be logarithmically transformed.
+        Input DataFrame containing the column to be analyzed.
     col : str
-        The name of the column to which the logarithmic transformation is applied.
+        The name of the column containing price or value data.
     window_size : int
-        The window size over which to calculate the percentage change of the log-transformed values.
+        The number of periods over which to compute the log return.
 
     Returns
     -------
     pd.Series
-        A Series containing the rolling log returns over `n` periods.
+        A Series containing the rolling log returns over `window_size` periods.
     """
+    if col not in df.columns:
+        raise ValueError(f"The column '{col}' is not present in the DataFrame.")
+
     df_copy = df.copy()
     df_copy[f"log_{col}"] = np.log(df_copy[col])
-    df_copy[f"ret_log_{window_size}"] = df_copy[f"log_{col}"].pct_change(window_size)
-
+    df_copy[f"ret_log_{window_size}"] = df_copy[f"log_{col}"].diff(window_size)
     return df_copy[f"ret_log_{window_size}"]
+

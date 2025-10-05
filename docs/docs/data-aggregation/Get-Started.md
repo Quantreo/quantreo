@@ -6,7 +6,7 @@ These tools help bridge the gap between raw microstructure data and usable featu
 
 To better understand how to use each function, you’ll find **detailed explanations** and **Jupyter Notebook examples** in the [tutorials](/../tutorials/Quantreo-for-beginners) folder.
 
-!!! warning "📦 Installation & Import"
+??? warning "📦 Installation & Import"
     Make sure the Quantreo library is installed before running any code. You can install it with:
 
     ```
@@ -21,7 +21,7 @@ To better understand how to use each function, you’ll find **detailed explanat
 ---
 ## Bar Building Input Format
 
-To build bars (time bars, tick bars, volume bars, etc.), Quantreo expects **tick-level data** — that is, individual trades with at least a **price** and a **volume**.
+To build bars (time bars, tick bars, volume bars, etc.), Quantreo expects **tick-level data**, that is, individual trades with at least a **price** and a **volume**.
 
 This raw format allows you to recreate flexible and informative bars that preserve market microstructure.
 

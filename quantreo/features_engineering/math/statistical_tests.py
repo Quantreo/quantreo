@@ -18,7 +18,7 @@ def _adf_stat(x: np.ndarray, k: int, regression: str = "c") -> float:
         X[:, 0] = 1.0
         X[:, 1] = xlag
         for j in range(k):
-            X[:, 2 + j] = dx[k - (j + 1): -(j + 1) or None]
+            X[:, 2 + j] = dx[k - (j + 1) : -(j + 1) or None]
         target_idx = 1
 
     elif regression == "ct":
@@ -28,11 +28,13 @@ def _adf_stat(x: np.ndarray, k: int, regression: str = "c") -> float:
         X[:, 1] = np.arange(k, len(x) - 1)
         X[:, 2] = xlag
         for j in range(k):
-            X[:, 3 + j] = dx[k - (j + 1): -(j + 1) or None]
+            X[:, 3 + j] = dx[k - (j + 1) : -(j + 1) or None]
         target_idx = 2
 
     else:
-        raise NotImplementedError("Only 'c' and 'ct' regressions are supported.")  # Unsupported regression mode
+        raise NotImplementedError(
+            "Only 'c' and 'ct' regressions are supported."
+        )  # Unsupported regression mode
 
     XtX = X.T @ X
     beta = np.linalg.solve(XtX, X.T @ y)
@@ -53,32 +55,106 @@ def _adf_stat_to_pvalue(stat: float, regression: str = "c") -> float:
     stats_known = np.arange(-6, 3, 0.2)
 
     if regression == "c":
-        pvalues_known = np.array([1.66612048e-07, 4.65495347e-07, 1.27117171e-06, 3.38720389e-06,
-           8.79208358e-06, 2.21931547e-05, 5.43859357e-05, 1.29169640e-04,
-           2.96832622e-04, 6.58900206e-04, 1.41051125e-03, 2.90731499e-03,
-           5.76102775e-03, 1.09588716e-02, 1.99846792e-02, 3.48944003e-02,
-           5.82737681e-02, 9.29972674e-02, 1.41736409e-01, 2.06245457e-01,
-           2.86573099e-01, 3.80461694e-01, 4.83593470e-01, 5.82276119e-01,
-           6.73595712e-01, 7.53264301e-01, 8.19122068e-01, 8.70982027e-01,
-           9.10098777e-01, 9.38521617e-01, 9.58532086e-01, 9.72261594e-01,
-           9.81494942e-01, 9.87615629e-01, 9.91636168e-01, 9.94265949e-01,
-           9.95985883e-01, 9.97114142e-01, 9.97857576e-01, 9.98349017e-01,
-           9.98672951e-01, 9.98882505e-01, 9.99010310e-01, 9.99075155e-01,
-           1.00000000e+00])
+        pvalues_known = np.array(
+            [
+                1.66612048e-07,
+                4.65495347e-07,
+                1.27117171e-06,
+                3.38720389e-06,
+                8.79208358e-06,
+                2.21931547e-05,
+                5.43859357e-05,
+                1.29169640e-04,
+                2.96832622e-04,
+                6.58900206e-04,
+                1.41051125e-03,
+                2.90731499e-03,
+                5.76102775e-03,
+                1.09588716e-02,
+                1.99846792e-02,
+                3.48944003e-02,
+                5.82737681e-02,
+                9.29972674e-02,
+                1.41736409e-01,
+                2.06245457e-01,
+                2.86573099e-01,
+                3.80461694e-01,
+                4.83593470e-01,
+                5.82276119e-01,
+                6.73595712e-01,
+                7.53264301e-01,
+                8.19122068e-01,
+                8.70982027e-01,
+                9.10098777e-01,
+                9.38521617e-01,
+                9.58532086e-01,
+                9.72261594e-01,
+                9.81494942e-01,
+                9.87615629e-01,
+                9.91636168e-01,
+                9.94265949e-01,
+                9.95985883e-01,
+                9.97114142e-01,
+                9.97857576e-01,
+                9.98349017e-01,
+                9.98672951e-01,
+                9.98882505e-01,
+                9.99010310e-01,
+                9.99075155e-01,
+                1.00000000e00,
+            ]
+        )
 
     elif regression == "ct":
-        pvalues_known = np.array([2.19685999e-06, 5.72200101e-06, 1.45728707e-05, 3.62096972e-05,
-           8.75816742e-05, 2.05747283e-04, 4.68395913e-04, 1.03105554e-03,
-           2.18970094e-03, 4.47697111e-03, 8.79370123e-03, 1.65606722e-02,
-           2.98461511e-02, 5.13879267e-02, 8.44017024e-02, 1.32080985e-01,
-           1.96944442e-01, 2.79892650e-01, 3.79618933e-01, 4.89850519e-01,
-           6.01433772e-01, 7.04758323e-01, 7.92432292e-01, 8.60912560e-01,
-           9.10502858e-01, 9.44114711e-01, 9.65682548e-01, 9.78951298e-01,
-           9.86879034e-01, 9.91531946e-01, 9.94233168e-01, 9.95777535e-01,
-           9.96616806e-01, 9.96986978e-01, 1.00000000e+00, 1.00000000e+00,
-           1.00000000e+00, 1.00000000e+00, 1.00000000e+00, 1.00000000e+00,
-           1.00000000e+00, 1.00000000e+00, 1.00000000e+00, 1.00000000e+00,
-           1.00000000e+00])
+        pvalues_known = np.array(
+            [
+                2.19685999e-06,
+                5.72200101e-06,
+                1.45728707e-05,
+                3.62096972e-05,
+                8.75816742e-05,
+                2.05747283e-04,
+                4.68395913e-04,
+                1.03105554e-03,
+                2.18970094e-03,
+                4.47697111e-03,
+                8.79370123e-03,
+                1.65606722e-02,
+                2.98461511e-02,
+                5.13879267e-02,
+                8.44017024e-02,
+                1.32080985e-01,
+                1.96944442e-01,
+                2.79892650e-01,
+                3.79618933e-01,
+                4.89850519e-01,
+                6.01433772e-01,
+                7.04758323e-01,
+                7.92432292e-01,
+                8.60912560e-01,
+                9.10502858e-01,
+                9.44114711e-01,
+                9.65682548e-01,
+                9.78951298e-01,
+                9.86879034e-01,
+                9.91531946e-01,
+                9.94233168e-01,
+                9.95777535e-01,
+                9.96616806e-01,
+                9.96986978e-01,
+                1.00000000e00,
+                1.00000000e00,
+                1.00000000e00,
+                1.00000000e00,
+                1.00000000e00,
+                1.00000000e00,
+                1.00000000e00,
+                1.00000000e00,
+                1.00000000e00,
+                1.00000000e00,
+                1.00000000e00,
+            ]
+        )
 
     else:
         return np.nan
@@ -92,7 +168,9 @@ def _adf_stat_to_pvalue(stat: float, regression: str = "c") -> float:
     return float(np.interp(stat, stats_known, pvalues_known))
 
 
-def adf_test(df: pd.DataFrame, col: str, window_size: int, lags: int = None, regression: str = "c") -> tuple[pd.Series, pd.Series]:
+def adf_test(
+    df: pd.DataFrame, col: str, window_size: int, lags: int = None, regression: str = "c"
+) -> tuple[pd.Series, pd.Series]:
     """
     Compute the Augmented Dickey-Fuller test in rolling windows to estimate stationarity over time.
 
@@ -145,14 +223,13 @@ def adf_test(df: pd.DataFrame, col: str, window_size: int, lags: int = None, reg
         k = lags
 
     stats = series.rolling(window=window_size).apply(
-        lambda x: _adf_stat_wrapper(x, k=k, regression=regression),
-        raw=True
+        lambda x: _adf_stat_wrapper(x, k=k, regression=regression), raw=True
     )
-
 
     p_val = stats.apply(lambda stat: _adf_stat_to_pvalue(stat, regression=regression))
 
     return stats.rename("adf_stat"), p_val.rename("adf_pval")
+
 
 @njit(cache=True, fastmath=True)
 def _arch_lm_only(y: np.ndarray, nlags: int, ddof: int = 0) -> float:
@@ -163,7 +240,7 @@ def _arch_lm_only(y: np.ndarray, nlags: int, ddof: int = 0) -> float:
     y_target = y[nlags:]
     y_lagged = np.empty((nobs, nlags))
     for i in range(nlags):
-        y_lagged[:, i] = y[nlags - i - 1: -i - 1]
+        y_lagged[:, i] = y[nlags - i - 1 : -i - 1]
 
     X = np.ones((nobs, nlags + 1))
     X[:, 1:] = y_lagged
@@ -181,7 +258,9 @@ def _arch_lm_only(y: np.ndarray, nlags: int, ddof: int = 0) -> float:
     return (nobs - ddof) * r_squared
 
 
-def arch_test(df: pd.DataFrame, col: str, window_size: int = 60, lags: int = 5, ddof: int = 0) -> tuple[pd.Series, pd.Series]:
+def arch_test(
+    df: pd.DataFrame, col: str, window_size: int = 60, lags: int = 5, ddof: int = 0
+) -> tuple[pd.Series, pd.Series]:
     """
     Compute the ARCH test (Engle) over rolling windows to detect conditional heteroskedasticity.
 
@@ -239,15 +318,17 @@ def arch_test(df: pd.DataFrame, col: str, window_size: int = 60, lags: int = 5, 
         nlags = lags
 
     if window_size <= nlags + 1:
-        raise ValueError(f"'window_size' must be greater than 'lags + 1' for regression to be valid.")
+        raise ValueError(
+            "'window_size' must be greater than 'lags + 1' for regression to be valid."
+        )
 
     # --- Rolling ARCH computation ---
     lm_stats = []
     index = df.index[window_size:]
 
     for i in range(window_size, len(df)):
-        window_data = df[col].iloc[i - window_size:i].values
-        y = window_data ** 2
+        window_data = df[col].iloc[i - window_size : i].values
+        y = window_data**2
         lm_stat = _arch_lm_only(y, nlags, ddof)
         lm_stats.append(lm_stat)
 
@@ -256,7 +337,7 @@ def arch_test(df: pd.DataFrame, col: str, window_size: int = 60, lags: int = 5, 
 
     return (
         pd.Series(lm_stats, index=index, name="arch_stat"),
-        pd.Series(lm_pvals, index=index, name="arch_pval")
+        pd.Series(lm_pvals, index=index, name="arch_pval"),
     )
 
 
@@ -285,12 +366,15 @@ def shapiro_wilk(df: pd.DataFrame, col: str, window_size: int) -> tuple[pd.Serie
     pval_series : pd.Series
         Series of p-values corresponding to each window.
     """
+    if col not in df.columns:
+        raise ValueError(f"The column '{col}' is not present in the DataFrame.")
+
     values = df[col].values
     stat_results = []
     pval_results = []
 
     for i in range(window_size, len(values) + 1):
-        window_data = values[i - window_size:i]
+        window_data = values[i - window_size : i]
         if np.any(np.isnan(window_data)):
             stat_results.append(np.nan)
             pval_results.append(np.nan)
@@ -301,5 +385,7 @@ def shapiro_wilk(df: pd.DataFrame, col: str, window_size: int) -> tuple[pd.Serie
 
     pad = [np.nan] * (window_size - 1)
     index = df.index
-    return (pd.Series(pad + stat_results, index=index, name=f"{col}_shapiro_stat"),
-        pd.Series(pad + pval_results, index=index, name=f"{col}_shapiro_pval"))
+    return (
+        pd.Series(pad + stat_results, index=index, name=f"{col}_shapiro_stat"),
+        pd.Series(pad + pval_results, index=index, name=f"{col}_shapiro_pval"),
+    )

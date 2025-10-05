@@ -1,7 +1,9 @@
 import pandas as pd
 
 
-def internal_bar_strength(df: pd.DataFrame, high_col: str = "high", low_col: str = "low", close_col: str = "close") -> pd.Series:
+def internal_bar_strength(
+    df: pd.DataFrame, high_col: str = "high", low_col: str = "low", close_col: str = "close"
+) -> pd.Series:
     """
     Compute the Internal Bar Strength (IBS) indicator.
 
@@ -22,5 +24,6 @@ def internal_bar_strength(df: pd.DataFrame, high_col: str = "high", low_col: str
     """
     range_ = df[high_col] - df[low_col]
     ibs = (df[close_col] - df[low_col]) / range_
+    ibs = ibs.fillna(0.5)
     ibs.name = "IBS"
     return ibs

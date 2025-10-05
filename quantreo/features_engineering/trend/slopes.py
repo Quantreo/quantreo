@@ -37,7 +37,7 @@ def _get_linear_regression_slope(series: np.ndarray) -> float:
     sum_x2 = np.sum(x * x)
 
     numerator = n * sum_xy - sum_x * sum_y
-    denominator = n * sum_x2 - sum_x ** 2
+    denominator = n * sum_x2 - sum_x**2
 
     return numerator / denominator
 
@@ -70,6 +70,9 @@ def linear_slope(df: pd.DataFrame, col: str, window_size: int = 60) -> pd.Series
     This indicator is useful to assess short- or medium-term price trends.
     A positive slope indicates an upward trend, while a negative slope reflects a downward trend.
     """
+    if col not in df.columns:
+        raise ValueError(f"The column '{col}' is not present in the DataFrame.")
+
     lin_slope = df[col].rolling(window_size).apply(_get_linear_regression_slope, raw=True)
     lin_slope.name = f"linear_slope_{window_size}"
     return lin_slope

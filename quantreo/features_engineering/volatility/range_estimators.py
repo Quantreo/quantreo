@@ -26,8 +26,14 @@ def _rogers_satchell_estimator(high, low, open_, close, window_size):
     return vol
 
 
-def rogers_satchell_volatility(df: pd.DataFrame, high_col: str = 'high', low_col: str = 'low',
-                          open_col: str = 'open', close_col: str = 'close', window_size: int = 30) -> pd.Series:
+def rogers_satchell_volatility(
+    df: pd.DataFrame,
+    high_col: str = "high",
+    low_col: str = "low",
+    open_col: str = "open",
+    close_col: str = "close",
+    window_size: int = 30,
+) -> pd.Series:
     """
     Calculate Rogers-Satchell volatility.md estimator using numpy operations with Numba acceleration.
 
@@ -112,8 +118,9 @@ def _parkinson_estimator(high, low, window_size):
     return vol
 
 
-def parkinson_volatility(df: pd.DataFrame, high_col: str = 'high', low_col: str = 'low', window_size: int = 30)\
-                        -> pd.Series:
+def parkinson_volatility(
+    df: pd.DataFrame, high_col: str = "high", low_col: str = "low", window_size: int = 30
+) -> pd.Series:
     """
     Calculate Parkinson's volatility.md estimator using numpy operations with Numba acceleration.
 
@@ -187,9 +194,9 @@ def _yang_zhang_estimator(high, low, open_, close, window_size, k=0.34):
 
     # Iterating over each time step
     for i in range(window_size, n):
-        sum_oc = 0.0   # Open-to-close variance (σ_O²)
-        sum_cc = 0.0   # Close-to-close variance (σ_C²)
-        sum_rs = 0.0   # Rogers-Satchell variance (σ_RS²)
+        sum_oc = 0.0  # Open-to-close variance (σ_O²)
+        sum_cc = 0.0  # Close-to-close variance (σ_C²)
+        sum_rs = 0.0  # Rogers-Satchell variance (σ_RS²)
         N = window_size  # Number of periods in the rolling window
 
         # Compute variance components over the rolling window
@@ -197,7 +204,7 @@ def _yang_zhang_estimator(high, low, open_, close, window_size, k=0.34):
             # Rogers-Satchell term
             term1 = np.log(high[j] / close[j]) * np.log(high[j] / open_[j])
             term2 = np.log(low[j] / close[j]) * np.log(low[j] / open_[j])
-            sum_rs += (term1 + term2)
+            sum_rs += term1 + term2
 
             # Open-to-close variance (σ_O²)
             diff_oc = np.log(open_[j] / close[j])  # log(Open_j / Close_j)
@@ -219,8 +226,15 @@ def _yang_zhang_estimator(high, low, open_, close, window_size, k=0.34):
     return vol
 
 
-def yang_zhang_volatility(df: pd.DataFrame, window_size: int = 30, high_col: str = 'high', low_col: str = 'low',
-                          open_col: str = 'open', close_col: str = 'close', k: float = 0.34) -> pd.Series:
+def yang_zhang_volatility(
+    df: pd.DataFrame,
+    window_size: int = 30,
+    high_col: str = "high",
+    low_col: str = "low",
+    open_col: str = "open",
+    close_col: str = "close",
+    k: float = 0.34,
+) -> pd.Series:
     """
     Compute the Yang-Zhang volatility.md estimator using a rolling window.
 

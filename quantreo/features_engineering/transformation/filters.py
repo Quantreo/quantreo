@@ -11,7 +11,9 @@ def _generate_savgol_last_point_coeffs(window_size: int, polyorder: int) -> np.n
     return coeffs[-1]  # We extract weights for the last row (latest point)
 
 
-def savgol_filter(df: pd.DataFrame, col: str = "close", window_size: int = 11, polyorder: int = 3) -> pd.Series:
+def savgol_filter(
+    df: pd.DataFrame, col: str = "close", window_size: int = 11, polyorder: int = 3
+) -> pd.Series:
     """
     Compute a causal Savitzky-Golay filter using optimized matrix operations.
 
@@ -31,6 +33,10 @@ def savgol_filter(df: pd.DataFrame, col: str = "close", window_size: int = 11, p
     """
     if window_size % 2 == 0:
         raise ValueError("window_size must be odd.")
+
+    if col not in df.columns:
+        raise ValueError(f"Column '{col}' not found in the DataFrame.")
+
     if polyorder >= window_size:
         raise ValueError("polyorder must be less than window_size.")
 
@@ -45,6 +51,6 @@ def savgol_filter(df: pd.DataFrame, col: str = "close", window_size: int = 11, p
     Y = X @ coeffs
 
     # Assign the result to the end of each window
-    result[window_size - 1:] = Y
+    result[window_size - 1 :] = Y
 
     return pd.Series(result, index=series.index, name=f"{col}_savgol_causal")

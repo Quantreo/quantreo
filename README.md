@@ -1,6 +1,5 @@
-![Quantreo LIB logo](docs/docs/assets/figures/quantreo_logo.png)
+![Quantreo LIB logo](docs/docs/assets/figures/quantreo_logo_readme.png)
 
----
 
 # Welcome to Quantreo
 
@@ -17,7 +16,8 @@
 
 
 
----
+<br>
+
 ## What is Quantreo?
 
 Quantreo is a Python toolbox that helps you build quantitative features, targets, and alternative bars, faster and more efficiently.
@@ -33,7 +33,6 @@ From volatility estimators to event-based bars and regime indicators, Quantreo p
 - **Alternative bars included**: Time, tick, volume & run bars  
 - **Robust by design**: Functions implemented to avoid data leakage and look-ahead bias.
 
-<br>
 
 ### 2. Main modules
 
@@ -42,7 +41,11 @@ From volatility estimators to event-based bars and regime indicators, Quantreo p
 - `quantreo.alternative_bars`: Time, tick, volume, and run bars  
 - `quantreo.datasets`: Synthetic or real OHLCV generators for fast testing
 
----
+
+
+
+<br>
+
 ## Install Quantreo
 ```bash
 pip install quantreo
@@ -54,7 +57,8 @@ If the installation completes successfully, you're all set to start using **Quan
 Quantreo provides a collection of ready-to-use tools for **feature engineering**, **target construction**, and **alternative bar generation**, all optimized for performance and ease of use.  
 Jump to the [Quick start](#quickstart) section below to see how it works in practice.
 
----
+<br>
+
 ##  Quickstart
 
 Quantreo makes it easy to test, explore, and create new quantitative features and targets in just a few lines.
@@ -71,7 +75,6 @@ df = load_generated_ohlcv()
 df.head()
 ```
 
-<br>
 
 ### 2. Use existing functions: example with volatility
 Compute a ready-to-use volatility feature in just two lines.
@@ -96,7 +99,8 @@ Want to go further? Here are a few examples of what you can build with Quantreo:
 
 See all tutorials here → [**Quantreo for Beginners**](https://docs.quantreo.com/tutorials/Quantreo-for-beginners/)
 
----
+<br>
+
 
 ## Resources
 
@@ -106,7 +110,8 @@ See all tutorials here → [**Quantreo for Beginners**](https://docs.quantreo.co
 - Learn how to create features and targets like a pro in the [ML4Trading course](https://quantreo.com/ml4trading).  
 
 
----
+<br>
+
 ## Cite Quantreo
 
 If you use **Quantreo** in your research or project, please consider citing it as:
@@ -114,7 +119,8 @@ If you use **Quantreo** in your research or project, please consider citing it a
 > Inglese, L. (2025). *Quantreo: A Python library for quantitative feature and target engineering.*  
 > Available at: https://github.com/Quantreo/quantreo
 
----
+<br>
+
 ## License
 MIT © Lucas Inglese, 2025
 

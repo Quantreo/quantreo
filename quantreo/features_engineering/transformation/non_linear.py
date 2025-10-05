@@ -2,7 +2,9 @@ import pandas as pd
 import numpy as np
 
 
-def fisher_transform(df: pd.DataFrame, high_col: str = "high", low_col: str = "low", window_size: int = 10) -> pd.Series:
+def fisher_transform(
+    df: pd.DataFrame, high_col: str = "high", low_col: str = "low", window_size: int = 10
+) -> pd.Series:
     """
     Compute the Fisher Transform indicator.
 
@@ -25,6 +27,12 @@ def fisher_transform(df: pd.DataFrame, high_col: str = "high", low_col: str = "l
         pd.Series: A Series containing the Fisher Transform values.
     """
     # Compute the median price from high and low
+
+    if high_col not in df.columns or low_col not in df.columns:
+        raise ValueError(f"Column '{high_col}' or '{low_col}' not found in DataFrame.")
+    if not np.issubdtype(df[high_col].dtype, np.number) or not np.issubdtype(df[low_col].dtype, np.number):
+        raise ValueError(f"Column '{high_col}' or '{low_col}' must be numeric.")
+
     median_price = (df[high_col] + df[low_col]) / 2
 
     # Rolling min and max over the selected window

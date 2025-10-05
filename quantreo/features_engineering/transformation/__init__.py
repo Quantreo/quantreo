@@ -7,8 +7,10 @@ from .smoothing import mma
 
 __all__ = [
     "savgol_filter",
-    "fisher_transform", "logit_transform", "neg_log_transform",
+    "fisher_transform",
+    "logit_transform",
+    "neg_log_transform",
     "fourier_transform",
     "wavelet_transform",
-    "mma"
+    "mma",
 ]

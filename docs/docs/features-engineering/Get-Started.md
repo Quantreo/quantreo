@@ -4,16 +4,15 @@ Feature engineering is a <u>crucial step</u> in **quantitative trading**. The **
 
 To help you understand how to use each function, we provide **detailed explanations** and **Jupyter Notebook examples** in the [tutorials](/../tutorials/Quantreo-for-beginners)  folder.
 
-!!! warning "📦 Installation & Import"
+??? warning "📦 Installation & Import"
     Be sure you have installed the quantreo library before running any of these codes. To install it, just run ``pip install quantreo`` in your terminal.
 
     PS: to import the Features Library Package, you just need to run 
     ```python
     import quantreo.features_engineering as fe
     ```
+---
 
-
-<br>
 ## **Data Format**
 
 Quantreo is designed to work with **OHLCV (Open, High, Low, Close, Volume) data**, which is the standard format in financial markets.  

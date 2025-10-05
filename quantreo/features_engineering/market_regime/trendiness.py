@@ -2,9 +2,9 @@ import numpy as np
 from ..trend import kama
 
 
-def kama_market_regime(df, col,
-                       l1_fast=50, l2_fast=2, l3_fast=30,
-                       l1_slow=200, l2_slow=2, l3_slow=30):
+def kama_market_regime(
+    df, col, l1_fast=50, l2_fast=2, l3_fast=30, l1_slow=200, l2_slow=2, l3_slow=30
+):
     """
     Compute a market regime indicator based on the difference between two KAMA (fast and slow).
 

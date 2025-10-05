@@ -40,8 +40,13 @@ def _build_tick_bars(prices, volumes, timestamps_ns, tick_per_bar):
     return bars, indices
 
 
-def ticks_to_tick_bars(df: pd.DataFrame, tick_per_bar: int = 1000, col_price: str = "price", col_volume: str = "volume",
-    additional_metrics: List[Tuple[Callable, str, List[str]]] = []) -> pd.DataFrame:
+def ticks_to_tick_bars(
+    df: pd.DataFrame,
+    tick_per_bar: int = 1000,
+    col_price: str = "price",
+    col_volume: str = "volume",
+    additional_metrics: List[Tuple[Callable, str, List[str]]] = [],
+) -> pd.DataFrame:
     """
     Convert tick-level data into fixed-size tick bars, with optional additional metrics.
 
@@ -97,7 +102,9 @@ def ticks_to_tick_bars(df: pd.DataFrame, tick_per_bar: int = 1000, col_price: st
         elif source == "price_volume":
             inputs = [func(prices[start:end], volumes[start:end]) for start, end in index_pairs]
         else:
-            raise ValueError(f"Invalid source '{source}'. Must be 'price', 'volume', or 'price_volume'.")
+            raise ValueError(
+                f"Invalid source '{source}'. Must be 'price', 'volume', or 'price_volume'."
+            )
 
         if isinstance(inputs[0], tuple):
             for i, name in enumerate(col_names):

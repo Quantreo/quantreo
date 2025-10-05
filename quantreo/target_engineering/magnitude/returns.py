@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def future_returns(df, close_col='close', window_size=10, log_return=True):
+def future_returns(df, close_col="close", window_size=10, log_return=True):
     """
     Compute future returns over a specified window size.
 
@@ -35,6 +35,8 @@ def future_returns(df, close_col='close', window_size=10, log_return=True):
     This target is part of the "Magnitude Targets" family within the Quantreo Target Engineering package.
     It is commonly used for regression models aimed at predicting return amplitude rather than direction.
     """
+    if close_col not in df.columns:
+        raise ValueError(f"Missing required column: '{close_col}' in DataFrame.")
 
     df_copy = df.copy()
 

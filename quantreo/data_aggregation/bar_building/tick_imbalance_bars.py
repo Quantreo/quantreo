@@ -32,9 +32,9 @@ def _build_tick_imbalance_bars(prices, volumes, timestamps_ns, expected_imbalanc
         nb_ticks += 1
 
         if abs(imbalance) > expected_imbalance:
-            p = prices[start:i + 1]
-            v = volumes[start:i + 1]
-            t = timestamps_ns[start:i + 1]
+            p = prices[start : i + 1]
+            v = volumes[start : i + 1]
+            t = timestamps_ns[start : i + 1]
 
             high_idx = np.argmax(p)
             low_idx = np.argmin(p)
@@ -49,7 +49,7 @@ def _build_tick_imbalance_bars(prices, volumes, timestamps_ns, expected_imbalanc
                 i + 1 - start,
                 (t[-1] - t[0]) / 60_000_000_000,
                 t[high_idx],
-                t[low_idx]
+                t[low_idx],
             )
             bars.append(bar)
             indices.append((start, i + 1))
@@ -59,8 +59,13 @@ def _build_tick_imbalance_bars(prices, volumes, timestamps_ns, expected_imbalanc
     return bars, indices
 
 
-def ticks_to_tick_imbalance_bars(df: pd.DataFrame, expected_imbalance: int = 100, col_price: str = "price",
-    col_volume: str = "volume", additional_metrics: List[Tuple[Callable, str, List[str]]] = []) -> pd.DataFrame:
+def ticks_to_tick_imbalance_bars(
+    df: pd.DataFrame,
+    expected_imbalance: int = 100,
+    col_price: str = "price",
+    col_volume: str = "volume",
+    additional_metrics: List[Tuple[Callable, str, List[str]]] = [],
+) -> pd.DataFrame:
     """
     Convert tick-level data into tick imbalance bars, optionally enriched with custom metrics.
 
@@ -91,13 +96,25 @@ def ticks_to_tick_imbalance_bars(df: pd.DataFrame, expected_imbalance: int = 100
     timestamps_ns = df.index.values.astype("int64")
 
     # Generate tick imbalance bars and slicing indexes
-    raw_bars, index_pairs = _build_tick_imbalance_bars(prices, volumes, timestamps_ns, expected_imbalance)
+    raw_bars, index_pairs = _build_tick_imbalance_bars(
+        prices, volumes, timestamps_ns, expected_imbalance
+    )
 
     if not raw_bars:
-        return pd.DataFrame(columns=[
-            "open", "high", "low", "close", "volume",
-            "number_ticks", "duration_minutes", "high_time", "low_time"
-        ] + [name for _, _, names in additional_metrics for name in names])
+        return pd.DataFrame(
+            columns=[
+                "open",
+                "high",
+                "low",
+                "close",
+                "volume",
+                "number_ticks",
+                "duration_minutes",
+                "high_time",
+                "low_time",
+            ]
+            + [name for _, _, names in additional_metrics for name in names]
+        )
 
     bars_np = np.array(raw_bars)
 
@@ -111,7 +128,7 @@ def ticks_to_tick_imbalance_bars(df: pd.DataFrame, expected_imbalance: int = 100
         "number_ticks": bars_np[:, 6].astype(int),
         "duration_minutes": bars_np[:, 7],
         "high_time": pd.to_datetime(bars_np[:, 8].astype(np.int64)),
-        "low_time": pd.to_datetime(bars_np[:, 9].astype(np.int64))
+        "low_time": pd.to_datetime(bars_np[:, 9].astype(np.int64)),
     }
 
     # Additional metrics computation
@@ -123,7 +140,9 @@ def ticks_to_tick_imbalance_bars(df: pd.DataFrame, expected_imbalance: int = 100
         elif source == "price_volume":
             inputs = [(prices[start:end], volumes[start:end]) for start, end in index_pairs]
         else:
-            raise ValueError(f"Invalid source '{source}'. Must be 'price', 'volume', or 'price_volume'.")
+            raise ValueError(
+                f"Invalid source '{source}'. Must be 'price', 'volume', or 'price_volume'."
+            )
 
         outputs = [func(*x) if isinstance(x, tuple) else func(x) for x in inputs]
 

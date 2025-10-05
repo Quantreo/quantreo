@@ -1,0 +1,10 @@
+[tool.ruff]
+line-length = 100
+extend-exclude = ["docs", "site", "mkdocs.yml"]  # on évite la doc
+ignore = ["E501"]  # ignore les lignes longues si besoin
+
+[tool.black]
+line-length = 100
+extend-exclude = "docs"
+
+

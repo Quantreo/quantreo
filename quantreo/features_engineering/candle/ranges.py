@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-def compute_spread(df: pd.DataFrame, high_col: str = 'high', low_col: str = 'low') -> pd.Series:
+def compute_spread(df: pd.DataFrame, high_col: str = "high", low_col: str = "low") -> pd.Series:
     """
     Compute the spread between the high and low price columns.
 

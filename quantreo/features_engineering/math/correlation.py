@@ -25,7 +25,10 @@ def auto_corr(df: pd.DataFrame, col: str, window_size: int = 50, lag: int = 10) 
         A Series containing the rolling autocorrelation values.
     """
     df_copy = df.copy()
-    col_name = f'autocorr_{lag}'
-    df_copy[col_name] = df_copy[col].rolling(window=window_size, min_periods=window_size).apply(
-        lambda x: x.autocorr(lag=lag), raw=False)
+    col_name = f"autocorr_{lag}"
+    df_copy[col_name] = (
+        df_copy[col]
+        .rolling(window=window_size, min_periods=window_size)
+        .apply(lambda x: x.autocorr(lag=lag), raw=False)
+    )
     return df_copy[col_name]

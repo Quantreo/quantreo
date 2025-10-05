@@ -2,9 +2,17 @@ import pandas as pd
 from ..magnitude import continuous_barrier_labeling
 
 
-def double_barrier_labeling(df: pd.DataFrame, open_col: str = "open", high_col: str = "high", low_col: str = "low",
-                            high_time_col: str = "high_time", low_time_col: str = "low_time", tp: float = 0.015,
-                            sl: float = -0.015, buy: bool = True) -> pd.Series:
+def double_barrier_labeling(
+    df: pd.DataFrame,
+    open_col: str = "open",
+    high_col: str = "high",
+    low_col: str = "low",
+    high_time_col: str = "high_time",
+    low_time_col: str = "low_time",
+    tp: float = 0.015,
+    sl: float = -0.015,
+    buy: bool = True,
+) -> pd.Series:
     """
     Compute double barrier classification labels based on TP/SL logic.
 
@@ -34,18 +42,35 @@ def double_barrier_labeling(df: pd.DataFrame, open_col: str = "open", high_col: 
     pandas.Series
         A Series containing discrete labels: 1 (TP), -1 (SL), or 0 (none).
     """
-    continuous = continuous_barrier_labeling(df, open_col=open_col, high_col=high_col, low_col=low_col,
-                                             high_time_col=high_time_col, low_time_col=low_time_col, tp=tp, sl=sl,
-                                             buy=buy)
+    continuous = continuous_barrier_labeling(
+        df,
+        open_col=open_col,
+        high_col=high_col,
+        low_col=low_col,
+        high_time_col=high_time_col,
+        low_time_col=low_time_col,
+        tp=tp,
+        sl=sl,
+        buy=buy,
+    )
 
     labels = continuous.apply(lambda x: 1 if x > 0 else (-1 if x < 0 else 0))
     labels.name = "barrier_label"
     return labels
 
 
-def triple_barrier_labeling(df: pd.DataFrame, max_duration_h: float, open_col: str = "open", high_col: str = "high",
-                            low_col: str = "low", high_time_col: str = "high_time", low_time_col: str = "low_time",
-                            tp: float = 0.015, sl: float = -0.015, buy: bool = True) -> pd.Series:
+def triple_barrier_labeling(
+    df: pd.DataFrame,
+    max_duration_h: float,
+    open_col: str = "open",
+    high_col: str = "high",
+    low_col: str = "low",
+    high_time_col: str = "high_time",
+    low_time_col: str = "low_time",
+    tp: float = 0.015,
+    sl: float = -0.015,
+    buy: bool = True,
+) -> pd.Series:
     """
     Compute triple barrier classification labels based on TP/SL and a max holding time.
 
@@ -76,8 +101,17 @@ def triple_barrier_labeling(df: pd.DataFrame, max_duration_h: float, open_col: s
     pandas.Series
         A Series of labels: 1 (TP), -1 (SL), or 0 (neither hit within time).
     """
-    durations = continuous_barrier_labeling(df, open_col=open_col, high_col=high_col, low_col=low_col,
-        high_time_col=high_time_col, low_time_col=low_time_col, tp=tp, sl=sl, buy=buy)
+    durations = continuous_barrier_labeling(
+        df,
+        open_col=open_col,
+        high_col=high_col,
+        low_col=low_col,
+        high_time_col=high_time_col,
+        low_time_col=low_time_col,
+        tp=tp,
+        sl=sl,
+        buy=buy,
+    )
 
     def label_fn(x):
         if abs(x) > max_duration_h:

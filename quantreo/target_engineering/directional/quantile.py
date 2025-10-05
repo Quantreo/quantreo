@@ -1,11 +1,18 @@
 import pandas as pd
 
 
-def quantile_label(df: pd.DataFrame, col: str, upper_quantile_level: float = 0.67,
-                   lower_quantile_level: float | None = None, q_high: float | None = None, q_low: float | None = None,
-                   return_thresholds: bool = False, positive_label: int = 1, negative_label: int = -1,
-                   neutral_label: int = 0) -> pd.Series | tuple[pd.Series, float, float]:
-
+def quantile_label(
+    df: pd.DataFrame,
+    col: str,
+    upper_quantile_level: float = 0.67,
+    lower_quantile_level: float | None = None,
+    q_high: float | None = None,
+    q_low: float | None = None,
+    return_thresholds: bool = False,
+    positive_label: int = 1,
+    negative_label: int = -1,
+    neutral_label: int = 0,
+) -> pd.Series | tuple[pd.Series, float, float]:
     """
     Generate quantile-based labels (custom values for upper, lower, and neutral) and optionally return thresholds.
 
