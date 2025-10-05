@@ -16,7 +16,7 @@ setup(
     author_email="lucas@quantreo.com",
     url="https://github.com/Quantreo/quantreo",
     packages=find_packages(include=["quantreo", "quantreo.*"]),
-    install_requires=["tqdm", "numpy", "pandas", "numba", "scipy", "PyWavelets", "antropy>=0.1.9"],
+    install_requires=["tqdm", "numpy", "pandas", "numba", "scipy", "PyWavelets", "antropy"],
     include_package_data=True,
     package_data={"quantreo.datasets": ["*.csv"]},
     classifiers=[
