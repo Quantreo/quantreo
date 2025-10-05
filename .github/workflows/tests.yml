@@ -2,9 +2,9 @@ name: Quantreo CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ modify-doc ]
   pull_request:
-    branches: [ main ]
+    branches: [ modify-doc ]
 
 jobs:
   test:
