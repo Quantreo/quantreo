@@ -41,6 +41,10 @@ def future_returns_sign(
     -----
     This method is part of the "Directional Targets" family within the Quantreo Target Engineering package.
     """
+
+    if window_size <= 0:
+        raise ValueError("window_size must be strictly positive.")
+
     fut_ret = future_returns(
         df, close_col=close_col, window_size=window_size, log_return=log_return
     )

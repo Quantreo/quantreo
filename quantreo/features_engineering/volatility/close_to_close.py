@@ -32,7 +32,7 @@ def close_to_close_volatility(
         raise ValueError(f"The required column '{close_col}' is not present in the DataFrame.")
 
     # Compute log returns
-    log_returns = df[close_col].pct_change().apply(lambda x: np.log(1 + x))
+    log_returns = df[close_col].pct_change(fill_method=None).apply(lambda x: np.log(1 + x))
 
     # Compute rolling standard deviation of log returns
     volatility_series = log_returns.rolling(window=window_size, min_periods=window_size).std()
