@@ -1,6 +1,5 @@
 ![Quantreo LIB logo](docs/docs/assets/figures/quantreo_logo_readme.png)
 
----
 
 # Welcome to Quantreo
 
@@ -17,7 +16,8 @@
 
 
 
----
+<br>
+
 ## What is Quantreo?
 
 Quantreo is a Python toolbox that helps you build quantitative features, targets, and alternative bars, faster and more efficiently.
@@ -42,7 +42,11 @@ From volatility estimators to event-based bars and regime indicators, Quantreo p
 - `quantreo.alternative_bars`: Time, tick, volume, and run bars  
 - `quantreo.datasets`: Synthetic or real OHLCV generators for fast testing
 
----
+
+
+<br>
+<br>
+
 ## Install Quantreo
 ```bash
 pip install quantreo
