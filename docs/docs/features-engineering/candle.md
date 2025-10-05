@@ -228,9 +228,10 @@ The formula used is:
     ```
 
 === "Notes"
-    - If `high` == `low`, then `IBS` = 0.5, which represents a neutral position within the range.
-    - The `IBS` values should normally lie between **0 and 1**.  
-      If you observe excessive values outside this range, it usually indicates issues in the input data (e.g., inconsistent OHLC values or misaligned candles).
+    !!! info
+        - If `high` == `low`, then `IBS` = 0.5, which represents a neutral position within the range.
+        - The `IBS` values should normally lie between **0 and 1**.  
+          If you observe excessive values outside this range, it usually indicates issues in the input data (e.g., inconsistent OHLC values or misaligned candles).
 
 
 📢 "For a practical example, check out the [educational notebook](/../tutorials/features-engineering-candle/#internal-bar-strength)."

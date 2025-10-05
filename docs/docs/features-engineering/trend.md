@@ -15,31 +15,37 @@ The `sma` function computes a Simple Moving Average (SMA) on any numerical colum
 !!! warning
     The first `(window_size - 1)` values will return `NaN` due to insufficient data to compute the average on these points.
 
+=== "Function"
+    ```python
+    fe.trend.sma(df: pd.DataFrame, col: str = 'close', window_size: int = 30)
+    ```
 
-```python title="How to call the sma function"
-fe.trend.sma(df: pd.DataFrame, col: str = 'close', window_size: int = 30)
-```
+=== "Docstring"
+    ```python
+    """
+    Calculate the Simple Moving Average (SMA) using Pandas rolling.mean.
+    
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        DataFrame containing the input data.
+    col : str
+        Name of the column on which to compute the SMA.
+    window_size : int, optional
+        The window size for computing the SMA (default is 30).
+    
+    Returns
+    -------
+    sma_series : pandas.Series
+        A Series indexed the same as the input DataFrame, containing the SMA values.
+        The first (window_size - 1) entries will be NaN due to insufficient data.
+    """
+    ```
 
-``` title="sma function docstring"
-"""
-Calculate the Simple Moving Average (SMA) using Pandas rolling.mean.
-
-Parameters
-----------
-df : pandas.DataFrame
-    DataFrame containing the input data.
-col : str
-    Name of the column on which to compute the SMA.
-window_size : int, optional
-    The window size for computing the SMA (default is 30).
-
-Returns
--------
-sma_series : pandas.Series
-    A Series indexed the same as the input DataFrame, containing the SMA values.
-    The first (window_size - 1) entries will be NaN due to insufficient data.
-"""
-```
+=== "Example"
+    ```python
+    df["sma"] = fe.trend.sma(df=df, col="close", window_size=30)
+    ```
 
 📢 "For a practical example, check out the [educational notebook](/../tutorials/features-engineering-trend/#simple-moving-average)."
 
@@ -73,38 +79,44 @@ $$
 !!! warning
     The first `(l1 - 1)` values will be `NaN` due to insufficient data for the efficiency ratio calculation.
 
+=== "Function"
+    ```python
+    fe.trend.kama(df: pd.DataFrame, col: str = 'close', l1: int = 10, l2: int = 2, l3: int = 30)
+    ```
 
-```python title="How to call the kama function"
-fe.trend.kama(df: pd.DataFrame, col: str = 'close', l1: int = 10, l2: int = 2, l3: int = 30)
-```
+=== "Docstring"
+    ```python
+    """
+    Calculate Kaufman's Adaptive Moving Average (KAMA) for a specified column in a DataFrame.
+    
+    KAMA adapts to market noise by adjusting its smoothing constant based on an efficiency ratio.
+    
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        DataFrame containing the price data.
+    col : str
+        Column name on which to compute the KAMA.
+    l1 : int, optional
+        Rolling window length for computing the efficiency ratio (default is 10).
+    l2 : int, optional
+        Parameter for the fastest EMA constant (default is 2).
+    l3 : int, optional
+        Parameter for the slowest EMA constant (default is 30).
+    
+    Returns
+    -------
+    pandas.Series
+        A Series containing the computed KAMA values, indexed the same as `df` and named "kama".
+        The first (l1 - 1) values will likely be NaN due to insufficient data.
+    """
+    ```
 
-``` title="kama function docstring"
-"""
-Calculate Kaufman's Adaptive Moving Average (KAMA) for a specified column in a DataFrame.
+=== "Example"
+    ```python
+    df["kama"] = fe.trend.kama(df=df, col="close", l1=10, l2=2, l3=30) 
+    ```
 
-KAMA adapts to market noise by adjusting its smoothing constant based on an efficiency ratio.
-
-Parameters
-----------
-df : pandas.DataFrame
-    DataFrame containing the price data.
-col : str
-    Column name on which to compute the KAMA.
-l1 : int, optional
-    Rolling window length for computing the efficiency ratio (default is 10).
-l2 : int, optional
-    Parameter for the fastest EMA constant (default is 2).
-l3 : int, optional
-    Parameter for the slowest EMA constant (default is 30).
-
-Returns
--------
-pandas.Series
-    A Series containing the computed KAMA values, indexed the same as `df` and named "kama".
-    The first (l1 - 1) values will likely be NaN due to insufficient data.
-"""
-
-```
 📢 "For a practical example, check out the [educational notebook](/../tutorials/features-engineering-trend/#kaufmans-adaptive-moving-average-kama)."
 
 ---
@@ -119,39 +131,45 @@ It works by fitting a **simple linear regression** of the form $y = ax + b$ on t
 A positive slope implies **upward momentum**, a negative slope implies **downward momentum**.
 
 
+=== "Function"
+    ```python
+    fe.trend.linear_slope(df: pd.DataFrame, col: str = 'close', window_size: int = 60)
+    ```
 
-```python title="How to call linear_slope"
-fe.trend.linear_slope(df: pd.DataFrame, col: str = 'close', window_size: int = 60)
-```
+=== "Docstring"
+    ```python
+    """
+    Compute the slope of a linear regression line over a rolling window.
+    
+    This function applies a linear regression on a rolling window of a selected column,
+    returning the slope of the fitted line at each time step. It uses a fast internal implementation
+    (`_get_linear_regression_slope`) for efficient computation.
+    
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        Input DataFrame containing the time series data.
+    col : str
+        Name of the column on which to compute the slope.
+    window_size : int, optional
+        Size of the rolling window used to fit the linear regression (default is 60).
+    
+    Returns
+    -------
+    slope_series : pandas.Series
+        A Series containing the slope of the regression line at each time step.
+        The first (window_size - 1) values will be NaN due to insufficient data for the initial windows.
+    
+    Notes
+    -----
+    This indicator is useful to assess short- or medium-term price trends.
+    A positive slope indicates an upward trend, while a negative slope reflects a downward trend.
+    """
+    ```
 
-```python title="linear_slope docstring"
-"""
-Compute the slope of a linear regression line over a rolling window.
-
-This function applies a linear regression on a rolling window of a selected column,
-returning the slope of the fitted line at each time step. It uses a fast internal implementation
-(`_get_linear_regression_slope`) for efficient computation.
-
-Parameters
-----------
-df : pandas.DataFrame
-    Input DataFrame containing the time series data.
-col : str
-    Name of the column on which to compute the slope.
-window_size : int, optional
-    Size of the rolling window used to fit the linear regression (default is 60).
-
-Returns
--------
-slope_series : pandas.Series
-    A Series containing the slope of the regression line at each time step.
-    The first (window_size - 1) values will be NaN due to insufficient data for the initial windows.
-
-Notes
------
-This indicator is useful to assess short- or medium-term price trends.
-A positive slope indicates an upward trend, while a negative slope reflects a downward trend.
-"""
-```
+=== "Example"
+    ```python
+    df["linear_slope"] = fe.trend.linear_slope(df, col='close', window_size=30)
+    ```
 
 📢 "For a practical example, check out the [educational notebook](/../tutorials/features-engineering-trend/#linear-slope)."

@@ -103,9 +103,9 @@ Each notebook showcases real-world use cases of Quantreo, from feature design to
 
 | Example                                                                                               | Description |
 |:------------------------------------------------------------------------------------------------------|:-------------|
-| [**Meta-Labelling Explained**](/applications/Meta-Labelling-Explained/)                               | Learn how to apply meta-labelling to improve signal precision and reduce false positives in trading strategies. |
-| [**Multi-Asset Feature Engineering in Financial ML**](/applications/Multi-Asset-Feature-Engineering/) | Discover how to build and standardize multi-asset features for cross-asset modeling and synthetic dataset generation. |
-| [**Dimensionality Reduction in Trading**](/applications/Dimensionality-Reduction-in-Trading/)         | Use Kernel PCA to create synthetic volatility features and reduce feature space complexity in ML models. |
+| [**Meta-Labelling Explained**](tutorials/tutorial-meta-labeling.ipynb)                               | Learn how to apply meta-labelling to improve signal precision and reduce false positives in trading strategies. |
+| [**Multi-Asset Feature Engineering in Financial ML**](tutorials/tutorial-multi-asset-feature-engineering-in-financial-ml.ipynb) | Discover how to build and standardize multi-asset features for cross-asset modeling and synthetic dataset generation. |
+| [**Dimensionality Reduction in Trading**](tutorials/tutorial-pca-in-trading.ipynb)         | Use Kernel PCA to create synthetic volatility features and reduce feature space complexity in ML models. |
 
 
 ---
@@ -120,17 +120,4 @@ You can:
 - **Open an issue:** [GitHub Issues](https://github.com/Quantreo/quantreo/issues)
 
 All feedback and bug reports are welcome, they help improve Quantreo’s performance, reliability, and usability for the quantitative research community.
-
-
-=== "Latest"
-
-    ```bash
-    pip install mkdocs-material
-    ```
-
-=== "9.x"
-
-    ```bash
-    pip install mkdocs-material==9.*
-    ```
 

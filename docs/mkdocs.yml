@@ -74,6 +74,9 @@ nav:
       - Multi-Asset Feature Engineering: tutorials/tutorial-multi-asset-feature-engineering-in-financial-ml.ipynb
       - PCA in Trading: tutorials/tutorial-pca-in-trading.ipynb
 
+  - Troubleshooting:
+      - troubleshooting/troubleshooting.md
+
   - GitHub: https://github.com/Quantreo/quantreo
 
 
@@ -96,6 +99,14 @@ extra:
     - icon: fontawesome/brands/linkedin
       link: https://www.linkedin.com/in/lucas-inglese-75574817b/
 
+  generator: false
+  metadata:
+    site_name: Quantreo
+    title: Quantreo - Python Library for Quantitative Trading
+    description: A faster way to build quantitative features, targets, and alternative bars in Python. Powered by Numba. Whether your goal is alpha research, backtesting, or production-ready model development, Quantreo offers a consistent and modular workflow.
+    image: https://docs.quantreo.com/assets/social-preview.png
+    type: website
+    url: https://docs.quantreo.com
 
 markdown_extensions:
   - pymdownx.highlight:

@@ -27,34 +27,41 @@ Where:
 - **\(\mu\)**: The mean of the log returns over the window.
 
 
-```python title="How to call the close_to_close_volatility function"
-fe.volatility.close_to_close_volatility(df: pd.DataFrame, window_size: int = 30, close_col: str = 'close')
-```
-``` title="close_to_close_volatility function docstring"
-"""
-Calculate the rolling close-to-close volatility.md using standard deviation.
+=== "Function"
+    ```python
+    fe.volatility.close_to_close_volatility(df: pd.DataFrame, window_size: int = 30, close_col: str = 'close')
+    ```
 
-This method computes the rolling standard deviation of the log returns,
-which represents the close-to-close volatility.md over a specified window.
+=== "Docstring"
+    ```python
+    """
+    Calculate the rolling close-to-close volatility.md using standard deviation.
+    
+    This method computes the rolling standard deviation of the log returns,
+    which represents the close-to-close volatility.md over a specified window.
+    
+    Parameters
+    ----------
+    df : pd.DataFrame
+        DataFrame containing the price data.
+    window_size : int, optional
+        The number of periods to include in the rolling calculation (default is 30).
+    close_col : str, optional
+        Column name for the closing prices (default is 'close').
+    
+    Returns
+    -------
+    volatility_series : pd.Series
+        A Series indexed the same as `df`, containing the rolling close-to-close volatility.md.
+        The first `window_size` rows will be NaN because there is insufficient data
+        to compute the volatility.md in those windows.
+    """
+    ```
 
-Parameters
-----------
-df : pd.DataFrame
-    DataFrame containing the price data.
-window_size : int, optional
-    The number of periods to include in the rolling calculation (default is 30).
-close_col : str, optional
-    Column name for the closing prices (default is 'close').
-
-Returns
--------
-volatility_series : pd.Series
-    A Series indexed the same as `df`, containing the rolling close-to-close volatility.md.
-    The first `window_size` rows will be NaN because there is insufficient data
-    to compute the volatility.md in those windows.
-"""
-```
-
+=== "Example"
+    ```python
+    df["ctc_vol"] = fe.volatility.close_to_close_volatility(df=df, close_col="close", window_size=30)
+    ```
 
 📢 *For a practical example, check out this [educational notebook](/../tutorials/features-engineering-volatility/#ctc-volatility).*
 
@@ -87,32 +94,40 @@ Where:
     ✔ Provides a **rolling measure of volatility**, making it suitable for **time-series analysis**.  
     ✔ Assumes that price movements follow a **Brownian motion** without drift.  
 
-```python title="How to call the parkinson_volatility function"
-fe.volatility.parkinson_volatility(df: pd.DataFrame, high_col: str = 'high', low_col: str = 'low', window_size: int = 30)
-``` 
-``` title="parkinson_volatility function docstring"
-"""
-Calculate Parkinson's volatility.md estimator using numpy operations with Numba acceleration.
+=== "Function"
+    ```python
+    fe.volatility.parkinson_volatility(df: pd.DataFrame, high_col: str = 'high', low_col: str = 'low', window_size: int = 30)
+    ``` 
 
-Parameters
-----------
-df : pandas.DataFrame
-    DataFrame containing the price data.
-high_col : str, optional
-    Column name for the high prices (default is 'high').
-low_col : str, optional
-    Column name for the low prices (default is 'low').
-window_size : int, optional
-    The number of periods to include in the rolling calculation (default is 30).
+=== "Docstring"
+    ``` python
+    """
+    Calculate Parkinson's volatility.md estimator using numpy operations with Numba acceleration.
+    
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        DataFrame containing the price data.
+    high_col : str, optional
+        Column name for the high prices (default is 'high').
+    low_col : str, optional
+        Column name for the low prices (default is 'low').
+    window_size : int, optional
+        The number of periods to include in the rolling calculation (default is 30).
+    
+    Returns
+    -------
+    volatility_series : pandas.Series
+        A Series indexed the same as `df`, containing the rolling Parkinson volatility.md.
+        The first `window_size` rows will be NaN because there is insufficient data
+        to compute the volatility.md in those windows.
+    """
+    ```
 
-Returns
--------
-volatility_series : pandas.Series
-    A Series indexed the same as `df`, containing the rolling Parkinson volatility.md.
-    The first `window_size` rows will be NaN because there is insufficient data
-    to compute the volatility.md in those windows.
-"""
-```
+=== "Example"
+    ```python
+    df["parkinson_vol"] = fe.volatility.parkinson_volatility(df=df, high_col="high", low_col="low", window_size=30)
+    ```
 
 📢 *For a practical example, check out this [educational notebook](/../tutorials/features-engineering-volatility/#parkinson-volatility).*
 
@@ -149,37 +164,45 @@ Where:
     ✔ Does not assume zero drift, making it more applicable to **trending markets**.  
     ✔ Is **computationally efficient** while reducing bias in the variance estimate.  
 
-```python title="How to call the rogers_satchell_volatility function"
-fe.volatility.rogers_satchell_volatility(df: pd.DataFrame, high_col: str = 'high', low_col: str = 'low', open_col: str = 'open',
-                               close_col: str = 'close', window_size: int = 30)
-```
+=== "Function"
+    ```python
+    fe.volatility.rogers_satchell_volatility(df: pd.DataFrame, high_col: str = 'high', low_col: str = 'low', open_col: str = 'open',
+                                   close_col: str = 'close', window_size: int = 30)
+    ```
 
-``` title="rogers_satchell_volatility function docstring"
-"""
-Compute the Rogers-Satchell volatility estimator using a rolling window.
+=== "Docstring"
+    ```python
+    """
+    Compute the Rogers-Satchell volatility estimator using a rolling window.
+    
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        DataFrame containing OHLC price data.
+    high_col : str, optional
+        Column name for high prices (default = 'high').
+    low_col : str, optional
+        Column name for low prices (default = 'low').
+    open_col : str, optional
+        Column name for open prices (default = 'open').
+    close_col : str, optional
+        Column name for close prices (default = 'close').
+    window_size : int, optional
+        The number of periods used in the rolling calculation (default = 30).
+    
+    Returns
+    -------
+    pd.Series
+        A Series containing the rolling Rogers-Satchell volatility, indexed like `df`.
+        The first `window_size` rows are NaN due to insufficient data.
+    """
+    ```
 
-Parameters
-----------
-df : pandas.DataFrame
-    DataFrame containing OHLC price data.
-high_col : str, optional
-    Column name for high prices (default = 'high').
-low_col : str, optional
-    Column name for low prices (default = 'low').
-open_col : str, optional
-    Column name for open prices (default = 'open').
-close_col : str, optional
-    Column name for close prices (default = 'close').
-window_size : int, optional
-    The number of periods used in the rolling calculation (default = 30).
-
-Returns
--------
-pd.Series
-    A Series containing the rolling Rogers-Satchell volatility, indexed like `df`.
-    The first `window_size` rows are NaN due to insufficient data.
-"""
-```
+=== "Example"
+    ```python
+    df["rs_vol"] = fe.volatility.rogers_satchell_volatility(df=df, high_col="high", low_col="low",open_col="open",
+                                                            close_col="close", window_size=30)
+    ```
 
 📢 *For a practical example, check out this [educational notebook](/../tutorials/features-engineering-volatility/#rogers-satchell-volatility).*
 
@@ -216,40 +239,48 @@ Where:
     ✔ Accounts for intra-day price fluctuations.  
     ✔ Provides a better measure of realized volatility.
 
-```python title="How to call the yang_zhang_volatility function"
-fe.volatility.yang_zhang_volatility(df: pd.DataFrame, high_col: str = 'high', low_col: str = 'low',
-                          open_col: str = 'open', close_col: str = 'close', window_size: int = 30, k: float = 0.34)
-```
-``` title="yang_zhang_volatility function docstring"
-    """
-    Compute the Yang-Zhang volatility estimator using a rolling window.
+=== "Function"
+    ```python
+    fe.volatility.yang_zhang_volatility(df: pd.DataFrame, high_col: str = 'high', low_col: str = 'low',
+                              open_col: str = 'open', close_col: str = 'close', window_size: int = 30, k: float = 0.34)
+    ```
 
-    Parameters
-    ----------
-    df : pandas.DataFrame
-        DataFrame containing OHLC price data.
-    high_col : str, optional
-        Column name for high prices (default = 'high').
-    low_col : str, optional
-        Column name for low prices (default = 'low').
-    open_col : str, optional
-        Column name for open prices (default = 'open').
-    close_col : str, optional
-        Column name for close prices (default = 'close').
-    window_size : int, optional
-        The number of periods used in the rolling calculation (default = 30).
-    k : float, optional
-        The weighting parameter for the open-to-close variance component, as described
-        in Yang & Zhang (2000). Empirical research suggests 0.34 as the optimal value.
+=== "Docstring"
+    ```python
+        """
+        Compute the Yang-Zhang volatility estimator using a rolling window.
+    
+        Parameters
+        ----------
+        df : pandas.DataFrame
+            DataFrame containing OHLC price data.
+        high_col : str, optional
+            Column name for high prices (default = 'high').
+        low_col : str, optional
+            Column name for low prices (default = 'low').
+        open_col : str, optional
+            Column name for open prices (default = 'open').
+        close_col : str, optional
+            Column name for close prices (default = 'close').
+        window_size : int, optional
+            The number of periods used in the rolling calculation (default = 30).
+        k : float, optional
+            The weighting parameter for the open-to-close variance component, as described
+            in Yang & Zhang (2000). Empirical research suggests 0.34 as the optimal value.
+    
+        Returns
+        -------
+        pd.Series
+            A Series containing the rolling Yang-Zhang volatility, indexed like `df`.
+            The first `window_size` rows are NaN due to insufficient data.
+        """
+    ```
 
-    Returns
-    -------
-    pd.Series
-        A Series containing the rolling Yang-Zhang volatility, indexed like `df`.
-        The first `window_size` rows are NaN due to insufficient data.
-    """
-
-```
+=== "Example"
+    ```python
+    df["yz_vol"] = fe.volatility.yang_zhang_volatility(df=df, low_col="low",high_col="high", open_col="open",
+                                                       close_col="close", window_size=30)
+    ```
 
 📢 *For a practical example, check out this [educational notebook](/../tutorials/features-engineering-volatility/#yang-zhang-volatility-estimator).*
 
