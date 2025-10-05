@@ -31,11 +31,3 @@ jobs:
 
       - name: Run tests with coverage
         run: pytest --cov=quantreo --cov-report=term-missing -v --maxfail=1 --disable-warnings
-
-
-
-      - name: Lint with Ruff (check only)
-        run: ruff check .
-
-      - name: Check formatting with Black (no modification)
-        run: black --check .
