@@ -24,5 +24,6 @@ def internal_bar_strength(
     """
     range_ = df[high_col] - df[low_col]
     ibs = (df[close_col] - df[low_col]) / range_
+    ibs = ibs.fillna(0.5)
     ibs.name = "IBS"
     return ibs
