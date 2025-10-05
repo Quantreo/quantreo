@@ -45,6 +45,9 @@ def sample_entropy(
     if order < 1:
         raise ValueError("Parameter 'order' must be >= 1.")
 
+    if col not in df.columns:
+        raise ValueError(f"Column '{col}' not found in DataFrame.")
+
     return (
         df[col]
         .rolling(window=window_size)
@@ -108,6 +111,9 @@ def spectral_entropy(
 
     if sf <= 0:
         raise ValueError("Sampling frequency 'sf' must be strictly positive.")
+
+    if col not in df.columns:
+        raise ValueError(f"Column '{col}' not found in DataFrame.")
 
     if method not in ["welch", "fft"]:
         raise ValueError("Method must be 'welch' or 'fft'.")
@@ -178,6 +184,9 @@ def permutation_entropy(
     if delay < 1:
         raise ValueError("Delay must be >= 1.")
 
+    if col not in df.columns:
+        raise ValueError(f"Column '{col}' not found in DataFrame.")
+
     return (
         df[col]
         .rolling(window=window_size)
@@ -225,6 +234,9 @@ def petrosian_fd(df: pd.DataFrame, col: str = "close", window_size: int = 100) -
     """
     if window_size < 10:
         raise ValueError("Petrosian fractal dimension requires window_size >= 10.")
+
+    if col not in df.columns:
+        raise ValueError(f"Column '{col}' not found in DataFrame.")
 
     return (
         df[col]

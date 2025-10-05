@@ -366,6 +366,9 @@ def shapiro_wilk(df: pd.DataFrame, col: str, window_size: int) -> tuple[pd.Serie
     pval_series : pd.Series
         Series of p-values corresponding to each window.
     """
+    if col not in df.columns:
+        raise ValueError(f"The column '{col}' is not present in the DataFrame.")
+
     values = df[col].values
     stat_results = []
     pval_results = []

@@ -81,21 +81,25 @@ Where: $P_t$ is the price at time $t$ and $n$ is the window size.
 === "Docstring"
     ```python
     """
-    Apply a logarithmic transformation to a column and compute rolling log returns.
+    Compute the logarithmic percentage change (log return) over a specified window.
+
+    Mathematically:
+        log_pct[t] = log(P_t) - log(P_{t - window_size})
+                   = log(P_t / P_{t - window_size})
 
     Parameters
     ----------
     df : pd.DataFrame
-        Input DataFrame.
+        Input DataFrame containing the column to be analyzed.
     col : str
-        Column to transform.
+        The name of the column containing price or value data.
     window_size : int
-        Window length for log return computation.
+        The number of periods over which to compute the log return.
 
     Returns
     -------
     pd.Series
-        Rolling log returns over `window_size` periods.
+        A Series containing the rolling log returns over `window_size` periods.
     """
     ```
 === "Example"

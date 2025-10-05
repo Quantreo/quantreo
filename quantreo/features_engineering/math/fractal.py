@@ -352,6 +352,12 @@ def hurst(df: pd.DataFrame, col: str, window_size: int = 100) -> pd.DataFrame:
     pd.Series
         A Series containing the rolling Hurst exponent values over the given window.
     """
+    if col not in df.columns:
+        raise ValueError(f"Column '{col}' not found in DataFrame.")
+
+    if window_size < 100:
+        raise ValueError("window_size must be >= 100")
+
     df_copy = df.copy()
 
     # Compute the rolling Hurst exponent using a helper function
@@ -399,6 +405,9 @@ def detrended_fluctuation(
     """
     if window_size < 100:
         raise ValueError("DFA requires window_size >= 100 for stable estimation.")
+
+    if col not in df.columns:
+        raise ValueError(f"Column '{col}' not found in DataFrame.")
 
     return (
         df[col]
