@@ -1,6 +1,7 @@
-site_name: QUANTREO
+site_name: Quantreo
 site_url: https://docs.quantreo.com/
 use_directory_urls: true
+site_description: A faster way to build quantitative features, targets, and alternative bars in Python. Powered by Numba. Whether your goal is alpha research, backtesting, or production-ready model development, Quantreo offers a consistent and modular workflow.
 
 theme:
   name: material
@@ -18,6 +19,7 @@ theme:
     - content.code.copy
     - content.code.annotation
     - content.icon
+    - content.meta
     - navigation.footer
 
 
@@ -99,14 +101,6 @@ extra:
     - icon: fontawesome/brands/linkedin
       link: https://www.linkedin.com/in/lucas-inglese-75574817b/
 
-  generator: false
-  metadata:
-    site_name: Quantreo
-    title: Quantreo - Python Library for Quantitative Trading
-    description: A faster way to build quantitative features, targets, and alternative bars in Python. Powered by Numba. Whether your goal is alpha research, backtesting, or production-ready model development, Quantreo offers a consistent and modular workflow.
-    image: https://docs.quantreo.com/assets/social-preview.png
-    type: website
-    url: https://docs.quantreo.com
 
 markdown_extensions:
   - pymdownx.highlight:
