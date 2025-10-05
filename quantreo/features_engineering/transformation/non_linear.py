@@ -27,6 +27,12 @@ def fisher_transform(
         pd.Series: A Series containing the Fisher Transform values.
     """
     # Compute the median price from high and low
+
+    if high_col not in df.columns or low_col not in df.columns:
+        raise ValueError(f"Column '{high_col}' or '{low_col}' not found in DataFrame.")
+    if not np.issubdtype(df[high_col].dtype, np.number) or not np.issubdtype(df[low_col].dtype, np.number):
+        raise ValueError(f"Column '{high_col}' or '{low_col}' must be numeric.")
+
     median_price = (df[high_col] + df[low_col]) / 2
 
     # Rolling min and max over the selected window

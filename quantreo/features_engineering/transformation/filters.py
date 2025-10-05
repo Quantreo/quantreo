@@ -33,6 +33,10 @@ def savgol_filter(
     """
     if window_size % 2 == 0:
         raise ValueError("window_size must be odd.")
+
+    if col not in df.columns:
+        raise ValueError(f"Column '{col}' not found in the DataFrame.")
+
     if polyorder >= window_size:
         raise ValueError("polyorder must be less than window_size.")
 
