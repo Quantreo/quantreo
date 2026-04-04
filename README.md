@@ -1,4 +1,6 @@
-> ⚠️ Archived repository. **Active development has moved to** [Oryon](https://github.com/lucasinglese/oryon).
+> ⚠️ Archived repository. 
+
+# **Active development has moved to** [Oryon](https://github.com/lucasinglese/oryon).
 
 Quantreo is no longer maintained and has been archived.
 
