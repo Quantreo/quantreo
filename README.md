@@ -1,3 +1,12 @@
+> ⚠️ Archived repository. **Active development has moved to** [Oryon](https://github.com/lucasinglese/oryon).
+
+Quantreo is no longer maintained and has been archived.
+
+The project now continues under **Oryon**, a complete rebuild designed for high-performance quantitative research and live trading workflows.
+
+➡️ Please use **[Oryon](https://github.com/lucasinglese/oryon)** for all new work.
+<br>
+
 ![Quantreo LIB logo](docs/docs/assets/figures/quantreo_logo_readme.png)
 
 
